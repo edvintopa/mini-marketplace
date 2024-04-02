@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### DB credentials ###
+src/main/resources/application.properties
