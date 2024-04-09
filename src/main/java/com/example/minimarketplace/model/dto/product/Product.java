@@ -12,8 +12,10 @@ public interface Product {
     UUID getProduct_id();
     String getTitle();
     String getDescription();
+    String getManufacturer();
+    String getModel();
     Date getDatePosted();
-    Date getDateOfProduction();
+    Date getModelYear();
     double getPrice();
     ProductCondition getProductCondition();
     ProductColor getProductColor();
@@ -21,8 +23,10 @@ public interface Product {
     void setProduct_id(UUID product_id);
     void setTitle(String title);
     void setDescription(String description);
+    void setManufacturer(String manufacturer);
+    void setModel(String model);
     void setDatePosted(Date datePosted);
-    void setDateOfProduction(Date dateOfProduction);
+    void setModelYear(Date modelYear);
     void setPrice(double price);
     void setProductCondition(ProductCondition productCondition);
     void setProductColor(ProductColor productColor);
