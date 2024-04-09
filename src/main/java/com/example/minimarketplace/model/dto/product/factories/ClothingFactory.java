@@ -9,8 +9,5 @@ import com.example.minimarketplace.model.dto.product.ProductFactory;
  * @created 2024-04-08
  */
 public class ClothingFactory extends ProductFactory {
-    @Override
-    public Product createProduct() {
-        return super.createProduct();
-    }
+
 }

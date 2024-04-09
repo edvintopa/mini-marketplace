@@ -16,6 +16,7 @@ import java.util.UUID;
 public class Vehicle implements Product {
     //Product attributes
     private UUID product_id;
+    private UUID seller_id;
     private String title;
     private String description;
     private String manufacturer;
@@ -39,6 +40,11 @@ public class Vehicle implements Product {
     @Override
     public UUID getProduct_id() {
         return product_id;
+    }
+
+    @Override
+    public UUID getSeller_id() {
+        return seller_id;
     }
 
     @Override
@@ -123,6 +129,11 @@ public class Vehicle implements Product {
     @Override
     public void setProduct_id(UUID product_id) {
         this.product_id = product_id;
+    }
+
+    @Override
+    public void setSeller_id(UUID seller_id) {
+        this.seller_id = seller_id;
     }
 
     @Override
