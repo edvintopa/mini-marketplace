@@ -9,7 +9,9 @@ import java.util.UUID;
  * @created 2024-04-08
  */
 public abstract class ProductFactory {
-    public abstract Product createProduct(String type, UUID product_id, String title, String description, Date datePosted,
-                                          Date dateOfProduction, double price, ProductCondition productCondition, ProductColor productColor,
-                                          ProductStatus productStatus);
+//    public abstract Product createProduct(String type, UUID product_id, String title, String description, String manufacturer,
+//                                          String model, Date datePosted, Date dateOfProduction, double price,
+//                                          ProductCondition productCondition, ProductColor productColor, ProductStatus productStatus);
+
+
 }
