@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.dto.product.products;
+package com.example.minimarketplace.model.dto.product.products.electronics;
 
 import com.example.minimarketplace.model.dto.product.Product;
 import com.example.minimarketplace.model.dto.product.ProductColor;
@@ -14,6 +14,7 @@ import java.util.UUID;
  * @created 2024-04-08
  */
 public class Electronics implements Product {
+    //Product attributes
     private UUID product_id;
     private String title;
     private String description;
@@ -25,6 +26,9 @@ public class Electronics implements Product {
     private ProductCondition productCondition;
     private ProductColor productColor;
     private ProductStatus productStatus;
+
+    //Electronics attributes
+    private ElectronicsType type;
 
     //getters
     @Override
@@ -82,6 +86,10 @@ public class Electronics implements Product {
         return productStatus;
     }
 
+    public ElectronicsType getType() {
+        return type;
+    }
+
     //setters
     @Override
     public void setProduct_id(UUID product_id) {
@@ -136,5 +144,9 @@ public class Electronics implements Product {
     @Override
     public void setProductStatus(ProductStatus productStatus) {
         this.productStatus = productStatus;
+    }
+
+    public void setType(ElectronicsType type) {
+        this.type = type;
     }
 }
