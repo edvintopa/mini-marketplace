@@ -1,4 +1,3 @@
-import React from "react";
 import "../index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="nav">
     <div className="nav-links">
-      <a href="#">Shop</a>
+      <a href="/productgallery.html">Marketplace</a>
       <a href="#">Login</a>
       <a href="#">Signup</a>
       </div>
