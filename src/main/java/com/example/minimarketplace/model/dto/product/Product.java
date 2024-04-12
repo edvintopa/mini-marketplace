@@ -9,8 +9,8 @@ import java.util.UUID;
  * @created 2024-04-08
  */
 public interface Product {
-    UUID getProduct_id();
-    UUID getSeller_id();
+    UUID getProductID();
+    UUID getSellerID();
     String getTitle();
     String getDescription();
     String getManufacturer();
@@ -21,8 +21,8 @@ public interface Product {
     ProductCondition getProductCondition();
     ProductColor getProductColor();
     ProductStatus getProductStatus();
-    void setProduct_id(UUID product_id);
-    void setSeller_id(UUID seller_id);
+    void setProductID(UUID productID);
+    void setSellerID(UUID sellerID);
     void setTitle(String title);
     void setDescription(String description);
     void setManufacturer(String manufacturer);

@@ -38,12 +38,12 @@ public class Vehicle implements Product {
 
     //getters
     @Override
-    public UUID getProduct_id() {
+    public UUID getProductID() {
         return product_id;
     }
 
     @Override
-    public UUID getSeller_id() {
+    public UUID getSellerID() {
         return seller_id;
     }
 
@@ -127,13 +127,13 @@ public class Vehicle implements Product {
 
     //setters
     @Override
-    public void setProduct_id(UUID product_id) {
-        this.product_id = product_id;
+    public void setProductID(UUID productID) {
+        this.product_id = productID;
     }
 
     @Override
-    public void setSeller_id(UUID seller_id) {
-        this.seller_id = seller_id;
+    public void setSellerID(UUID sellerID) {
+        this.seller_id = sellerID;
     }
 
     @Override
