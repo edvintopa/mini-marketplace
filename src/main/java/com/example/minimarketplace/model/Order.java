@@ -2,42 +2,95 @@ package com.example.minimarketplace.model;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.UUID;
 @Entity
-@Table(name ="orders")
+@Table(name ="order")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(
+            name = "order_sequence",
+            sequenceName = "order_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "order_sequence"
+    )
+    @Column(
+            name = "order_id",
+            updatable = false
+    )
     private UUID orderID;
-    @Column(name = "buyer")
-    private UUID buyer;
-    @Column(name = "passwordHash")
-    private String passwordHash;
-    @Column(name = "cost")
-    private double cost;
 
-    @Column(name = "orderdate")
-    private String orderDate;
+    @ManyToOne
+    @JoinColumn(
+            name = "seller",
+            referencedColumnName = "user_id",
+            nullable = false
+    )
+    private User seller;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "buyer",
+            referencedColumnName = "user_id",
+            nullable = false
+    )
+    private User buyer;
+
+    @Column(
+            name = "total",
+            columnDefinition = "numeric(13, 2)",
+            nullable = false
+    )
+    private double total;
+
+    @Column(
+            name = "order_date",
+            columnDefinition = "date",
+            nullable = false
+    )
+    private Date orderDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "order_status",
+            nullable = false
+    )
+    private OrderStatus orderStatus;
+
+    public Order(User seller, User buyer, double total,
+                 Date orderDate, OrderStatus orderStatus){
+        this.seller = seller;
+        this.buyer = buyer;
+        this.total = total;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+    }
 
     public UUID getOrderID() {
         return orderID;
     }
 
-    public UUID getBuyer() {
+    public User getSeller() {
+        return seller;
+    }
+
+    public User getBuyer() {
         return buyer;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public double getTotal() {
+        return total;
     }
 
-    public double getCost() {
-        return cost;
-    }
-
-    public String getOrderDate() {
+    public Date getOrderDate() {
         return orderDate;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 }
