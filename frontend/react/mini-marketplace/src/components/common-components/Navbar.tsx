@@ -1,4 +1,4 @@
-import "../../index.css"; 
+import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faShop } from "@fortawesome/free-solid-svg-icons";
@@ -13,8 +13,8 @@ const Navbar = () => {
                 <a href="/"><FontAwesomeIcon icon={faShop} /><p>Home</p></a>
             </div>
             <div className="nav-center">
-                <a href="#">Shop</a>
-                <a href="#">Login</a>
+            <a href="/productgallery.html">Marketplace</a>
+            <a href="#">Login</a>
                 <a href="#">Signup</a>
 
             </div>
