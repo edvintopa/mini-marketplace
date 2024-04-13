@@ -1,38 +1,49 @@
+/* accent color: #c4b5fd */
+
+
 .nav {
+    position: relative; 
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: space-between; 
     width: 100%;
     height: 56px;
-    background: linear-gradient(to right, #f3f4f6, #f3f4f6);
+    background-color: #f3f4f6;
 }
 
-.nav-links {
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
+    justify-content:center;
     flex-grow: 1; 
-    margin-left: 70px; 
+}
+
+.nav-center a {
+    margin: 0 10px;
+}
+
+.nav-left {
+    display: flex;
+    justify-content: flex-start;
+    flex-grow: 0;
 }
 
 .nav-right {
     display: flex;
-    justify-content: flex-end; 
-    flex-grow: 0; 
+    justify-content: flex-end;
+    flex-grow: 0;
 }
 
-.nav-links a {
-    margin: 0 10px; 
-}
-
-.nav-right a {
-    margin-right: 10px; 
+.nav-left p {
+    margin-left: 10px;
 }
 
 .nav a {
     display: inline-flex;
     height: 36px; 
     align-items: center;
-    border-radius: 8px; 
     padding: 8px 16px; 
     font-size: 0.875rem; 
     font-weight: 500; 
@@ -44,7 +55,31 @@
 
 .nav a:hover {
     background-color:white; 
+    transition: 0.3s;
+    
     color: #1f2937; 
+}
+
+.nav-search {
+    height: 32px;
+    margin: 0 10px;
+    margin-top: 8px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    border-radius: 9999px;
+    outline: none;
+    background-color: #ffffff;
+}
+
+#profileIcon {
+    padding-right: 20px;
+}
+
+
+.profile-dropdown {
+    /* display: none; */
 }
 
 .banner {    
@@ -70,4 +105,51 @@
 }
 
 
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    width: 100%;
+    height: 56px;
+    background-color: #f3f4f6;
+}
 
+.footer p {
+    font-size: 0.875rem; 
+    font-weight: 500; 
+    font-family: inter;
+    color: #1f2937;
+}
+
+
+/* Profile Page */
+
+.profile {
+    display: grid;
+    width: 100%;
+    height: 100vh; 
+}
+
+.profile-header {
+    margin-top: 100px;
+    margin-left: 60px;
+}
+
+.profile-image {
+    font-size: 100px;
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    margin-bottom: 16px; 
+    color: white;
+}
+
+.profile-header-info {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: center;
+}
+
+body {
+}
