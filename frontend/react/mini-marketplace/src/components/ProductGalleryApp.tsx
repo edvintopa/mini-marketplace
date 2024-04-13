@@ -1,4 +1,4 @@
-import { ProductGalleryWrapper } from './productviewgallery/ProductGalleryWrapper'
+import { ProductGalleryWrapper } from './product-gallery/ProductGalleryWrapper'
 import Navbar from "./Navbar";
 import "../CSS-files/productgallery.css";
 
