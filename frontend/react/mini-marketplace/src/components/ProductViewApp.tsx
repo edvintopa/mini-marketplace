@@ -1,6 +1,6 @@
 
 import Navbar from "./Navbar";
-import "../CSS-files/productgallery.css";
+import "../../CSS-files/productview.css";
 import { CurrentProductView } from './product-view/ProductView';
 
 export const ProductViewApp = ({id} : {id: string}) => {

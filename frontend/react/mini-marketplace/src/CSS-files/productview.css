@@ -1,0 +1,79 @@
+.ProductViewInfo {
+    display: grid;
+    width: 30%;
+    padding-left: 2%;
+}
+
+.GeneralProductView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10 auto;
+}
+
+.ProductViewImage img{
+    width: 600px;
+    height: 600px;
+}
+
+.AddToCartBtn {
+    background-color: black;
+    color: white;
+    font-family: inter;
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 10px 10px;
+    width: auto !important;
+    height: fit-content;
+}
+
+.PlaceholderBtn {
+    background-color: white;
+    color: black;
+    font-family: inter;
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 10px 10px;
+    width: auto !important;
+    height: fit-content;
+    border: 5px solid black;
+}
+
+h3, h4, button {
+    font-family: inter;
+}
+
+.TitleOfProduct {
+    font-size: xx-large;
+}
+
+.PriceOfProduct {
+    font-size: 25px;
+    margin: 0;
+    
+}
+
+.TitleOfProduct, .PriceOfProduct, button {
+    margin-bottom: 15px; /* Adjust this value to increase or decrease the space */
+}
+
+.ProductViewButtons {
+    display: grid;
+    margin-bottom: auto;
+}
+
+.DescriptionInfo {
+    text-align: left;
+    font-family: Arial;
+    font-size: 17px;
+    font-style: italic;
+    width: 90%;
+}
+
+.userProfile {
+    margin-top: 10px;
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+    font-style: normal;
+}
