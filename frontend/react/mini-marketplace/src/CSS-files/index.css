@@ -121,9 +121,69 @@
     color: #1f2937;
 }
 
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: inter;
+}
+
+.main-content {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    margin-right: 20px;
+    color: #4b5563; /* Gray-600 */
+    font-size: 4em;
+}
+
+.profile-info h4 {
+    font-size: 1.5em;
+    margin: 0;
+    color: #1f2937; /* Gray-800 */
+}
+
+.profile-info p {
+    color: #6b7280; /* Gray-500 */
+}
+
+.profile-section h4 {
+    margin-top: 20px;
+    color: #111827; /* Gray-900 */
+}
+
+.profile-settings, .order-history {
+    display: block;
+    align-items: center;
+    font-size: 16px;
+    color: #374151; /* Gray-700 */
+}
+
+.profile-settings span, .order-history span {
+    margin-left: 10px;
+}
+
+.settings-item {
+    margin-top: 10px;
+}
+
+
 
 /* Profile Page */
 
+/*
 .profile {
     display: grid;
     width: 100%;
@@ -141,7 +201,6 @@
     height: 100px; 
     border-radius: 50%; 
     margin-bottom: 16px; 
-    color: white;
 }
 
 .profile-header-info {
@@ -150,6 +209,7 @@
     align-items:flex-start;
     justify-content: center;
 }
+*/
 
 body {
 }

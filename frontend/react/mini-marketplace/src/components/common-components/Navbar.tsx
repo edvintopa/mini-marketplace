@@ -1,8 +1,6 @@
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faShop } from "@fortawesome/free-solid-svg-icons";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 
 
