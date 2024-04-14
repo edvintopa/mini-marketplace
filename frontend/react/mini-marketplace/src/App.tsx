@@ -18,7 +18,7 @@ function App() {
                 <Route path="/login" element={<ProductGalleryApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<CurrentProductView id={""} />} />
-                {/*<Route path="/profile" element={<Profile />} />*/}
+                <Route path="/profile" element={<Profile name="John Doe" bio="I got the good stuff" />} />
             </Routes>
             <Footer />
         </div>
