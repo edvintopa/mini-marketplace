@@ -1,15 +1,29 @@
+import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Navbar from './components/common-components/Navbar';
+import NavbarLoggedIn from './components/common-components/NavbarLoggedIn';
 import Profile from './components/userprofile/profile';
 import StartPage from './components/startpage';
 import Footer from './components/common-components/Footer';
 import { ProductGalleryApp } from "./components/ProductGalleryApp";
 import { CurrentProductView } from './components/product-view/ProductView';
+import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 
 function App() {
+
+    const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);
+
+    const toggleSavedProducts = () => {
+        setSavedProductsVisible(!isSavedProductsVisible);
+    };
+
+
     return (
         <div className="App">
-            <Navbar />
+            <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
+            <SavedProductsPanel
+            className={isSavedProductsVisible ? 'visible' : ''}
+            toggleSavedProducts={toggleSavedProducts}
+            />
             <Routes>
                 <Route path="/" element={<StartPage />} />
                 <Route path="/productgallery" element={<ProductGalleryApp />} />

@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import '../../CSS-files/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCog, faHistory, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCog, faHistory, faPenToSquare, } from '@fortawesome/free-solid-svg-icons';
 
-// TypeScript interfaces for prop types
 interface UserProfileProps {
     name: string;
     bio: string;
@@ -17,12 +17,12 @@ const ProfileSettings = () => {
     return (
         <div className="profile-settings">
             <div className="settings-item">
-                <FontAwesomeIcon icon={faCog} />
-                <span>Settings</span>
-            </div>
-            <div className="settings-item">
                 <FontAwesomeIcon icon={faPenToSquare} />
                 <span>Edit Profile</span>
+            </div>
+            <div className="settings-item">
+            <FontAwesomeIcon icon={faCog} />
+            <span>Settings</span>
             </div>
         </div>
     );
@@ -46,8 +46,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ title, children }) => {
 };
 
 const Profile: React.FC<UserProfileProps> = ({ name = "John Doe", bio = "I got the good stuff" }) => {
+
+
     return (
         <div className="profile-page">
+
+
             <main className="main-content">
                 <div className="profile-header">
                     <div className="profile-avatar">

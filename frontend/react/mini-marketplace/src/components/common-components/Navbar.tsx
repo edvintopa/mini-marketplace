@@ -1,6 +1,6 @@
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -9,17 +9,15 @@ const Navbar = () => {
         <nav className="nav">
             <div className="nav-left">
                 <a href="/"><FontAwesomeIcon icon={faShop} /><p>Home</p></a>
+                <a href="/productgallery.html">Marketplace</a>
             </div>
             <div className="nav-center">
-            <a href="/productgallery.html">Marketplace</a>
-            <a href="#">Login</a>
-                <a href="#">Signup</a>
-
+            <input className="nav-search" type="text" placeholder="Search" />
             </div>
             <div className="nav-right">
-            <input className="nav-search" type="text" placeholder="Search" />
                 <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
-                <a href="/profile" className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>
+                <a href="#">Signup</a>
+                <a href="#">Login</a>
             </div>
         </nav>
     );
