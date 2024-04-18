@@ -15,8 +15,8 @@ import java.util.UUID;
  */
 public class Electronics implements Product {
     //Product attributes
-    private UUID product_id;
-    private UUID seller_id;
+    private UUID productID;
+    private UUID sellerID;
     private String title;
     private String description;
     private String manufacturer;
@@ -33,12 +33,12 @@ public class Electronics implements Product {
 
     //getters
     @Override
-    public UUID getProduct_id() {
-        return product_id;
+    public UUID getProductID() {
+        return productID;
     }
     @Override
-    public UUID getSeller_id() {
-        return seller_id;
+    public UUID getSellerID() {
+        return sellerID;
     }
 
     @Override
@@ -97,12 +97,12 @@ public class Electronics implements Product {
 
     //setters
     @Override
-    public void setProduct_id(UUID product_id) {
-        this.product_id = product_id;
+    public void setProductID(UUID productID) {
+        this.productID = productID;
     }
     @Override
-    public void setSeller_id(UUID seller_id) {
-        this.seller_id = seller_id;
+    public void setSellerID(UUID sellerID) {
+        this.sellerID = sellerID;
     }
 
     @Override
