@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.dto.product.products.vehicle;
+package com.example.minimarketplace.model.product.products.vehicle;
 
 import com.example.minimarketplace.model.dto.product.Product;
 import com.example.minimarketplace.model.dto.product.ProductColor;
