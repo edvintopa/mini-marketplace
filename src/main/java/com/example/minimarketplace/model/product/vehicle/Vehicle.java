@@ -1,9 +1,9 @@
-package com.example.minimarketplace.model.dto.product.products.electronics;
+package com.example.minimarketplace.model.dto.product.products.vehicle;
 
 import com.example.minimarketplace.model.dto.product.Product;
 import com.example.minimarketplace.model.dto.product.ProductColor;
-import com.example.minimarketplace.model.dto.product.ProductCondition;
-import com.example.minimarketplace.model.dto.product.ProductStatus;
+import com.example.minimarketplace.model.product.ProductCondition;
+import com.example.minimarketplace.model.product.ProductStatus;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,12 +11,12 @@ import java.util.UUID;
 /**
  * @author edvintopa
  * @project mini-marketplace
- * @created 2024-04-08
+ * @created 2024-04-09
  */
-public class Electronics implements Product {
+public class Vehicle implements Product {
     //Product attributes
-    private UUID productID;
-    private UUID sellerID;
+    private UUID product_id;
+    private UUID seller_id;
     private String title;
     private String description;
     private String manufacturer;
@@ -28,17 +28,23 @@ public class Electronics implements Product {
     private ProductColor productColor;
     private ProductStatus productStatus;
 
-    //Electronics attributes
-    private ElectronicsType type;
+    //Vehicle attributes
+    private VehicleType type;
+    private VehicleDrivetrain drivetrain;
+    private VehicleFuel fuel;
+    private VehicleTransmission transmission;
+    private double milage;
+    private int numberOfOwners;
 
     //getters
     @Override
     public UUID getProductID() {
-        return productID;
+        return product_id;
     }
+
     @Override
     public UUID getSellerID() {
-        return sellerID;
+        return seller_id;
     }
 
     @Override
@@ -91,18 +97,43 @@ public class Electronics implements Product {
         return productStatus;
     }
 
-    public ElectronicsType getType() {
+    public Date getDateOfProduction() {
+        return dateOfProduction;
+    }
+
+    public VehicleType getType() {
         return type;
+    }
+
+    public VehicleDrivetrain getDrivetrain() {
+        return drivetrain;
+    }
+
+    public VehicleFuel getFuel() {
+        return fuel;
+    }
+
+    public VehicleTransmission getTransmission() {
+        return transmission;
+    }
+
+    public double getMilage() {
+        return milage;
+    }
+
+    public int getNumberOfOwners() {
+        return numberOfOwners;
     }
 
     //setters
     @Override
     public void setProductID(UUID productID) {
-        this.productID = productID;
+        this.product_id = productID;
     }
+
     @Override
     public void setSellerID(UUID sellerID) {
-        this.sellerID = sellerID;
+        this.seller_id = sellerID;
     }
 
     @Override
@@ -155,7 +186,31 @@ public class Electronics implements Product {
         this.productStatus = productStatus;
     }
 
-    public void setType(ElectronicsType type) {
+    public void setDateOfProduction(Date dateOfProduction) {
+        this.dateOfProduction = dateOfProduction;
+    }
+
+    public void setType(VehicleType type) {
         this.type = type;
+    }
+
+    public void setDrivetrain(VehicleDrivetrain drivetrain) {
+        this.drivetrain = drivetrain;
+    }
+
+    public void setFuel(VehicleFuel fuel) {
+        this.fuel = fuel;
+    }
+
+    public void setTransmission(VehicleTransmission transmission) {
+        this.transmission = transmission;
+    }
+
+    public void setMilage(double milage) {
+        this.milage = milage;
+    }
+
+    public void setNumberOfOwners(int numberOfOwners) {
+        this.numberOfOwners = numberOfOwners;
     }
 }

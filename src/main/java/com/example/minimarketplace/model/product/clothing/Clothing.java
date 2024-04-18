@@ -2,8 +2,8 @@ package com.example.minimarketplace.model.dto.product.products.clothing;
 
 import com.example.minimarketplace.model.dto.product.Product;
 import com.example.minimarketplace.model.dto.product.ProductColor;
-import com.example.minimarketplace.model.dto.product.ProductCondition;
-import com.example.minimarketplace.model.dto.product.ProductStatus;
+import com.example.minimarketplace.model.product.ProductCondition;
+import com.example.minimarketplace.model.product.ProductStatus;
 import jakarta.persistence.*;
 
 import java.util.Date;
