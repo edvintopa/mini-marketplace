@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.dto.product;
+package com.example.minimarketplace.model.product;
 
 public enum ProductStatus {
     AVAILABLE,

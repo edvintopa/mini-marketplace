@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.Product;
+package com.example.minimarketplace.model.product;
 
 public enum ProductColor {
     BLACK,
@@ -10,6 +10,7 @@ public enum ProductColor {
     GREEN,
     PURPLE,
     GRAY,
+    OTHER
 
 
 }
