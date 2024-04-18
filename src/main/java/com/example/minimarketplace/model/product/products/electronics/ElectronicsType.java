@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.product.products.vehicle.electronics;
+package com.example.minimarketplace.model.product.products.electronics;
 
 /**
  * @author edvintopa
