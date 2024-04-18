@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.dto.product.products.clothing;
+package com.example.minimarketplace.model.product.products.clothing;
 
 /**
  * @author edvintopa
