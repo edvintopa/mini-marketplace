@@ -1,77 +1,43 @@
-import React, { useState } from 'react';
-import '../../CSS-files/index.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCog, faHistory, faPenToSquare, } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import '../../CSS-files/profile.css';
+import ProfileInfo from '../common-components/ProfileInfo';
+import OrderHistory from './OrderHistory';
+import ProfileSettings from './ProfileSettings';
 
-interface UserProfileProps {
-    name: string;
-    bio: string;
+
+interface User {
+id: number;
+name: string;
+bio: string;
+avatarUrl: string;
 }
 
-interface ProfileSectionProps {
-    title: string;
-    children: React.ReactNode;
+interface Order {
+id: number;
+description: string;
+date: string;
 }
 
-const ProfileSettings = () => {
+interface ProfileProps {
+    user: User;
+    orders: Order[];
+}
+
+
+const Profile: React.FC<ProfileProps> = ({ user, orders }) => {
+
+
     return (
-        <div className="profile-settings">
-            <div className="settings-item">
-                <FontAwesomeIcon icon={faPenToSquare} />
-                <span>Edit Profile</span>
+        <div className="main-content">
+            <div className="profile-settings">
+                <ProfileSettings />
             </div>
-            <div className="settings-item">
-            <FontAwesomeIcon icon={faCog} />
-            <span>Settings</span>
+            <div className="content-area">
+                <ProfileInfo user={user} />
+                <OrderHistory orders={orders} />
             </div>
         </div>
-    );
-};
-
-const OrderHistory = () => {
-    return (
-        <div className="order-history">
-            <FontAwesomeIcon icon={faHistory} /> <span>Order History</span>
-        </div>
-    );
-};
-
-const ProfileSection: React.FC<ProfileSectionProps> = ({ title, children }) => {
-    return (
-        <div className="profile-section">
-            <h4>{title}</h4>
-            {children}
-        </div>
-    );
-};
-
-const Profile: React.FC<UserProfileProps> = ({ name = "John Doe", bio = "I got the good stuff" }) => {
-
-
-    return (
-        <div className="profile-page">
-
-
-            <main className="main-content">
-                <div className="profile-header">
-                    <div className="profile-avatar">
-                        <FontAwesomeIcon icon={faUser} size="3x" />
-                    </div>
-                    <div className="profile-info">
-                        <h4>{name}</h4>
-                        <p>{bio}</p>
-                    </div>
-                </div>
-                <ProfileSection title="Profile Settings">
-                    <ProfileSettings />
-                </ProfileSection>
-                <ProfileSection title="Order History">
-                    <OrderHistory />
-                </ProfileSection>
-            </main>
-        </div>
-    );
+    )
 };
 
 export default Profile;
-

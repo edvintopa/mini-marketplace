@@ -1,5 +1,19 @@
 /* accent color: #c4b5fd */
 
+.App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.content {
+    flex: 1;
+}
 
 .nav {
     position: relative; 
@@ -79,9 +93,6 @@
 }
 
 
-.profile-dropdown {
-    /* display: none; */
-}
 
 .banner {    
     display: flex;
@@ -107,11 +118,15 @@
 
 
 .footer {
+    position: absolute;
+    bottom: 0;
+
+    width: 100%;
+    height: 56px;
+
     display: flex;
     align-items: center;
     justify-content: center; 
-    width: 100%;
-    height: 56px;
     background-color: #f3f4f6;
 }
 
