@@ -78,14 +78,14 @@ public class User {
     private double balance;
 
     public User(String firstName, String lastName, String username, String password,
-                Date dateOfBirth, String email, double balance){
+                Date dateOfBirth, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
-        this.balance = balance;
+        this.balance = 2000.00;
     }
 
     public UUID getUserId() {
