@@ -77,12 +77,12 @@ public class User {
     )
     private double balance;
 
-    public User(String firstName, String lastName, String username, String passowrd,
+    public User(String firstName, String lastName, String username, String password,
                 Date dateOfBirth, String email, double balance){
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.password = passowrd;
+        this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.balance = balance;

@@ -11,6 +11,8 @@ public enum ClothingType {
     HOODIE,
     TROUSERS,
     SHORTS,
+    SKIRT,
+    DRESS,
     FOOTWEAR,
     HEADWARE,
     ACCESSORY,
