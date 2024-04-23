@@ -1,5 +1,6 @@
 package com.example.minimarketplace.model;
 
+import com.example.minimarketplace.model.product.Product;
 import jakarta.persistence.*;
 
 /**
@@ -9,15 +10,20 @@ import jakarta.persistence.*;
 @Table(name = "order_content")
 public class OrderContent {
 
-    //TODO: not finished, not sure how to map relationship yet
+    @Id //composite PK
+    @ManyToOne //one order, many instances
     @JoinColumn(
             name = "order_id",
-            nullable = false,
-            updatable = false
+            nullable = false
     )
-    private long orderID;
+    private Order order;
 
-    //TODO: add productID
-
+    @Id //composite PK
+    @ManyToOne //one product, many instances
+    @JoinColumn(
+            name = "product_id",
+            nullable = false
+    )
+    private Product product;
 
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @SequenceGenerator(
+    @SequenceGenerator( //sequence to increment order id
             name = "order_sequence",
             sequenceName = "order_sequence",
             allocationSize = 1
@@ -20,22 +20,23 @@ public class Order {
     )
     @Column(
             name = "order_id",
+            nullable = false,
             updatable = false
     )
     private UUID orderID;
 
-    @ManyToOne
+    @ManyToOne //one seller, many orders
     @JoinColumn(
-            name = "seller",
-            referencedColumnName = "user_id",
+            name = "seller", //name in order table
+            referencedColumnName = "user_id", //name in user table
             nullable = false
     )
     private User seller;
 
-    @ManyToOne
+    @ManyToOne //one buyer, many orders
     @JoinColumn(
-            name = "buyer",
-            referencedColumnName = "user_id",
+            name = "buyer", //name in order table
+            referencedColumnName = "user_id", //name in user table
             nullable = false
     )
     private User buyer;
@@ -68,6 +69,10 @@ public class Order {
         this.total = total;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
+    }
+
+    public Order() {
+
     }
 
     public UUID getOrderID() {

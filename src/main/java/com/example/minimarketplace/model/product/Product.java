@@ -1,4 +1,5 @@
 package com.example.minimarketplace.model.product;
+import com.example.minimarketplace.model.User;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -30,41 +31,43 @@ public abstract class Product {
     )
     private UUID product_id;
 
-    @OneToOne( //FK mapping
+    @ManyToOne( //FK mapping (one seller, many products)
             cascade = CascadeType.ALL
     )
     @JoinColumn(
-            name = "seller",
+            name = "seller", //name in product table
+            referencedColumnName = "user_id", //name in user table
             nullable = false,
-            columnDefinition = "TEXT"
+            updatable = false,
+            columnDefinition = "VARCHAR(50)"
     )
-    private UUID seller_id;
+    private User seller_id;
 
     @Column(
             name = "title",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "VARCHAR(50)"
     )
     private String title;
 
     @Column(
             name = "description",
-            columnDefinition = "TEXT"
+            columnDefinition = "VARCHAR(50)"
     )
     private String description;
 
     @Column(
             name = "manufacturer",
             nullable = false,
-            updatable = false,
-            columnDefinition = "varchar(50)"
+            columnDefinition = "VARCHAR(50)"
     )
     private String manufacturer;
 
-    @Enumerated(EnumType.STRING)
     @Column(
             name = "date_posted",
-            nullable = false
+            nullable = false,
+            updatable = false,
+            columnDefinition = "DATE"
     )
     private Date datePosted;
 
@@ -73,7 +76,6 @@ public abstract class Product {
             nullable = false
     )
     private double price;
-
 
     @Enumerated(EnumType.STRING)
     @Column(
@@ -161,11 +163,11 @@ public abstract class Product {
         this.title = title;
     }
 
-    public UUID getSeller_id() {
+    public User getSeller_id() {
         return seller_id;
     }
 
-    public void setSeller_id(UUID seller_id) {
+    public void setSeller_id(User seller_id) {
         this.seller_id = seller_id;
     }
 

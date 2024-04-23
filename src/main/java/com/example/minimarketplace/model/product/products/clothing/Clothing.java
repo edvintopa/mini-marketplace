@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Clothing extends Product {
 
     //Clothing attributes
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) //represented as string in database
     @Column(
             name = "season",
             nullable = false,
