@@ -22,34 +22,65 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/getUsers")
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username) {
+//    @GetMapping("/getUsers")
+//    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username) {
+//        try {
+//            List<User> users = new ArrayList<User>();
+//
+//            if(username == null) {
+//                users.addAll(userRepository.findAll());
+//            } else {
+//                users.addAll(userRepository.findByUsername(username));
+//            }
+//
+//            if(users.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//
+//            return new ResponseEntity<>(users, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    /**
+     * @author edvintopa
+     * Uses save method available in repo interface.
+     *
+     * Recieves user obj (JSON) and then checks availability of email and username
+     */
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            List<User> users = new ArrayList<User>();
-
-            if(username == null) {
-                users.addAll(userRepository.findAll());
-            } else {
-                users.addAll(userRepository.findByUsername(username));
+            /*
+             * CHECKS IF USERNAME & EMAIL IS IN USE
+             */
+            List<User> existingUsers = userRepository.findByUsername(user.getUsername());
+            if (!existingUsers.isEmpty()) {
+                return new ResponseEntity<>("Username is already in use", HttpStatus.BAD_REQUEST);
             }
 
-            if(users.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            existingUsers = userRepository.findByEmail(user.getEmail());
+            if (!existingUsers.isEmpty()) {
+                return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
             }
 
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            /*
+             * CREATE USER
+             */
+
+            User _user = userRepository.save(new User(
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getUsername(),
+                    user.getPassword(), //TODO: lookup password storing
+                    user.getDateOfBirth(),
+                    user.getEmail()
+
+            ));
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        try {
-            User _user = userRepository.save(new User(user.getUsername(), user.getPassword()));
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-}
 }
