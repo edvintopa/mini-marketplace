@@ -11,7 +11,7 @@ import java.util.UUID;
  * @created 2024-04-01
  */
 @Entity
-@Table(name ="user")
+@Table(name ="webuser")
 public class User {
     @Id
     @SequenceGenerator(
@@ -86,6 +86,9 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.balance = 2000.00;
+    }
+
+    public User() {
     }
 
     public UUID getUserId() {

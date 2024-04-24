@@ -38,15 +38,13 @@ public abstract class Product {
             name = "seller", //name in product table
             referencedColumnName = "user_id", //name in user table
             nullable = false,
-            updatable = false,
-            columnDefinition = "VARCHAR(50)"
+            updatable = false
     )
     private User seller_id;
 
     @Column(
             name = "title",
-            nullable = false,
-            columnDefinition = "VARCHAR(50)"
+            nullable = false
     )
     private String title;
 
