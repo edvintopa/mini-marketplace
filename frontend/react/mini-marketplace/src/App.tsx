@@ -7,6 +7,7 @@ import { ProductGalleryApp } from "./components/ProductGalleryApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/profile';
+import Profile from './components/userprofile/Profile';
 
 function App() {
 
