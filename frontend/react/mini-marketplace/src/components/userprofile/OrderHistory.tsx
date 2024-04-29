@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { Order } from '../../types/types';
 
 
-interface Order {
-    id: number;
-    description: string;
-    date: string;
-}
 
 interface OrderHistoryProps {
     orders: Order[];

@@ -1,5 +1,42 @@
 /* accent color: #c4b5fd */
 
+
+
+body[data-theme='dark'] {
+    background-color: #121212;
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .nav, body[data-theme='dark'] .footer {
+    background-color: #333333;
+}
+
+body[data-theme='dark'] .nav a {
+    color: #E0E0E0;
+    background-color: transparent;
+}
+
+body[data-theme='dark'] .nav a:hover {
+    background-color: #424242;
+}
+
+body[data-theme='dark'] .nav-search {
+    background-color: #424242;
+    color: #E0E0E0;
+    border: 1px solid #424242;
+}
+
+body[data-theme='dark'] .footer p {
+    color: #E0E0E0;
+}
+
+
+
+
+
+
+
+
 .App {
     display: flex;
     flex-direction: column;
@@ -70,7 +107,6 @@ body, html {
 .nav a:hover {
     background-color:white; 
     transition: 0.3s;
-    
     color: #1f2937; 
 }
 
@@ -118,8 +154,9 @@ body, html {
 
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    z-index: 2;
 
     width: 100%;
     height: 56px;
@@ -213,14 +250,21 @@ body, html {
     background-color: #a78bfa;
 }
 
+body[data-theme='dark'] .saved-products-panel {
+    background-color: #424242;
+}
+
+
+
 .saved-products-panel {
+    z-index: 2;
     position: fixed;
-    top: 64px;
+    top: 56.5px;
     right: 0;
     width: 300px;
-    /*height: (100vh - 60px);*/
-    height: 100%;
+    top: 56.5px;
     background: white;
+    height: calc(100vh - 56px);
     box-shadow: -5px 0 15px rgba(0,0,0,0.1);
     padding: 20px;
     transform: translateX(100%);
@@ -245,3 +289,16 @@ body, html {
 .close-panel-btn:hover {
     color: #1f2937;
 }
+
+
+
+
+
+/* TextFIeldComponent */
+.textFieldBox {
+    display: grid;
+    margin: 0 auto;
+}
+
+
+

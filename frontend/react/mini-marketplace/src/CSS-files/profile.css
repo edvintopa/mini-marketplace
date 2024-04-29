@@ -8,15 +8,33 @@
     margin: auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     max-width: 1200px;
+    font-family: inter;
 }
+
 
 .profile-info {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 8px;
     margin: 10px;
+}
+
+#edit-profile-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-content {
+    display: flex;
+    align-items: center;
 }
 
 .profile-avatar img {
@@ -25,6 +43,11 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 20px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-details h1 {
@@ -38,14 +61,75 @@
     font-size: 16px;
 }
 
+body[data-theme='dark'] .profile-info {
+    background-color: #333333;
+}
+
+body[data-theme='dark'] .profile-details h1 {
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .profile-details p {
+    color: #E0E0E0;
+}
+
+
+.content-area {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    overflow-y: auto;
+}
+
+
+body[data-theme='dark'] .profile-info button {
+}
+
+body[data-theme='dark'] .order-history-container {
+    background-color: #424242;
+}
+
+
 /* Profile Settings */
 
+body[data-theme='dark'] .settings-item {
+    color: #E0E0E0;
+}
+.settings-item button {
+    border: none;
+    background-color: white;
+    color: #374151;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.settings-item button:hover {
+    background-color: #f3f4f6;
+    transition: 0.3s;
+}
+
+body[data-theme='dark'] .profile-settings {
+    background-color: #424242;
+}
+
+body[data-theme='dark'] .settings-item button {
+    background-color: #424242;
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .settings-item button:hover {
+    background-color: #333333;
+}
+
+
+
 .profile-settings {
-    width: 200px;
+    top: 56.5px;
+    width: 220px;
     position: fixed;
     height: calc(100vh - 56px);
     overflow-y: auto;
     box-shadow: 4px 0px 8px rgba(0,0,0,0.1);
+    left: 0;
 }
 
 .content-area {
@@ -67,6 +151,7 @@
 
 .settings-item {
     margin-top: 10px;
+    margin-left: 10px;
 }
 
 

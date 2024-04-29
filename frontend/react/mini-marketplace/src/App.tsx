@@ -6,33 +6,35 @@ import Footer from './components/common-components/Footer';
 import { ProductGalleryApp } from "./components/ProductGalleryApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
-import Profile from './components/userprofile/profile';
 import Profile from './components/userprofile/Profile';
+import { ThemeProvider } from './ThemeContext';
+import { UserProvider } from './context/UserContext';
 
 function App() {
-
     const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);
+
+    const [orders, setOrders] = useState([
+        {
+            id: 1,
+            description: 'Black Hoodie',
+            date: '2024-04-18',
+        },
+        {
+            id: 2,
+            description: 'Black jeans',
+            date: '2024-04-29',
+        },
+    ]);
 
     const toggleSavedProducts = () => {
         setSavedProductsVisible(!isSavedProductsVisible);
     };
 
-const testUser = {
-    id: 1,
-    name: "Elliot",
-    bio: "hello friend",
-    avatarUrl: "https://i.pinimg.com/originals/7b/7b/7b/"
-}
 
-const arrayOfOrders = [
-    {
-    id: 1,
-    description: "reverse shell script",
-    date: "2024-04-18",
-    }
-]
 
     return (
+        <ThemeProvider>
+        <UserProvider>
         <div className="App">
             <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
             <SavedProductsPanel
@@ -47,10 +49,12 @@ const arrayOfOrders = [
                 <Route path="/login" element={<ProductGalleryApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<CurrentProductView id={""} />} />
-                <Route path="/profile" element={<Profile user={testUser} orders={arrayOfOrders} />} />
+                <Route path="/profile" element={<Profile orders={orders} />} />
             </Routes>
             <Footer />
         </div>
+        </UserProvider>
+        </ThemeProvider>
     );
 }
 

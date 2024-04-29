@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode } from "react";
 import "../../CSS-files/profile.css";
 
 
@@ -6,15 +6,17 @@ import "../../CSS-files/profile.css";
 
 interface ProfileInfoProps {
     user: {
-        name: string;
+        name: string; /** TODO: split into first and last name */
         bio: string;
         avatarUrl: string;
     };
+    children?: ReactNode;
 }
 
-const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
+const ProfileInfo: React.FC<ProfileInfoProps> = ({ user, children }) => {
     return (
         <div className="profile-info">
+        <div className="profile-content">
             <div className="profile-avatar">
                 <img src={user.avatarUrl} alt="avatar" />
             </div>
@@ -22,6 +24,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
                 <h1>{user.name}</h1>
                 <p>{user.bio}</p>
             </div>
+        </div>
+        {children}
         </div>
     );
 };

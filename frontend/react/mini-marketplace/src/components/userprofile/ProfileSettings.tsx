@@ -1,23 +1,25 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faPenToSquare, faMoon } from '@fortawesome/free-solid-svg-icons';
-
+import { faCog, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '../../useTheme';
 
 
 
 const ProfileSettings = () => {
+    const { toggleTheme } = useTheme();
+
     return (
             <div>
             <div className="settings-item">
-                <FontAwesomeIcon icon={faPenToSquare} />
-                <span>Edit Profile</span>
+                <button>
+                    <FontAwesomeIcon icon={faCog} />
+                    <span>Settings</span>
+                </button>
             </div>
             <div className="settings-item">
-            <FontAwesomeIcon icon={faCog} />
-            <span>Settings</span>
-            </div>
-            <div className="settings-item">
-            <FontAwesomeIcon icon={faMoon} />
-            <span>Dark Mode</span>
+                <button onClick={toggleTheme}>
+                    <FontAwesomeIcon icon={faMoon} />
+                    <span>Dark Mode</span>
+                </button>
             </div>
         </div>
     );
