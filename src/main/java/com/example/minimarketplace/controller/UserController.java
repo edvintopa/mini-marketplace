@@ -1,5 +1,6 @@
 package com.example.minimarketplace.controller;
 
+import com.example.minimarketplace.model.user.LoginRequest;
 import com.example.minimarketplace.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,5 +85,26 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user)
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+        try {
+            //JSON extraction
+            String lrUsername = loginRequest.getUsername();
+            String lrPassword = loginRequest.getPassword();
+
+            List<User> attemptedUser = userRepository.findByUsername(lrUsername);   //TODO: Check if list is redundant, use single obj instead?
+            if (!attemptedUser.isEmpty()) {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+
+            //compare password with database
+
+            //grant access, return token JWT
+
+            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }
