@@ -11,7 +11,13 @@
     font-family: inter;
 }
 
+body[data-theme='dark'] .main-content {
+}
 
+/*
+ * ProfileInfo.tsx
+ *
+ * */
 .profile-info {
     display: flex;
     justify-content: space-between;
@@ -20,16 +26,6 @@
     background-color: #f4f4f4;
     border-radius: 8px;
     margin: 10px;
-}
-
-#edit-profile-btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: #c4b5fd;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .profile-content {
@@ -61,6 +57,16 @@
     font-size: 16px;
 }
 
+#edit-profile-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 body[data-theme='dark'] .profile-info {
     background-color: #333333;
 }
@@ -74,6 +80,10 @@ body[data-theme='dark'] .profile-details p {
 }
 
 
+/*
+ * Profile.tsx
+ *
+ * */
 .content-area {
     margin-left: 220px;
     width: calc(100% - 220px);
@@ -81,19 +91,20 @@ body[data-theme='dark'] .profile-details p {
 }
 
 
-body[data-theme='dark'] .profile-info button {
+/* 
+ * Profile Settings
+ *
+ * */
+.profile-settings {
+    top: 56.5px;
+    width: 220px;
+    position: fixed;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    box-shadow: 4px 0px 8px rgba(0,0,0,0.1);
+    left: 0;
 }
 
-body[data-theme='dark'] .order-history-container {
-    background-color: #424242;
-}
-
-
-/* Profile Settings */
-
-body[data-theme='dark'] .settings-item {
-    color: #E0E0E0;
-}
 .settings-item button {
     border: none;
     background-color: white;
@@ -111,6 +122,10 @@ body[data-theme='dark'] .profile-settings {
     background-color: #424242;
 }
 
+body[data-theme='dark'] .settings-item {
+    color: #E0E0E0;
+}
+
 body[data-theme='dark'] .settings-item button {
     background-color: #424242;
     color: #E0E0E0;
@@ -122,15 +137,6 @@ body[data-theme='dark'] .settings-item button:hover {
 
 
 
-.profile-settings {
-    top: 56.5px;
-    width: 220px;
-    position: fixed;
-    height: calc(100vh - 56px);
-    overflow-y: auto;
-    box-shadow: 4px 0px 8px rgba(0,0,0,0.1);
-    left: 0;
-}
 
 .content-area {
     margin-left: 220px;
@@ -173,7 +179,6 @@ body[data-theme='dark'] .settings-item button:hover {
     transition: transform 0.3s ease-in-out;
     overflow: hidden;
     z-index: 1;
-
     background-color: #f4f4f4;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 10px;
@@ -185,7 +190,10 @@ body[data-theme='dark'] .settings-item button:hover {
      transform: scaleY(1);
 }
 
-/* Individual order item */
+body[data-theme='dark'] .order-history-container {
+    background-color: #424242;
+}
+
 .order-item {
     margin-bottom: 10px;
     padding: 10px;
@@ -193,7 +201,6 @@ body[data-theme='dark'] .settings-item button:hover {
     border-radius: 4px;
 }
 
-/* Button style */
 .order-action-button button {
     z-index: 2;
     width: 100%;
@@ -214,6 +221,4 @@ body[data-theme='dark'] .settings-item button:hover {
 
 .order-history-icon {
     margin-left: 10px;
-
 }
-

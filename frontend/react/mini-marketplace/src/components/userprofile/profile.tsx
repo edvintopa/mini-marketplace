@@ -9,14 +9,11 @@ import { Order } from '../../types/types';
 
 
 
-
-
 interface ProfileProps {
     orders: Order[];
 }
 
-
-const Profile: React.FC<ProfileProps> = ({ orders }) => {
+const Profile: React.FC<ProfileProps> = ({ orders  }) => {
     const { user, updateUser } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState(user);
@@ -42,7 +39,9 @@ const Profile: React.FC<ProfileProps> = ({ orders }) => {
             </div>
             <div className="content-area">
                 {editMode ? (
-                    <EditProfile user={editableUser} onChange={handleChange} />
+                    <EditProfile user={editableUser} onChange={handleChange}>
+                    <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>
+                    </EditProfile>
                 ) : (
                     <ProfileInfo user={user}>
                         <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>

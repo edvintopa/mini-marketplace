@@ -22,7 +22,7 @@ const StartPage = () => {
                 <div>
                     <div className="banner">
                         <h1>Mini Market</h1>
-                        <p>Explore our collection of amazing products</p>
+                        <p>Buy and sell ur shit</p>
                     </div>
                     <h2>Featured Products</h2>
                     <div className="product-gallery-preview">

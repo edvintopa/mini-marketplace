@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 
 interface EditProfileProps {
@@ -8,14 +8,15 @@ interface EditProfileProps {
         avatarUrl: string;
     };
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    children?: ReactNode;
 }
 
 
 
 
-const EditProfile: React.FC<EditProfileProps> = ({ user, onChange }) => {
+const EditProfile: React.FC<EditProfileProps> = ({ user, onChange, children }) => {
     return (
-        <div>
+        <div className="profile-info profile-content">
             <input
                 type="text"
                 name="name"
@@ -34,6 +35,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, onChange }) => {
                 value={user.avatarUrl}
                 onChange={onChange}
             />
+            {children}
+
         </div>
     );
 };
