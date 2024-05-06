@@ -51,6 +51,9 @@ public class UserController {
      */
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
+
+        //TODO: Implement verification of bad values, error management
+
         try {
             /*
              * CHECKS IF USERNAME & EMAIL IS IN USE
@@ -68,8 +71,7 @@ public class UserController {
             /*
              * CREATE USER
              */
-
-            User _user = userRepository.save(new User(
+            User newUser = userRepository.save(new User(
                     user.getFirstName(),
                     user.getLastName(),
                     user.getUsername(),
@@ -78,7 +80,7 @@ public class UserController {
                     user.getEmail()
 
             ));
-            return new ResponseEntity<>(HttpStatus.CREATED);    //TODO: return auth token
+            return new ResponseEntity<>(newUser.getUserId().toString() ,HttpStatus.CREATED);    //TODO: return auth token
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -92,7 +94,7 @@ public class UserController {
             String lrPassword = loginRequest.getPassword();
 
             List<User> attemptedUser = userRepository.findByUsername(lrUsername);   //TODO: Check if list is redundant, use single obj instead?
-            if (!attemptedUser.isEmpty()) {
+            if (attemptedUser.isEmpty()) {
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }
 
