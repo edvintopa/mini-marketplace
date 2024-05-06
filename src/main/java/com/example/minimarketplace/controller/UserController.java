@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class UserController {
                     user.getFirstName(),
                     user.getLastName(),
                     user.getUsername(),
-                    user.getPassword(), //TODO: lookup password storing
+                    BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()),    //hash with salt
                     user.getDateOfBirth(),
                     user.getEmail()
 
@@ -98,7 +99,10 @@ public class UserController {
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }
 
-            //compare password with database
+            //compare hash with database
+            if(!BCrypt.checkpw(lrPassword, attemptedUser.get(0).getPassword())) {
+                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+            }
 
             //grant access, return token JWT
 
