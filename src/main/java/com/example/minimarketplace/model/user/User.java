@@ -86,8 +86,12 @@ public class User {
         this.balance = 2000.00;
     }
 
-    public User() {
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
+
+    public User() {}    //default constructor workaround
 
     public UUID getUserId() {
         return userId;
