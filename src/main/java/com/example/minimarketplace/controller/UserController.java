@@ -1,10 +1,17 @@
 package com.example.minimarketplace.controller;
 
-import com.example.minimarketplace.model.user.LoginRequest;
+import com.example.minimarketplace.auth.JwtUtil;
+import com.example.minimarketplace.model.user.request.LoginRequest;
 import com.example.minimarketplace.model.user.User;
+import com.example.minimarketplace.model.user.response.ErrorResponse;
+import com.example.minimarketplace.model.user.response.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -22,6 +29,14 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    private final AuthenticationManager authenticationManager;
+
+    private JwtUtil jwtUtil;
+    public UserController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
 //    @GetMapping("/getUsers")
 //    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username) {
@@ -59,13 +74,13 @@ public class UserController {
             /*
              * CHECKS IF USERNAME & EMAIL IS IN USE
              */
-            List<User> existingUsers = userRepository.findByUsername(user.getUsername());
-            if (!existingUsers.isEmpty()) {
+            User existingUser = userRepository.findByUsername(user.getUsername());
+            if (existingUser != null) {
                 return new ResponseEntity<>("Username is already in use", HttpStatus.BAD_REQUEST);
             }
 
-            existingUsers = userRepository.findByEmail(user.getEmail());
-            if (!existingUsers.isEmpty()) {
+            existingUser = userRepository.findByEmail(user.getEmail());
+            if (existingUser != null) {
                 return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
             }
 
@@ -87,30 +102,25 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+    @ResponseBody
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest)  {
+
         try {
-            //JSON extraction
-            String lrUsername = loginRequest.getUsername();
-            String lrPassword = loginRequest.getPassword();
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            String username = authentication.getName();
+            User user = new User(username,"");
+            String token = jwtUtil.createToken(user);
+            LoginResponse loginRes = new LoginResponse(username,token);
 
-            List<User> attemptedUser = userRepository.findByUsername(lrUsername);   //TODO: Check if list is redundant, use single obj instead?
-            if (attemptedUser.isEmpty()) {
-                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-            }
+            return ResponseEntity.ok(loginRes);
 
-            //compare hash with database
-            if(!BCrypt.checkpw(lrPassword, attemptedUser.get(0).getPassword())) {
-                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
-            }
-
-            //grant access, return token JWT
-
-            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (BadCredentialsException e){
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST,"Invalid username or password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }catch (Exception e){
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
-
     }
 }
