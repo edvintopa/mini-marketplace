@@ -1,6 +1,7 @@
-package com.example.minimarketplace.model;
+package com.example.minimarketplace.model.user;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -14,18 +15,15 @@ import java.util.UUID;
 @Table(name ="webuser")
 public class User {
     @Id
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator" //deprecated, find alternative (still works)
     )
     @Column(
             name = "user_id",
-            updatable = false
+            updatable = false,
+            nullable = false
     )
     private UUID userId;
 

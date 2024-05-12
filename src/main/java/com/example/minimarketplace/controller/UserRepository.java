@@ -1,6 +1,6 @@
 package com.example.minimarketplace.controller;
 
-import com.example.minimarketplace.model.*;
+import com.example.minimarketplace.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

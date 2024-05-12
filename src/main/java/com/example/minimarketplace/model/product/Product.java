@@ -1,5 +1,5 @@
 package com.example.minimarketplace.model.product;
-import com.example.minimarketplace.model.User;
+import com.example.minimarketplace.model.user.User;
 import jakarta.persistence.*;
 
 import java.util.Date;
