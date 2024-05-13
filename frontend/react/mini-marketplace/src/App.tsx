@@ -6,7 +6,7 @@ import Footer from './components/common-components/Footer';
 import { ProductGalleryApp } from "./components/ProductGalleryApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
-import Profile from './components/userprofile/Profile';
+import Profile from './components/userprofile/Profile.tsx';
 import { ThemeProvider } from './ThemeContext';
 import { UserProvider } from './context/UserContext';
 
