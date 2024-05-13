@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../CSS-files/profile.css';
 import ProfileInfo from '../common-components/ProfileInfo';
 import OrderHistory from './OrderHistory';
@@ -6,7 +6,6 @@ import ProfileSettings from './ProfileSettings';
 import EditProfile from './EditProfile';
 import { useUser } from '../../context/UserContext';
 import { Order } from '../../types/types';
-
 
 
 interface ProfileProps {
@@ -30,6 +29,20 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
         const { name, value } = e.target;
         setEditableUser(prev => ({ ...prev, [name]: value }));
     };
+
+    useEffect(() => {
+        const username = 'example';
+        fetch(`http://localhost:8080/get?username?=${username}`)
+        .then(response => response.json())
+        .then(data => {
+            setEditableUser(data);
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            });
+    }, []);
+
+
 
 
     return (
