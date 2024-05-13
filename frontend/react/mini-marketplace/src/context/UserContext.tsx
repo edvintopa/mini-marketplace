@@ -3,9 +3,14 @@ import { User, UserContextType } from '../types/types';
 
 const defaultState = {
     user: {
-        id: 0,
-        name: "",
-        bio: "",
+        UUID: "",
+        first_name: "",
+        last_name: "",
+        username: "",
+        password: "",
+        date_of_birth: "",
+        email: "",
+        balance: "",
         avatarUrl: "",
     },
     updateUser: () => {}
@@ -21,7 +26,6 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User>({
-        id: 1,
         name: "Elliot Alderson",
         bio: "hello friend",
         avatarUrl: "https://i.imgur.com/9KYqMnT.png"

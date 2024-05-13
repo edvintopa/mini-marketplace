@@ -1,8 +1,12 @@
 export interface User {
-    id: number;
-    name: string;
-    bio: string;
-    avatarUrl: string;
+        UUID: string,
+        first_name: string,
+        last_name: string,
+        username: string,
+        password: string,
+        date_of_birth: string,
+        email: string,
+        balance: number,
 }
 
 export interface UserContextType {
