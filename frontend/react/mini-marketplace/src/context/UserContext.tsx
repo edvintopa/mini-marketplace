@@ -10,8 +10,7 @@ const defaultState = {
         password: "",
         date_of_birth: "",
         email: "",
-        balance: "",
-        avatarUrl: "",
+        balance: 0,
     },
     updateUser: () => {}
 };
