@@ -40,10 +40,11 @@ public class SecurityConfig  {
 
         //all calls to /user/ controller is permitted.
         //TODO: make products visible to all and only expose certain endpoints
-        http.csrf().disable()
+        http.cors().and()
+                .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/user/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 

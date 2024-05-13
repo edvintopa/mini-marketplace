@@ -15,14 +15,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.List;
-
 /**
  * @author edvintopa
  * @project mini-marketplace
  * @created 2024-04-01
  */
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -38,26 +36,21 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
-//    @GetMapping("/getUsers")
-//    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String username) {
-//        try {
-//            List<User> users = new ArrayList<User>();
-//
-//            if(username == null) {
-//                users.addAll(userRepository.findAll());
-//            } else {
-//                users.addAll(userRepository.findByUsername(username));
-//            }
-//
-//            if(users.isEmpty()) {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//
-//            return new ResponseEntity<>(users, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    //http://localhost:8080/user/get
+    @GetMapping("/get")
+    public ResponseEntity<User> getAllUsers(@RequestParam String username) {
+        try {
+            User user = userRepository.findByUsername(username);
+
+            if (user == null) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * @author edvintopa
