@@ -31,8 +31,8 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
     };
 
     useEffect(() => {
-        const username = 'example';
-        fetch(`http://localhost:8080/get?username?=${username}`)
+        const username = 'johndoe';
+        fetch(`http://localhost:8080/user/get?username=${username}`)
         .then(response => response.json())
         .then(data => {
             setEditableUser(data);
