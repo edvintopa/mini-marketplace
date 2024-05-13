@@ -30,7 +30,9 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
                         {orders.map(order => (
                             <li className="order-item" key={order.id}>
                                 {order.description}
-                                on {order.date}
+                                <div className="order-date">
+                                    {order.date}
+                                </div>
                             </li>
                         ))}
                     </ul>

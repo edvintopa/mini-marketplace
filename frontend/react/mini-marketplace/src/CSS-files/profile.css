@@ -46,7 +46,7 @@ body[data-theme='dark'] .main-content {
     flex-direction: column;
 }
 
-.profile-details h1 {
+.profile-details h1 input {
     margin: 0;
     color: #333;
     font-size: 24px;
@@ -67,6 +67,10 @@ body[data-theme='dark'] .main-content {
     transition: background-color 0.3s;
 }
 
+#edit-profile-btn:hover {
+    background-color: #a78bfa;
+}
+
 body[data-theme='dark'] .profile-info {
     background-color: #333333;
 }
@@ -85,8 +89,8 @@ body[data-theme='dark'] .profile-details p {
  *
  * */
 .content-area {
-    margin-left: 220px;
-    width: calc(100% - 220px);
+    margin-left: 220vh;
+    width: calc(100% - 220vh);
     overflow-y: auto;
 }
 
@@ -195,10 +199,16 @@ body[data-theme='dark'] .order-history-container {
 }
 
 .order-item {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.order-date {
+    margin-right: 10px;
 }
 
 .order-action-button button {

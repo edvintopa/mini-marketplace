@@ -28,10 +28,10 @@ body[data-theme='dark'] .footer p {
     color: #E0E0E0;
 }
 
-
 body, html {
-    height: 100%;
+    min-height: 400px;
     margin: 0;
+    margin-bottom: 60px;
 }
 
 .App {
@@ -224,7 +224,6 @@ body[data-theme='dark'] .banner p {
 }
 
 .show-more-btn {
-    justify-content: center;
     /*margin: 20px auto;*/
     padding: 10px 20px;
     border: none;
@@ -235,6 +234,10 @@ body[data-theme='dark'] .banner p {
     font-weight: 500;
     cursor: pointer;
     text-decoration: none; 
+}
+
+.show-more-btn:hover {
+    background-color: #a78bfa;
 }
 
 .main-content {

@@ -35,8 +35,8 @@ const StartPage = () => {
                             price={product.price + " kr"}
                             />
                         ))}
+                        <Link to="/productgallery" className="show-more-btn">Show More</Link>
                     </div>
-                    <Link to="/productgallery" className="show-more-btn">Show More</Link>
                 </div>
             </main>
         </div>
