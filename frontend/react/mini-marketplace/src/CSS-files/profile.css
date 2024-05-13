@@ -1,0 +1,234 @@
+.main-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+
+    width: 95%;
+    padding: 20px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    font-family: inter;
+}
+
+body[data-theme='dark'] .main-content {
+}
+
+/*
+ * ProfileInfo.tsx
+ *
+ * */
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.profile-content {
+    display: flex;
+    align-items: center;
+}
+
+.profile-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-details h1 input {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.profile-details p {
+    color: #666;
+    font-size: 16px;
+}
+
+#edit-profile-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#edit-profile-btn:hover {
+    background-color: #a78bfa;
+}
+
+body[data-theme='dark'] .profile-info {
+    background-color: #333333;
+}
+
+body[data-theme='dark'] .profile-details h1 {
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .profile-details p {
+    color: #E0E0E0;
+}
+
+
+/*
+ * Profile.tsx
+ *
+ * */
+.content-area {
+    margin-left: 220vh;
+    width: calc(100% - 220vh);
+    overflow-y: auto;
+}
+
+
+/* 
+ * Profile Settings
+ *
+ * */
+.profile-settings {
+    top: 56.5px;
+    width: 220px;
+    position: fixed;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    box-shadow: 4px 0px 8px rgba(0,0,0,0.1);
+    left: 0;
+}
+
+.settings-item button {
+    border: none;
+    background-color: white;
+    color: #374151;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.settings-item button:hover {
+    background-color: #f3f4f6;
+    transition: 0.3s;
+}
+
+body[data-theme='dark'] .profile-settings {
+    background-color: #424242;
+}
+
+body[data-theme='dark'] .settings-item {
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .settings-item button {
+    background-color: #424242;
+    color: #E0E0E0;
+}
+
+body[data-theme='dark'] .settings-item button:hover {
+    background-color: #333333;
+}
+
+
+
+
+.content-area {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    overflow-y: auto;
+}
+
+.profile-settings, .order-history {
+    display: block;
+    align-items: center;
+    font-size: 16px;
+    color: #374151;
+}
+
+.profile-settings span, .order-history span {
+    margin-left: 10px;
+}
+
+.settings-item {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+/* OrderHistory.css */
+
+/* Parent class for history container and button */
+.order-history-parent {
+    position: relative;
+}
+
+/* Container for the order list */
+.order-history-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f4f4f4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.order-history-container.visible {
+     transform: scaleY(1);
+}
+
+body[data-theme='dark'] .order-history-container {
+    background-color: #424242;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.order-date {
+    margin-right: 10px;
+}
+
+.order-action-button button {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 0;
+}
+
+.order-action-button button:hover {
+    background-color: #a78bfa;
+}
+
+.order-history-icon {
+    margin-left: 10px;
+}

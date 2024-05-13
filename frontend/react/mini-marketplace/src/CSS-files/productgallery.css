@@ -1,0 +1,60 @@
+
+.ProductCard img {
+    width: 250px;
+    height: 250px;
+}
+
+.ProductCard {
+    margin: 10px; /* Adjust as needed */
+    width: fit-content;
+    display: grid;
+    font-size: 20px;
+    font-family: inter;
+    padding: 10px;
+}
+
+.ProductCardTitle, .ProductCardPrice {
+    margin: 0;
+    text-align: right;
+}
+
+.ProductCardPrice {
+    font-weight: 400;
+}
+
+.ProductGallery {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    width: calc((4 * 250px) + 200px);
+}
+
+.SearchQueryTitle {
+    font-size: 30px;
+    font-family: inter;
+    margin: 10px;
+}
+
+.ProductGalleryWrapper {
+    padding-top: 4%;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.FilterTagButton {
+    width: fit-content;
+    background-color: white;
+    font-size: 17px;
+    font-family: inter;
+    margin: 0px 10px;
+    padding: 10px 20px 5%;
+    border: 2px solid rgb(132, 132, 132);
+    border-radius: 24px;
+}
+
+.FilterTagGallery {
+    padding: 0.5%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap !important;
+}
