@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
     private final String secret_key = "edvintopaKey";     //should be env variable instead of hardcoded.
-    private long accessTokenValidity = 60*60*1000;  //one hour
+    private long accessTokenValidity = 60*60*1000 * 5;  //one hour
 
     private final JwtParser jwtParser;
 
