@@ -4,9 +4,11 @@ import NavbarLoggedIn from './components/common-components/NavbarLoggedIn';
 import StartPage from './components/startpage';
 import Footer from './components/common-components/Footer';
 import { ProductGalleryApp } from "./components/ProductGalleryApp";
+import { LoginPageApp } from "./components/LoginPageApp";
+import { SignUpApp } from "./components/SignUpApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
-import Profile from './components/userprofile/Profile.tsx';
+import Profile from './components/userprofile/Profile';
 import { ThemeProvider } from './ThemeContext';
 import { UserProvider } from './context/UserContext';
 
@@ -44,12 +46,12 @@ function App() {
             <Routes>
                 <Route path="/" element={<StartPage />} />
                 <Route path="/productgallery" element={<ProductGalleryApp />} />
-                <Route path="/signup" element={<ProductGalleryApp />} />{" "}
+                <Route path="/signup" element={<SignUpApp />} />{" "}
                 {/* to be fixed */}
-                <Route path="/login" element={<ProductGalleryApp />} />{" "}
+                <Route path="/login" element={<LoginPageApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<CurrentProductView id={""} />} />
-                <Route path="/profile" element={<Profile orders={orders} />} />
+               <Route path="/profile" element={<Profile orders={orders} />} />
             </Routes>
             <Footer />
         </div>
