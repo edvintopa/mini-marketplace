@@ -9,12 +9,12 @@ interface NavbarLoggedInProps {
 }
 
 const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, isSavedProductsVisible }) => {
-
+    console.log("Rendering NavbarLoggedIn");
     return (
         <nav className="nav">
             <div className="nav-left">
                 <a href="/"><FontAwesomeIcon icon={faShop} /><p>Home</p></a>
-                <a href="/productgallery.html">Marketplace</a>
+                <a href="/productgallery">Marketplace</a>
             </div>
             <div className="nav-center">
             <input className="nav-search" type="text" placeholder="Search" />

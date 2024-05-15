@@ -45,7 +45,7 @@ function App() {
             />
             <Routes>
                 <Route path="/" element={<StartPage />} />
-                <Route path="/productgallery" element={<ProductGalleryApp />} />
+                <Route path="/productgallery" element={<ProductGalleryApp />} /> {''}
                 <Route path="/signup" element={<SignUpApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/login" element={<LoginPageApp />} />{" "}
