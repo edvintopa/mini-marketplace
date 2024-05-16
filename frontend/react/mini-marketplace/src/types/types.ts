@@ -9,6 +9,13 @@ export interface User {
         balance: number;
 }
 
+export interface TextFieldComponentTypes {
+    name: string;
+    type: string;
+    onChange: (event: any) => void;
+    textFieldTitle: string;
+}
+
 export interface LoginRequest {
     username: string;
     password: string;
