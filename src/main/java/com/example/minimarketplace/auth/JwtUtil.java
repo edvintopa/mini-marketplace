@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
     private final String secret_key = "edvintopaKey";     //should be env variable instead of hardcoded.
-    private long accessTokenValidity = 60*60*1000 * 5;  //one hour
+    private long accessTokenValidity = 60*60*1000 * 4;  //four hours
 
     private final JwtParser jwtParser;
 
@@ -32,7 +32,7 @@ public class JwtUtil {
     }
 
     public String createToken(User user) {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
         claims.put("firstName",user.getFirstName());
         claims.put("lastName",user.getLastName());
         Date tokenCreateTime = new Date();
@@ -81,7 +81,7 @@ public class JwtUtil {
         }
     }
 
-    public String getEmail(Claims claims) {
+    public String getUsername(Claims claims) {
         return claims.getSubject();
     }
 
@@ -89,4 +89,8 @@ public class JwtUtil {
         return (List<String>) claims.get("roles");
     }
 
+    public String getBearer(String token) {
+        Claims claims = parseJwtClaims(token);
+        return getUsername(claims);
+    }
 }
