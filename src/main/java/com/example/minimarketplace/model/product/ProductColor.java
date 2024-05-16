@@ -10,7 +10,11 @@ public enum ProductColor {
     GREEN,
     PURPLE,
     GRAY,
-    OTHER
-
+    OTHER,
+    PINK,
+    OLIVE,
+    NAVY,
+    MAROON,
+    BEIGE,
 
 }
