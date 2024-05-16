@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoginViewContainer } from './login-view/LoginViewContainer';
+import { LoginViewContainer } from './login-view/LoginViewContainer.tsx';
 import "./../CSS-files/loginsignup.css";
 import './../CSS-files/index.css';
 
