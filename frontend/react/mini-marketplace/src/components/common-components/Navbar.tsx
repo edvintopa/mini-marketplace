@@ -4,7 +4,7 @@ import { faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
     return (
         <nav className="nav">
             <div className="nav-left">

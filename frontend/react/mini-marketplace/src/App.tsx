@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Navbar from './components/common-components/Navbar';
 import NavbarLoggedIn from './components/common-components/NavbarLoggedIn';
 import StartPage from './components/startpage';
 import Footer from './components/common-components/Footer';
@@ -11,6 +12,7 @@ import SavedProductsPanel from './components/common-components/SavedProductsPane
 import Profile from './components/userprofile/Profile';
 import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
+import { useUser } from './context/UserContext';
 import axios from 'axios';
 
 axios.interceptors.request.use(
@@ -26,7 +28,7 @@ axios.interceptors.request.use(
     }
 );
 
-function App() {
+const App = () => {
     const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);
 
     const [orders, setOrders] = useState([
@@ -46,13 +48,16 @@ function App() {
         setSavedProductsVisible(!isSavedProductsVisible);
     };
 
-
+    const { user } = useUser();
 
     return (
-        <ThemeProvider>
-        <UserProvider>
         <div className="App">
-            <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
+            { user ? (
+                <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
+            ) : (
+                <Navbar />
+            )}
+
             <SavedProductsPanel
             className={isSavedProductsVisible ? 'visible' : ''}
             toggleSavedProducts={toggleSavedProducts}
@@ -69,8 +74,6 @@ function App() {
             </Routes>
             <Footer />
         </div>
-        </UserProvider>
-        </ThemeProvider>
     );
 }
 
