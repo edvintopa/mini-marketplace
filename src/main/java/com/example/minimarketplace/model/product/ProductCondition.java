@@ -4,5 +4,6 @@ public enum ProductCondition {
     NEW,
     VERY_GOOD,
     GOOD,
-    NOT_WORKING_PROPERLY
+    NOT_WORKING_PROPERLY,
+    USED
 }
