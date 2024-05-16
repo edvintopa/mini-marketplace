@@ -1,13 +1,33 @@
 export interface User {
-    id: number;
-    name: string;
-    bio: string;
-    avatarUrl: string;
+        userId: string;
+        firstName: string;
+        lastName: string;
+        username: string;
+        password: string;
+        dateOfBirth: string;
+        email: string;
+        balance: number;
+}
+
+export interface LoginRequest {
+    username: string;
+    password: string;
+}
+
+export interface RegisterRequest {
+    first_name: string;
+    last_name: string;
+    username: string;
+    password: string;
+    date_of_birth: string;
+    email: string;
 }
 
 export interface UserContextType {
-    user: User;
-    updateUser: (user: User) => void;
+    user: User | null;
+    error: string;
+    //updateUser: (user: User) => void;
+    fetchUser: (username: string) => void;
 }
 
 export interface Order {
