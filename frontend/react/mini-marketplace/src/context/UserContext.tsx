@@ -87,7 +87,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
-    const loginUser = async (username: string, password: string) => {
+    const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
             const response = await axios.post<{ username: string, token: string }>(`http://localhost:8080/user/login`, {
                 username,
@@ -115,9 +115,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 localStorage.setItem('token', token);
 
                 console.log('Login successful for user:', username);
+                return true;
             } else {
                 setError('No data returned from server');
                 console.log('No data returned from server');
+                return false;
             }
         } catch (err: unknown) {
             if (axios.isAxiosError(err) && err.response) {
@@ -128,6 +130,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 setError('An unexpected error occurred during login.');
                 console.log('An unexpected error occurred during login:', err)
             }
+            return false;
         }
     };
 
