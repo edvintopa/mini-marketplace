@@ -74,14 +74,14 @@ body, html {
     flex-grow: 0;
 }
 
+.nav-left p {
+    margin-left: 10px;
+}
+
 .nav-right {
     display: flex;
     justify-content: flex-end;
     flex-grow: 0;
-}
-
-.nav-left p {
-    margin-left: 10px;
 }
 
 .nav a {
@@ -115,6 +115,68 @@ body, html {
     border-radius: 9999px;
     outline: none;
     background-color: #ffffff;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 150px;
+    background-color: white;
+    box-shadow: 0 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown-menu button {
+    display: block;
+    width: 70%;
+    padding: 5px 10px;
+    margin: 5px auto;
+    background-color: #c4b5fd;;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    text-align: center;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    outline: none;
+}
+
+.dropdown-menu a {
+    display: block;
+    width: 70%;
+    padding: 10px 15px;
+    margin: 5px auto;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    height: auto;
+}
+
+.dropdown-menu a:hover {
+    background-color: #e2e8f0;
+}
+
+.dropdown-menu button:hover {
+    background-color: #a78bfa;
+}
+
+.dropdown-menu.visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
 }
 
 #profileIcon {
@@ -280,3 +342,5 @@ body[data-theme='dark'] .banner p {
     display: grid;
     margin: 0 auto;
 }
+
+

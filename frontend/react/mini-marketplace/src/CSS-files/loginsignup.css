@@ -1,0 +1,109 @@
+.LoginPageApp {
+  width: 30%;
+  margin: 0 auto;
+  font-size: 25px;
+}
+
+.titleOfContainer {
+  font-family: montserrat;
+  font-size: 50px;
+  margin-top: 10%;
+  text-align: center;
+  margin-bottom: -15px;
+}
+
+.textFieldBox input {
+  height: 40px;
+  font-size: 25px;
+  border-radius: 5px;
+  border-color: #b1b1b1;
+  color: #1f2937;
+  padding-left: 10px;
+}
+
+.textFieldBox {
+  /*background-color: blueviolet;*/
+  margin: 0px 0px -1%;
+
+}
+
+.textFieldTitle {
+  /*background-color: brown; */
+  margin-top: 25px;
+  margin-bottom: 3px;
+  font-size: 20px;
+}
+
+.LoginButton {
+  background-color: #c4b5fd;
+  width: 100%;
+  font-size: 35px;
+  padding: 10px 0px 10px;
+  font-family: arial;
+  font-weight: bold;
+  border-radius: 10px;
+  border-style: none;
+  color: #1f2937;
+}
+
+.loginContainer {
+  display: grid;
+}
+
+.LoginButtonContainer {
+  padding-top: 30px;
+}
+
+.LoginDescription {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.LoginDescription a {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #1f2937;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.LoginDescription a:hover {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #c4b5fd;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/*---------- SIGN UP CSS ----------------*/
+.NameContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.SignUpContainer {
+  width: 35%;
+  margin: 0 auto;
+  display: grid;
+}
+
+.SignUpButtonWrapper button {
+  background-color: #c4b5fd;
+  width: 100%;
+  font-size: 35px;
+  padding: 10px 0px 10px;
+  font-family: arial;
+  font-weight: bold;
+  border-radius: 10px;
+  border-style: none;
+  color: #1f2937;
+  margin-top: 30px;
+}
+
+button {
+    cursor: pointer;
+}
