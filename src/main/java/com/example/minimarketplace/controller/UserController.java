@@ -67,7 +67,7 @@ public class UserController {
      * @author edvintopa
      */
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity registerUser(@RequestBody User user) {
 
         //TODO: Implement verification of bad values, error management
 
@@ -77,12 +77,14 @@ public class UserController {
              */
             User existingUser = userRepository.findByUsername(user.getUsername());
             if (existingUser != null) {
-                return new ResponseEntity<>("Username is already in use", HttpStatus.BAD_REQUEST);
+                ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, "Username is already in use");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
             existingUser = userRepository.findByEmail(user.getEmail());
             if (existingUser != null) {
-                return new ResponseEntity<>("Email is already in use", HttpStatus.BAD_REQUEST);
+                ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, "Email is already in use");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
 
             /*
@@ -97,9 +99,18 @@ public class UserController {
                     user.getEmail()
 
             ));
-            return new ResponseEntity<>(newUser.getUserId().toString() ,HttpStatus.CREATED);    //TODO: return auth token and automatically log in after registration
+
+            //autheticate user after registration, automatic login
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(newUser.getUsername(), user.getPassword()));
+
+            String token = jwtUtil.createToken(newUser);
+
+            LoginResponse loginResponse = new LoginResponse(newUser.getUsername(), token);
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(loginResponse);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
@@ -138,8 +149,8 @@ public class UserController {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST,"Invalid username or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }catch (Exception e){
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }
