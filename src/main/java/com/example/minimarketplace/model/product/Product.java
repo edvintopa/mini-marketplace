@@ -1,6 +1,7 @@
 package com.example.minimarketplace.model.product;
 import com.example.minimarketplace.model.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -15,15 +16,11 @@ import java.util.UUID;
 @Table(name ="product")
 public abstract class Product {
 
-    @Id //PK
-    @SequenceGenerator( //create a sequence for id incrementation
-            name = "product_sequence",
-            sequenceName = "product_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue( //specify usage of sequence
-            strategy = GenerationType.SEQUENCE,
-            generator = "product_sequence"
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator" //deprecated, find alternative (still works)
     )
     @Column(
             name = "product_id",
@@ -96,6 +93,26 @@ public abstract class Product {
             nullable = false
     )
     private ProductStatus productStatus;
+
+    public Product(User seller_id,
+                   String title,
+                   String description,
+                   String manufacturer,
+                   Date datePosted,
+                   double price,
+                   ProductCondition productCondition,
+                   ProductColor productColor,
+                   ProductStatus productStatus) {
+        this.seller_id = seller_id;
+        this.title = title;
+        this.description = description;
+        this.manufacturer = manufacturer;
+        this.datePosted = datePosted;
+        this.price = price;
+        this.productCondition = productCondition;
+        this.productColor = productColor;
+        this.productStatus = productStatus;
+    }
 
     public ProductStatus getProductStatus() {
         return productStatus;
