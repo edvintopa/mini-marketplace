@@ -5,6 +5,8 @@ import com.example.minimarketplace.model.user.request.LoginRequest;
 import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.model.user.response.ErrorResponse;
 import com.example.minimarketplace.model.user.response.LoginResponse;
+import com.example.minimarketplace.model.user.response.UserResponse;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     //http://localhost:8080/user/get
+    // test
     @GetMapping("/get")
     public ResponseEntity<User> getAllUsers(@RequestParam String username) {
         try {
@@ -53,6 +56,45 @@ public class UserController {
     }
 
     /**
+     * This method is responsible for fetching the user's information based on the provided JWT token.
+     * The token is passed in the request header under the key "Authorization".
+     * The method first extracts the username from the token and then fetches the user's information from the database.
+     * It then creates a UserResponse object containing the necessary user information and returns it.
+     * <p>
+     * If the token is invalid, a JwtException is thrown and caught, and an ErrorResponse with the message "Invalid token" is returned with a status of UNAUTHORIZED.
+     * If any other exception occurs during the process, an ErrorResponse with the exception message is returned with a status of INTERNAL_SERVER_ERROR.
+     *
+     * @param token This is a request header parameter that contains the JWT token.
+     * @return ResponseEntity This returns a response entity that contains either a UserResponse object (in case of successful operation) or an ErrorResponse object (in case of an exception).
+     * @throws JwtException This exception is thrown when the provided token is invalid.
+     * @throws Exception This is a general exception that can be thrown for various reasons.
+     * <p>
+     * @author edvintopa
+     */
+    @GetMapping("/me")
+    public ResponseEntity getUser(@RequestHeader("Authorization") String token) {
+        try {
+            String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
+            User user = userRepository.findByUsername(username);
+
+            UserResponse userResponse = new UserResponse(
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getBalance()
+            );
+
+            return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+        } catch (JwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid token"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+        }
+    }
+
+
+    /**
      * This method handles the registration of a new user.
      * It first checks if the provided username and email are already in use.
      * If either the username or email is in use, it returns a BAD_REQUEST status with an appropriate message.
@@ -65,6 +107,7 @@ public class UserController {
      * @param user This is a request body parameter that contains the new user's details.
      * @return ResponseEntity This returns a response entity that contains either the ID of the newly created user (in case of successful registration) or a BAD_REQUEST/INTERNAL_SERVER_ERROR status (in case of failed registration or any other exception).
      * @throws Exception This is a general exception that can be thrown for various reasons.
+     * <p>
      * @author edvintopa
      */
     @PostMapping("/register")
@@ -130,11 +173,10 @@ public class UserController {
      * @return ResponseEntity This returns a response entity that contains either a LoginResponse object (in case of successful authentication) or an ErrorResponse object (in case of failed authentication or any other exception).
      * @throws BadCredentialsException This exception is thrown when the provided credentials are invalid.
      * @throws Exception This is a general exception that can be thrown for various reasons other than bad credentials.
-     *
+     * <p>
      * @author edvintopa
      */
-    @ResponseBody
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest)  {
 
         try {
