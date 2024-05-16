@@ -16,5 +16,6 @@ public enum ProductColor {
     NAVY,
     MAROON,
     BEIGE,
+    BROWN
 
 }
