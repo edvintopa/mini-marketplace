@@ -13,13 +13,17 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ orders  }) => {
-    const { user, updateUser } = useUser();
+    const { user, fetchUser } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState(user);
 
+    useEffect(() => {
+        fetchUser('johndoe');
+    }, [fetchUser]);
+
     const handleEditToggle = () => {
         if (editMode) {
-            updateUser(editableUser);
+            //updateUser(editableUser);
             console.log("Saving changes:", editableUser);
         }
         setEditMode(!editMode);
@@ -30,6 +34,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
         setEditableUser(prev => ({ ...prev, [name]: value }));
     };
 
+    /*
     useEffect(() => {
         const username = 'johndoe';
         fetch(`http://localhost:8080/user/get?username=${username}`)
@@ -41,6 +46,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
             console.error('There was an error!', error);
             });
     }, []);
+    */
 
 
 
@@ -56,7 +62,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
                     <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>
                     </EditProfile>
                 ) : (
-                    <ProfileInfo user={user}>
+                    <ProfileInfo user={editableUser || user}>
                         <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>
                     </ProfileInfo>
                 )}
