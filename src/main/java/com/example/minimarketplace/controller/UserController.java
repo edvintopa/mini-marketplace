@@ -56,9 +56,10 @@ public class UserController {
      * This method handles the registration of a new user.
      * It first checks if the provided username and email are already in use.
      * If either the username or email is in use, it returns a BAD_REQUEST status with an appropriate message.
+     * <p>
      * If both the username and email are not in use, it creates a new User object with the provided details,
      * hashes the provided password using BCrypt, and saves the new user in the repository.
-     * It then returns a CREATED status with the ID of the newly created user.
+     * It then returns a CREATED status with a token of the newly created user, which essentially logs in automatically.
      * If any exception occurs during the process, it returns an INTERNAL_SERVER_ERROR status.
      *
      * @param user This is a request body parameter that contains the new user's details.
