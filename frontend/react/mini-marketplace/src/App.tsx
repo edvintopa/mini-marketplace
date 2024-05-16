@@ -9,8 +9,22 @@ import { SignUpApp } from "./components/SignUpApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
-import { ThemeProvider } from './ThemeContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
+import axios from 'axios';
+
+axios.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
 
 function App() {
     const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);

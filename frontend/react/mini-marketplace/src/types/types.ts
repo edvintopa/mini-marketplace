@@ -35,6 +35,9 @@ export interface UserContextType {
     error: string;
     //updateUser: (user: User) => void;
     fetchUser: (username: string) => void;
+    loginUser: (username: string, password: string) => Promise<void>;
+    logoutUser: () => void;
+    token: string | null;
 }
 
 export interface Order {
