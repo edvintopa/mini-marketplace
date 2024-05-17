@@ -440,9 +440,7 @@ body[data-theme='dark'] .banner p {
 }
 
 /* Styling for the color dropdown and text input */
-.color-dropdown,
-.condition-dropdown,
-.status-dropdown {
+.dropdown {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -451,8 +449,6 @@ body[data-theme='dark'] .banner p {
   margin-top: 5px;
 }
 
-.color-dropdown:focus,
-.condition-dropdown:focus,
-.status-dropdown:focus {
+.dropdown:focus {
   border-color: #c4b5fd;
 }
