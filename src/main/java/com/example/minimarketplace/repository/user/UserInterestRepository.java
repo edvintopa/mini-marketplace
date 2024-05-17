@@ -12,5 +12,5 @@ import java.util.UUID;
  * @created 2024-05-17
  */
 public interface UserInterestRepository extends JpaRepository<UserInterest, UUID> {
-    //List<UUID> findUsersInterestedIn(String type);
+    List<UUID> findUsersInterestedIn(String type);
 }
