@@ -1,8 +1,14 @@
 package com.example.minimarketplace.component.event;
 
-import com.example.minimarketplace.model.product.ProductType;
+import com.example.minimarketplace.model.notification.Notification;
+import com.example.minimarketplace.repository.NotificationRepository;
+import com.example.minimarketplace.repository.UserInterestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author edvintopa
@@ -11,14 +17,24 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProductAvailableEventListener {
-    private ProductType interest = null;    //TODO: Mechanism to extract what the user is interested in
+
+    @Autowired
+    UserInterestRepository userInterestRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @EventListener
     public void handleProductAvailableEvent(ProductAvailableEvent event) {
-        if (event.getProductType() == interest) {
-            //TODO: Mechanism to save data about notifications
-        }
-
         //get userid and interests that match interest
+        List<UUID> users = userInterestRepository.findUsersInterestedIn(event.getProductType());
+
+        //save to database notification
+        for (UUID user : users) {
+            notificationRepository.save(new Notification(
+                    user,
+                    event.getProductType()
+            ));
+        }
     }
 }

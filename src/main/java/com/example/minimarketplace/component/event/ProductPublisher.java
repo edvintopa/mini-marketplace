@@ -1,6 +1,5 @@
 package com.example.minimarketplace.component.event;
 
-import com.example.minimarketplace.model.product.ProductType;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Component;
  * @project mini-marketplace
  * @created 2024-05-17
  */
+
+/*CALL THIS VIA  productPublisher.notifyProductAvailability(savedProduct.getName(), savedProduct.getType());*/
 @Component
 public class ProductPublisher {
     private final ApplicationEventPublisher eventPublisher;
@@ -17,8 +18,8 @@ public class ProductPublisher {
         this.eventPublisher = eventPublisher;
     }
 
-    public void notifyProductAvailability(String productName, ProductType type) {
-        ProductAvailableEvent event = new ProductAvailableEvent(this, productName, type);
+    public void notifyProductAvailability(String type) {
+        ProductAvailableEvent event = new ProductAvailableEvent(this, type);
         eventPublisher.publishEvent(event);
     }
 }
