@@ -12,24 +12,24 @@ import java.util.*;
 @Service
 public class UserCartService {
 
-    private Map<String, List<UUID>> cartMap;
+    private Map<UUID, List<UUID>> cartMap;
 
     public UserCartService() {
         this.cartMap = new HashMap<>();
     }
 
-    public void addToCart(String token, UUID productId) {
-        List<UUID> cart = cartMap.getOrDefault(token, new ArrayList<>());   //if no cart, create one
+    public void addToCart(UUID userId, UUID productId) {
+        List<UUID> cart = cartMap.getOrDefault(userId, new ArrayList<>());   //if no cart, create one
         cart.add(productId);    //add product
-        cartMap.put(token, cart);   //put it in the map
+        cartMap.put(userId, cart);   //put it in the map
     }
 
-    public List<UUID> getCart(String token) {
-        return cartMap.getOrDefault(token, new ArrayList<>());  //if no cart, create one
+    public List<UUID> getCart(UUID userId) {
+        return cartMap.getOrDefault(userId, new ArrayList<>());  //if no cart, create one
     }
 
-    public void clearCart(String token) {
-        cartMap.remove(token);
+    public void clearCart(UUID userId) {
+        cartMap.remove(userId);
     }
 
 }
