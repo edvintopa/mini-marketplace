@@ -140,7 +140,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     const signupUser = async (formData: SignupFormData): Promise<boolean> => {
         try {
-            const response = await axios.post<{ username: string, token: string }>(`http://localhost:8080/user/signup`, formData);
+            const response = await axios.post<{ username: string, token: string }>(`http://localhost:8080/user/register`, formData);
 
             if (response.data) {
                 const { token } = response.data;
