@@ -1,5 +1,7 @@
 package com.example.minimarketplace.model.product;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ProductColor {
     BLACK,
     WHITE,
@@ -10,12 +12,11 @@ public enum ProductColor {
     GREEN,
     PURPLE,
     GRAY,
-    OTHER,
-    PINK,
-    OLIVE,
-    NAVY,
-    MAROON,
-    BEIGE,
-    BROWN
+    OTHER;
+
+    @JsonValue
+    public String toValue(){
+        return this.name();
+    }
 
 }

@@ -3,10 +3,9 @@ package com.example.minimarketplace.model.product.products.clothing;
 import com.example.minimarketplace.model.product.*;
 import com.example.minimarketplace.model.user.User;
 import jakarta.persistence.*;
-import jakarta.transaction.UserTransaction;
 
+import java.lang.String;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author edvintopa, Tiffany Dizdar
@@ -51,16 +50,32 @@ public class Clothing extends Product {
     )
     private ClothingType type;
 
-    public Clothing(ClothingSeason season, ClothingSex sex, ClothingSize size, ClothingType type, User seller_id,
+    public Clothing() {
+        super();
+    }
+
+    public Clothing(User user,
                     String title,
                     String description,
                     String manufacturer,
-                    Date datePosted,
+                    Date date,
                     double price,
                     ProductCondition productCondition,
                     ProductColor productColor,
-                    ProductStatus productStatus) {
-        super(seller_id,title,description,manufacturer,datePosted,price,productCondition,productColor,productStatus);
+                    ProductStatus productStatus,
+                    ClothingSeason season,
+                    ClothingSex sex,
+                    ClothingSize size,
+                    ClothingType type) {
+        super(user,
+                title,
+                description,
+                manufacturer,
+                date,
+                price,
+                productCondition,
+                productColor,
+                productStatus);
         this.season = season;
         this.sex = sex;
         this.size = size;
@@ -100,4 +115,13 @@ public class Clothing extends Product {
     }
 
 
+    @Override
+    public java.lang.String toString() {
+        return "Clothing{" +
+                "season=" + season +
+                ", sex=" + sex +
+                ", size=" + size +
+                ", type=" + type +
+                '}';
+    }
 }

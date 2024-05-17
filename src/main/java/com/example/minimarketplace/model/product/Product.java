@@ -37,26 +37,26 @@ public abstract class Product {
             nullable = false,
             updatable = false
     )
-    private User seller_id;
+    private User seller;
 
     @Column(
             name = "title",
             nullable = false
     )
-    private String title;
+    private java.lang.String title;
 
     @Column(
             name = "description",
             columnDefinition = "VARCHAR(50)"
     )
-    private String description;
+    private java.lang.String description;
 
     @Column(
             name = "manufacturer",
             nullable = false,
             columnDefinition = "VARCHAR(50)"
     )
-    private String manufacturer;
+    private java.lang.String manufacturer;
 
     @Column(
             name = "date_posted",
@@ -94,7 +94,7 @@ public abstract class Product {
     )
     private ProductStatus productStatus;
 
-    public Product(User seller_id,
+    public Product(User seller,
                    String title,
                    String description,
                    String manufacturer,
@@ -103,7 +103,7 @@ public abstract class Product {
                    ProductCondition productCondition,
                    ProductColor productColor,
                    ProductStatus productStatus) {
-        this.seller_id = seller_id;
+        this.seller = seller;
         this.title = title;
         this.description = description;
         this.manufacturer = manufacturer;
@@ -112,6 +112,10 @@ public abstract class Product {
         this.productCondition = productCondition;
         this.productColor = productColor;
         this.productStatus = productStatus;
+    }
+
+    public Product() {
+
     }
 
     public ProductStatus getProductStatus() {
@@ -178,12 +182,12 @@ public abstract class Product {
         this.title = title;
     }
 
-    public User getSeller_id() {
-        return seller_id;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setSeller_id(User seller_id) {
-        this.seller_id = seller_id;
+    public void setSeller(User seller_id) {
+        this.seller = seller_id;
     }
 
     public UUID getProduct_id() {
