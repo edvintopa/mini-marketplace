@@ -1,5 +1,8 @@
 package com.example.minimarketplace.model.product.products.clothing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author edvintopa
  * @project mini-marketplace
@@ -10,5 +13,15 @@ public enum ClothingSize {
     S,
     M,
     L,
-    XL
+    XL;
+
+    @JsonValue
+    public String toValue(){
+        return this.name();
+    }
+
+    @JsonCreator
+    public static ClothingSex forValue(String value){
+        return ClothingSex.valueOf(value.toUpperCase());
+    }
 }

@@ -3,8 +3,8 @@ package com.example.minimarketplace.model.product.products.vehicle;
 import com.example.minimarketplace.model.product.*;
 import com.example.minimarketplace.model.user.User;
 
+import java.lang.String;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author edvintopa

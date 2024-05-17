@@ -3,6 +3,7 @@ package com.example.minimarketplace.model.product.products.electronics;
 import com.example.minimarketplace.model.product.*;
 import com.example.minimarketplace.model.user.User;
 
+import java.lang.String;
 import java.util.Date;
 
 /**
