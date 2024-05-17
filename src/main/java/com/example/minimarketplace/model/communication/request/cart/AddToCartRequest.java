@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.communication.request.order;
+package com.example.minimarketplace.model.communication.request.cart;
 
 import java.util.UUID;
 

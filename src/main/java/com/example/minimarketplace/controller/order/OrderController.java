@@ -1,10 +1,10 @@
 package com.example.minimarketplace.controller.order;
 
 import com.example.minimarketplace.auth.JwtUtil;
-import com.example.minimarketplace.model.communication.request.order.AddToCartRequest;
+import com.example.minimarketplace.model.communication.request.cart.AddToCartRequest;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
-import com.example.minimarketplace.model.communication.response.order.AddToCartResponse;
-import com.example.minimarketplace.model.communication.response.order.GetMyOrdersResponse;
+import com.example.minimarketplace.model.communication.response.cart.AddToCartResponse;
+import com.example.minimarketplace.model.communication.response.order.GetOrdersResponse;
 import com.example.minimarketplace.model.order.Order;
 import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.repository.order.OrderRepository;
@@ -56,19 +56,19 @@ public class OrderController {
      * <p>
      * @author edvintopa
      */
-    @GetMapping("/myorders")
-    public ResponseEntity getMyOrders(@RequestHeader("Authorization") String token) {
+    @GetMapping("/get")
+    public ResponseEntity getOrders(@RequestHeader("Authorization") String token) {
         try {
             UUID buyerId = tokenResolverService.resolveTokenToUserId(token);
             List<Order> orders = orderRepository.findAllByBuyerId(buyerId); //Get users orders
 
-            List<GetMyOrdersResponse> response = new ArrayList<>();
+            List<GetOrdersResponse> response = new ArrayList<>();
 
             for (Order order : orders) {
 
                 User seller = userRepository.findByUserId(order.getSellerId());
 
-                response.add(new GetMyOrdersResponse(
+                response.add(new GetOrdersResponse(
                         seller.getUsername(),
                         order.getOrderDate(),
                         order.getTotal(),
@@ -99,4 +99,17 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/mycart")
+    public ResponseEntity getCart(@RequestHeader("Authorization") String token) {
+
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            List<UUID> cartItems = cartService.getCart(userId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(cartItems);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 }
