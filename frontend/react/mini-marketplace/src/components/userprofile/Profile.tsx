@@ -5,7 +5,7 @@ import OrderHistory from './OrderHistory';
 import ProfileSettings from './ProfileSettings';
 import EditProfile from './EditProfile';
 import { useUser } from '../../context/UserContext';
-import { Order } from '../../types/types';
+import { Order, User } from '../../types/types';
 
 
 interface ProfileProps {
@@ -13,13 +13,15 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ orders  }) => {
-    const { user, fetchUser } = useUser();
+    const { user } = useUser();
     const [editMode, setEditMode] = useState(false);
-    const [editableUser, setEditableUser] = useState(user);
+    const [editableUser, setEditableUser] = useState<User | null>(null);
 
     useEffect(() => {
-        fetchUser('johndoe');
-    }, [fetchUser]);
+        if (user) {
+            setEditableUser(user);
+        }
+    }, [user]);
 
     const handleEditToggle = () => {
         if (editMode) {
@@ -31,25 +33,12 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEditableUser(prev => ({ ...prev, [name]: value }));
+        setEditableUser(prev => prev ? ({ ...prev, [name]: value }) : null);
     };
 
-    /*
-    useEffect(() => {
-        const username = 'johndoe';
-        fetch(`http://localhost:8080/user/get?username=${username}`)
-        .then(response => response.json())
-        .then(data => {
-            setEditableUser(data);
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-            });
-    }, []);
-    */
-
-
-
+    if (!editableUser) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="main-content">
@@ -58,7 +47,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
             </div>
             <div className="content-area">
                 {editMode ? (
-                    <EditProfile user={editableUser} onChange={handleChange}>
+                    <EditProfile user={editableUser || user} onChange={handleChange}>
                     <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>
                     </EditProfile>
                 ) : (

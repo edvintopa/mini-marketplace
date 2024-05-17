@@ -49,11 +49,22 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
-        if (storedUser && storedToken) {
-            setUser(JSON.parse(storedUser));
+        if (storedToken) {
             setToken(storedToken);
+            
+            axios.get<User>(`http://localhost:8080/user/me`, {
+                headers: { Authorization: `Bearer ${storedToken}` },
+            })
+            .then(response => {
+                setUser(response.data);
+                localStorage.setItem('user', JSON.stringify(response.data));
+            })
+            .catch(err => {
+                console.log('Failed to fetch user details:', err);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            });
         }
     }, []);
 
@@ -98,21 +109,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             console.log("Response data:", response.data);
 
             if (response.data) {
-                const { token, username } = response.data;
+                const { token } = response.data;
                 setToken(token);
-
-                const user: User = {
-                    userId: "",
-                    firstName: "",
-                    lastName: "",
-                    username: username,
-                    password: "",
-                    dateOfBirth: "",
-                    email: "",
-                    balance: 0,
-                };
-                setUser(user);
                 localStorage.setItem('token', token);
+
+                const userResponse = await axios.get<User>(`http://localhost:8080/user/me`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                const user = userResponse.data;
+                setUser(user);
+                localStorage.setItem('user', JSON.stringify(user));
+
 
                 console.log('Login successful for user:', username);
                 return true;
