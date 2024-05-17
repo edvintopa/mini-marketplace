@@ -344,3 +344,115 @@ body[data-theme='dark'] .banner p {
 }
 
 
+/*
+ * RegisterProductCard.tsx
+ *
+ * */
+.register-product-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.form-title {
+    font-family: inter;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Form within the register product card */
+.register-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Section for image upload */
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Styling for the product image */
+.product-image {
+  width: 100%;
+  height: auto;
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+/* General styling for the submit button */
+.product-submit-btn {
+  padding: 8px 16px;
+  background-color: #c4b5fd;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  background-color: #a78bfa;
+}
+
+/* TextFieldComponent specific styles */
+.textFieldBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.textFieldBox .form-section-title {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.textFieldBox input[type="text"],
+.textFieldBox input[type="number"],
+.textFieldBox textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  outline: none;
+  width: 100%;
+  max-width: 100%;
+}
+
+.textFieldBox input[type="text"]:focus,
+.textFieldBox input[type="number"]:focus,
+.textFieldBox textarea:focus {
+  border-color: #c4b5fd;
+}
+
+.form-section-title {
+    font-size: 1rem;
+}
+
+/* Styling for the color dropdown and text input */
+.color-dropdown,
+.condition-dropdown,
+.status-dropdown {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  outline: none;
+  margin-top: 5px;
+}
+
+.color-dropdown:focus,
+.condition-dropdown:focus,
+.status-dropdown:focus {
+  border-color: #c4b5fd;
+}

@@ -3,8 +3,7 @@ import { RegisterProductCard } from './register-product/RegisterProductCard'
 
 export const RegisterProductApp = () => {
   return (
-    <div>RegisterProductApp
-
+    <div>
         <RegisterProductCard />
     </div>
   )
