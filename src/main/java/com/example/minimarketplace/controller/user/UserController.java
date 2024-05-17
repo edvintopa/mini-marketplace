@@ -7,6 +7,7 @@ import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
 import com.example.minimarketplace.model.communication.response.user.LoginResponse;
 import com.example.minimarketplace.model.communication.response.user.UserResponse;
+import com.example.minimarketplace.service.TokenResolverService;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.UUID;
 
 /**
  * @author edvintopa
@@ -34,9 +37,12 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
 
     private JwtUtil jwtUtil;
-    public UserController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+
+    private final TokenResolverService tokenResolverService;
+    public UserController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, TokenResolverService tokenResolverService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.tokenResolverService = tokenResolverService;
     }
 
     //http://localhost:8080/user/get
@@ -75,8 +81,8 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity getUser(@RequestHeader("Authorization") String token) {
         try {
-            String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
-            User user = userRepository.findByUsername(username);
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            User user = userRepository.findByUserId(userId);
 
             UserResponse userResponse = new UserResponse(
                     user.getFirstName(),
