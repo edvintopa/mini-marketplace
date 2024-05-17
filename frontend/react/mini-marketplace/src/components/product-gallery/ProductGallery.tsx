@@ -7,7 +7,7 @@ export interface ProductType {
   name: string;
   price: number;
   title: string;
-  imagelink: string;
+  product_image: string;
   url: string;
 }
 
@@ -45,7 +45,7 @@ export const ProductGallery = () => {
               console.log('product: ', product),
               <ProductGalleryCard
                   id={product.id}
-                  imagelink={product.imagelink || 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg'}
+                  imagelink={product.product_image}
                   url={product.url}
                   title={product.title}
                   price={product.price + " kr"}

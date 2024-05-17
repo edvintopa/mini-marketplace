@@ -3,11 +3,15 @@ import "../CSS-files/productgallery.css";
 import './../CSS-files/index.css';
 import '../script/Search.tsx';
 
-export const ProductGalleryApp = (searchTerm: string) => {
+import { useLocation } from "react-router-dom";
+
+export const ProductGalleryApp = () => {
+    const location = useLocation();
+    const searchTerm = location.state ? location.state.searchTerm : '';
     console.log(searchTerm + " is PGA");
     return (
         <div className='ProductGalleryWrapper'>
-            <ProductGalleryWrapper searchTerm={searchTerm.valueOf()} />
+            <ProductGalleryWrapper searchTerm={searchTerm} />
         </div>
     )
 }
