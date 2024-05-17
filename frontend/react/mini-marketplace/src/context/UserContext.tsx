@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import axios from 'axios';
-import { User, UserContextType } from '../types/types';
+import { SignupFormData, User, UserContextType } from '../types/types';
 
 /* TODO: leftover from editing profile
 const defaultState = {
@@ -17,16 +17,6 @@ const defaultState = {
     updateUser: () => {}
 };
 */
-
-const defaultState = {
-    user: null,
-    error: '',
-    updateUser: () => {},
-    loginUser: async (username: string, password: string) => {},
-    logoutUser: () => {},
-    fetchUser: async (username: string) => {},
-    token: null,
-};
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -148,6 +138,41 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         localStorage.removeItem('token');
     };
 
+    const signupUser = async (formData: SignupFormData): Promise<boolean> => {
+        try {
+            const response = await axios.post<{ username: string, token: string }>(`http://localhost:8080/user/signup`, formData);
+
+            if (response.data) {
+                const { token } = response.data;
+                setToken(token);
+                localStorage.setItem('token', token);
+
+                // Fetch full user details using the /me endpoint
+                const userResponse = await axios.get<User>(`http://localhost:8080/user/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                const user = userResponse.data;
+                setUser(user);
+                localStorage.setItem('user', JSON.stringify(user));
+
+                console.log('Signup successful for user:', user);
+                return true;
+            } else {
+                setError('No data returned from server');
+                return false;
+            }
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err) && err.response) {
+                const errorResponse = err.response.data as string;
+                setError(`Signup failed: ${errorResponse}`);
+            } else {
+                setError('An unexpected error occurred during signup.');
+            }
+            return false;
+        }
+    };
+
     /* TODO: leftover from editing profile
     const updateUser = (newUserData: User) => {
         setUser(newUserData);
@@ -155,7 +180,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     */
 
     return (
-        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, token, error }}>
+        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, signupUser, token, error }}>
             {children}
         </UserContext.Provider>
     );

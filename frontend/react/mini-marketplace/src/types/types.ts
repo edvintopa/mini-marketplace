@@ -16,6 +16,15 @@ export interface TextFieldComponentTypes {
     textFieldTitle: string;
 }
 
+export interface SignupFormData {
+    username: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    dateOfBirth: string,
+}
+
 export interface UserContextType {
     user: User | null;
     error: string;
@@ -23,6 +32,7 @@ export interface UserContextType {
     fetchUser: (username: string) => void;
     loginUser: (username: string, password: string) => Promise<boolean>;
     logoutUser: () => void;
+    signupUser: (formData: SignupFormData) => Promise<boolean>;
     token: string | null;
 }
 
