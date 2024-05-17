@@ -6,6 +6,7 @@ export interface ProductType {
   id: string;
   name: string;
   price: number;
+  title: string;
   imagelink: string;
   url: string;
 }
@@ -33,7 +34,6 @@ export const ProductGallery = () => {
         .then(response => response.json())
         .then(data => setProducts(data))
         .catch(error => console.error('Error:', error));
-
   }, []);
 
 
@@ -42,11 +42,12 @@ export const ProductGallery = () => {
         <div className='FilterTagWrapper'><FilterTagWrapper /></div>
         <div className='ProductGallery'>
           {products.map((product) => (
+              console.log('product: ', product),
               <ProductGalleryCard
                   id={product.id}
                   imagelink={product.imagelink || 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg'}
                   url={product.url}
-                  title={product.name}
+                  title={product.title}
                   price={product.price + " kr"}
               />
           ))}

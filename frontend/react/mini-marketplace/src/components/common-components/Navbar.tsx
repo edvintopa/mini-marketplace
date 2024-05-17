@@ -4,15 +4,19 @@ import { faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 //import '../script/Search.tsx';
 // @ts-ignore
 import { useNavigate } from "react-router-dom";
+import {ProductGalleryApp} from "../ProductGalleryApp.tsx";
+
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
     const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            const searchTerm = event.currentTarget.value;
+            const searchTerm  = event.currentTarget.value;
             navigate(`/productgallery?search=${searchTerm}`);
             console.log(searchTerm + " was searched")
+            ProductGalleryApp(event.currentTarget.value.toString());
+            event.currentTarget.value = '';
         }
     };
 

@@ -46,8 +46,12 @@ public class ProductController {
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
 
+            /*for (int i = 0; i < products.size(); i++) {
+                System.out.println(i + ": " + products.get(i));
+            }*/
             return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
         }catch (Exception e){
+            System.out.println("error :( " + e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
