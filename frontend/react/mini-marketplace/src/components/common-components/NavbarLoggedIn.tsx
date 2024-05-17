@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faShop, faCartShopping, faTimes, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../../context/UserContext";
 
 interface NavbarLoggedInProps {
     toggleSavedProducts: () => void;
@@ -13,13 +14,12 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { user, logoutUser } = useUser();
 
     const toggleDropdown = (event: React.MouseEvent) => {
         event.stopPropagation();
         setDropdownVisible(prev => !prev);
     };
-
-
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -51,7 +51,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
             <a href="#" onClick={(event) => toggleDropdown(event)} className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>
             <div className={`dropdown-menu ${isDropdownVisible ? 'visible' : ''}`} ref={dropdownRef}>
                 <a href="/profile">View Profile</a>
-                <button onClick={() => console.log("Add logout functionality here")}>Logout</button>
+                <button onClick={logoutUser}>Logout</button>
             </div>
             </div>
         </nav>

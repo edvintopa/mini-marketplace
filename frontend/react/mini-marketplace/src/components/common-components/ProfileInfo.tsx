@@ -5,7 +5,7 @@ import { User } from "../../types/types";
 
 
 interface ProfileInfoProps {
-    user?: User | null;
+    user: User;
     children?: ReactNode;
 }
 
@@ -22,7 +22,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ user, children }) => {
                 {/*<img src={user.avatarUrl} alt="avatar" />*/}
             </div>
             <div className="profile-details">
-                <h1>{user.firstName}</h1>
+                <h1>{user.firstName} {user.lastName}</h1>
                 {/*<p>{user.bio}</p>*/}
             </div>
         </div>

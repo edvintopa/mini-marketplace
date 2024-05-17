@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Navbar from './components/common-components/Navbar';
 import NavbarLoggedIn from './components/common-components/NavbarLoggedIn';
 import StartPage from './components/startpage';
 import Footer from './components/common-components/Footer';
@@ -9,10 +10,25 @@ import { SignUpApp } from "./components/SignUpApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
-import { ThemeProvider } from './ThemeContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
+import { useUser } from './context/UserContext';
+import axios from 'axios';
 
-function App() {
+axios.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+const App = () => {
     const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);
 
     const [orders, setOrders] = useState([
@@ -32,13 +48,16 @@ function App() {
         setSavedProductsVisible(!isSavedProductsVisible);
     };
 
-
+    const { user } = useUser();
 
     return (
-        <ThemeProvider>
-        <UserProvider>
         <div className="App">
-            <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
+            { user ? (
+                <NavbarLoggedIn toggleSavedProducts={toggleSavedProducts} isSavedProductsVisible={isSavedProductsVisible} />
+            ) : (
+                <Navbar />
+            )}
+
             <SavedProductsPanel
             className={isSavedProductsVisible ? 'visible' : ''}
             toggleSavedProducts={toggleSavedProducts}
@@ -55,8 +74,6 @@ function App() {
             </Routes>
             <Footer />
         </div>
-        </UserProvider>
-        </ThemeProvider>
     );
 }
 

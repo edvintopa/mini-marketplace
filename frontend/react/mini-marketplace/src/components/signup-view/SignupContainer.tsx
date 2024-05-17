@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { TextFieldComponent } from "../common-components/TextFieldComponent";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
-export const SignUpContainer = () => {
+export const SignUpContainer: React.FC = () => {
+    const { signupUser } = useUser();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -10,27 +13,25 @@ export const SignUpContainer = () => {
         dateOfBirth: '',
         email: ''
     });
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-    const handleInputChange = (event: any) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
         setFormData({
             ...formData,
-            [event.target.name]: event.target.value
+            [name]: value,
         });
     };
 
-    const handleSubmit = async (event: any) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        const response = await fetch('http://localhost:8080/user/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-        console.log(data);
+        const success = await signupUser(formData);
+        if (success) {
+            navigate('/');
+        } else {
+            setErrorMessage('Signup failed, please try again');
+        }
     };
 
     return (
@@ -52,8 +53,9 @@ export const SignUpContainer = () => {
                 <TextFieldComponent textFieldTitle="Email" type="text" name="email" onChange={handleInputChange} />
             </div>
             <div className="SignUpButtonWrapper">
-                <button type="submit">SIGN IN</button>
+                <button type="submit">Sign Up</button>
             </div>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
     );
 };
