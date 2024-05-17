@@ -1,5 +1,6 @@
-package com.example.minimarketplace.model;
+package com.example.minimarketplace.model.order;
 
+import com.example.minimarketplace.model.order.Order;
 import com.example.minimarketplace.model.product.Product;
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.example.minimarketplace.service;
 
-import com.example.minimarketplace.controller.UserRepository;
+import com.example.minimarketplace.repository.user.UserRepository;
 import com.example.minimarketplace.model.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

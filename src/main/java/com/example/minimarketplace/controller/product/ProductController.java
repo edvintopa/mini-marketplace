@@ -1,10 +1,8 @@
-package com.example.minimarketplace.controller;
+package com.example.minimarketplace.controller.product;
 
 
+import com.example.minimarketplace.repository.product.ProductRepository;
 import com.example.minimarketplace.model.product.Product;
-import com.example.minimarketplace.model.product.ProductColor;
-import com.example.minimarketplace.model.product.ProductCondition;
-import com.example.minimarketplace.model.product.ProductStatus;
 import com.example.minimarketplace.model.product.products.clothing.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 @CrossOrigin(origins = "*")

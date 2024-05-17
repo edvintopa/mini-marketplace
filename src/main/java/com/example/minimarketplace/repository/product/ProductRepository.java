@@ -1,4 +1,4 @@
-package com.example.minimarketplace.controller;
+package com.example.minimarketplace.repository.product;
 
 import com.example.minimarketplace.model.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.example.minimarketplace.controller;
+package com.example.minimarketplace.repository.user;
 
 import com.example.minimarketplace.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

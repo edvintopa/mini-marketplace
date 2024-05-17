@@ -1,11 +1,12 @@
-package com.example.minimarketplace.controller;
+package com.example.minimarketplace.controller.user;
 
 import com.example.minimarketplace.auth.JwtUtil;
-import com.example.minimarketplace.model.user.request.LoginRequest;
+import com.example.minimarketplace.repository.user.UserRepository;
+import com.example.minimarketplace.model.communication.request.user.LoginRequest;
 import com.example.minimarketplace.model.user.User;
-import com.example.minimarketplace.model.user.response.ErrorResponse;
-import com.example.minimarketplace.model.user.response.LoginResponse;
-import com.example.minimarketplace.model.user.response.UserResponse;
+import com.example.minimarketplace.model.communication.response.ErrorResponse;
+import com.example.minimarketplace.model.communication.response.user.LoginResponse;
+import com.example.minimarketplace.model.communication.response.user.UserResponse;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

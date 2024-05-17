@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model;
+package com.example.minimarketplace.model.order;
 
 public enum OrderStatus {
 

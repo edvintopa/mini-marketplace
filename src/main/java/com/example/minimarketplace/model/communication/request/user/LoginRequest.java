@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model.user.request;
+package com.example.minimarketplace.model.communication.request.user;
 
 /**
  * @author edvintopa

@@ -1,8 +1,8 @@
 package com.example.minimarketplace.component.event;
 
 import com.example.minimarketplace.model.notification.Notification;
-import com.example.minimarketplace.repository.NotificationRepository;
-import com.example.minimarketplace.repository.UserInterestRepository;
+import com.example.minimarketplace.repository.user.NotificationRepository;
+import com.example.minimarketplace.repository.user.UserInterestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

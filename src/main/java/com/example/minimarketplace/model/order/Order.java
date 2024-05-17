@@ -1,4 +1,4 @@
-package com.example.minimarketplace.model;
+package com.example.minimarketplace.model.order;
 
 import com.example.minimarketplace.model.user.User;
 import jakarta.persistence.*;
