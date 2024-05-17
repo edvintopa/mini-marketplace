@@ -365,14 +365,12 @@ body[data-theme='dark'] .banner p {
     color: #333;
 }
 
-/* Form within the register product card */
 .register-product-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Section for image upload */
 .image-upload-section {
   display: flex;
   flex-direction: column;
@@ -380,7 +378,6 @@ body[data-theme='dark'] .banner p {
   gap: 10px;
 }
 
-/* Styling for the product image */
 .product-image {
   width: 100%;
   height: auto;
@@ -388,7 +385,6 @@ body[data-theme='dark'] .banner p {
   border-radius: 10px;
 }
 
-/* General styling for the submit button */
 .product-submit-btn {
   padding: 8px 16px;
   background-color: #c4b5fd;
@@ -404,7 +400,6 @@ body[data-theme='dark'] .banner p {
   background-color: #a78bfa;
 }
 
-/* TextFieldComponent specific styles */
 .textFieldBox {
   display: flex;
   flex-direction: column;
@@ -439,7 +434,6 @@ body[data-theme='dark'] .banner p {
     font-size: 1rem;
 }
 
-/* Styling for the color dropdown and text input */
 .dropdown {
   padding: 8px;
   border: 1px solid #ddd;

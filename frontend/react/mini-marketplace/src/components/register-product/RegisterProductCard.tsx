@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import axios from 'axios';
+import { useUser } from '../../context/UserContext';
 import '../../CSS-files/index.css';
 
 const conditions = [
@@ -24,6 +26,10 @@ const sexes = [
     'MEN', 'WOMEN', 'UNISEX',
 ];
 
+const sizes = [
+    'XS', 'S', 'M', 'L', 'XL',
+];
+
 
 export const RegisterProductCard: React.FC = () => {
     const [imageUrl, setImageUrl] = React.useState("https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg");
@@ -32,6 +38,7 @@ export const RegisterProductCard: React.FC = () => {
     const [type, setType] = useState(types[0]);  
     const [season, setSeason] = useState(seasons[0]);
     const [sex, setSex] = useState(sexes[0]);
+    const [size, setSize] = useState(sizes[0]);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -39,7 +46,7 @@ export const RegisterProductCard: React.FC = () => {
         price: 0,
     });
 
-    // color, condition, status
+    const { token } = useUser();
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -49,8 +56,8 @@ export const RegisterProductCard: React.FC = () => {
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { title, value } = event.target;
-        setFormData(prevData => ({ ...prevData, [title]: value }));
+        const { name, value } = event.target;
+        setFormData(prevData => ({ ...prevData, [name]: value }));
     };
 
     const handleColorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,12 +80,39 @@ export const RegisterProductCard: React.FC = () => {
         setSex(event.target.value);
     };
 
-    const postProduct = (event: React.FormEvent) => {
+    const handleSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSize(event.target.value);
+    };
+
+    const postProduct = async (event: React.FormEvent) => {
         event.preventDefault();
-        //if (event.target.files && event.target.files[0]) {
-            //const imageUrl = URL.createObjectURL(event.target.files[0]);
-            //setImageUrl(imageUrl);
-        //}
+
+        const productData = {
+            ...formData,
+            productcondition: condition,
+            productcolor: color,
+            season,
+            sex,
+            size,
+            type,
+        };
+
+        console.log('Product data to be posted:', productData);
+
+        try {
+            const response = await axios.post('http://localhost:8080/product/createClothing', productData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log('Product created:', response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Failed to create product:', error.response?.data || error.message);
+            } else {
+                console.log('Unexpected error:', error);
+            }
+        }
     };
 
     return (
@@ -92,15 +126,19 @@ export const RegisterProductCard: React.FC = () => {
                 </div>
                 <div className="textFieldBox">
                     <h3 className="form-section-title">Name</h3>
-                    <input type="text" title="title" value={formData.title} onChange={handleInputChange} />
+                    <input type="text" name="title" value={formData.title} onChange={handleInputChange} />
                 </div>
                 <div className="textFieldBox">
                     <h3 className="form-section-title">Price</h3>
-                    <input type="number" title="price" value={formData.price} onChange={handleInputChange} />
+                    <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
                 </div>
                 <div className="textFieldBox">
                     <h3 className="form-section-title">Description</h3>
-                    <input type="text" title="description" value={formData.description} onChange={handleInputChange} />
+                    <input type="text" name="description" value={formData.description} onChange={handleInputChange} />
+                </div>
+                <div className="textFieldBox">
+                    <h3 className="form-section-title">Manufacturer</h3>
+                    <input type="text" name="manufacturer" value={formData.manufacturer} onChange={handleInputChange} />
                 </div>
                 <div className="textFieldBox">
                     <h3 className="form-section-title">Condition</h3>
@@ -138,6 +176,16 @@ export const RegisterProductCard: React.FC = () => {
                         {sexes.map((sexOption) => (
                             <option key={sexOption} value={sexOption}>
                                 {sexOption}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="textFieldBox">
+                    <h3 className="form-section-title">Size</h3>
+                    <select value={size} onChange={handleSizeChange} className="dropdown">
+                        {sizes.map((sizeOption) => (
+                            <option key={sizeOption} value={sizeOption}>
+                                {sizeOption}
                             </option>
                         ))}
                     </select>
