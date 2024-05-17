@@ -1,5 +1,5 @@
 
-export const ProductGalleryCard = ({imagelink, url, title, price, id}: {imagelink: string, url: string, title: string, price: string, id: string}) => {
+export const ProductGalleryCard = ({imagelink, url, title, price}: {imagelink: string, url: string, title: string, price: string, id: string}) => {
     return (
         <div className='ProductCard'>
                  <a href={url}>

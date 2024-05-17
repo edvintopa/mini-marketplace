@@ -13,4 +13,6 @@ import java.util.UUID;
  */
 public interface UserInterestRepository extends JpaRepository<UserInterest, UUID> {
     List<UUID> findUsersInterestedIn(String type);
+
+
 }

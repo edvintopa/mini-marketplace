@@ -1,10 +1,21 @@
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-
-
+//import '../script/Search.tsx';
+// @ts-ignore
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            const searchTerm = event.currentTarget.value;
+            navigate(`/productgallery?search=${searchTerm}`);
+            console.log(searchTerm + " was searched")
+        }
+    };
+
     return (
         <nav className="nav">
             <div className="nav-left">
@@ -12,7 +23,7 @@ const Navbar: React.FC = () => {
                 <a href="/productgallery">Marketplace</a>
             </div>
             <div className="nav-center">
-            <input className="nav-search" type="text" placeholder="Search" />
+            <input className="nav-search" type="text" placeholder="Search" onKeyDown={handleSearch} />
             </div>
             <div className="nav-right">
                 <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
