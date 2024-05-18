@@ -1,9 +1,7 @@
 package com.example.minimarketplace.controller.order;
 
 import com.example.minimarketplace.auth.JwtUtil;
-import com.example.minimarketplace.model.communication.request.cart.AddToCartRequest;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
-import com.example.minimarketplace.model.communication.response.cart.AddToCartResponse;
 import com.example.minimarketplace.model.communication.response.order.GetOrdersResponse;
 import com.example.minimarketplace.model.order.Order;
 import com.example.minimarketplace.model.user.User;
@@ -31,7 +29,6 @@ import java.util.UUID;
 @RequestMapping("/order")
 public class OrderController {
 
-    private JwtUtil jwtUtil;
     private final UserCartService cartService;
     private final TokenResolverService tokenResolverService;
 
@@ -41,8 +38,7 @@ public class OrderController {
     @Autowired
     UserRepository userRepository;
 
-    public OrderController(JwtUtil jwtUtil, UserCartService cartService, TokenResolverService tokenResolverService) {
-        this.jwtUtil = jwtUtil;
+    public OrderController(UserCartService cartService, TokenResolverService tokenResolverService) {
         this.cartService = cartService;
         this.tokenResolverService = tokenResolverService;
     }
@@ -84,32 +80,5 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/addtocart")
-    public ResponseEntity addToCart(@RequestHeader("Authorization") String token, @RequestBody AddToCartRequest request) {
 
-        try {
-            UUID userId = tokenResolverService.resolveTokenToUserId(token);
-            cartService.addToCart(userId, request.getProductId());
-
-            AddToCartResponse addToCartResponse = new AddToCartResponse(request.getProductId(), userId);
-            return ResponseEntity.status(HttpStatus.OK).body(addToCartResponse);
-        } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
-
-    @GetMapping("/mycart")
-    public ResponseEntity getCart(@RequestHeader("Authorization") String token) {
-
-        try {
-            UUID userId = tokenResolverService.resolveTokenToUserId(token);
-            List<UUID> cartItems = cartService.getCart(userId);
-
-            return ResponseEntity.status(HttpStatus.OK).body(cartItems);
-        } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
 }
