@@ -7,30 +7,45 @@ interface ProductViewProps {
 }
 
 export interface ProductInfo {
-    id: string;
-    name: string;
-    price: number;
+    product_id: string;
     title: string;
+    username: string;
+    description: string;
+    manufacturer: string;
+    datePosted: string;
+    price: number;
     product_image: string;
     url: string;
-    description: string;
-    seller: string;
-    date: string;
-    status: string;
+    productStatus: string;
 }
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
     try {
-        console.log(id.valueOf() + " is the id")
         const response = await fetch(`http://localhost:8080/product/getProduct/${id}`);
         const data = await response.json();
-        return data;
+        console.log(JSON.stringify(data) + " received from database"); // Log the received data
+
+        // Map the received data to the ProductInfo interface
+        const productInfo: ProductInfo = {
+            product_id: data.product_id,
+            username: data.username,
+            price: data.price,
+            title: data.title,
+            manufacturer: data.manufacturer,
+            product_image: data.product_image,
+            url: data.url,
+            description: data.description,
+            datePosted: data.datePosted,
+            productStatus: data.productStatus,
+        };
+
+        console.log(JSON.stringify(productInfo.productStatus) + " is the product info");
+        return productInfo;
     } catch (error) {
         console.error('Error:', error);
         return null;
     }
 }
-
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
 
@@ -39,7 +54,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     }, [id]);
 
     if (currentProduct) {
-        console.log(currentProduct.status + " is the status");
+        console.log(JSON.stringify(currentProduct.username) + " is the status");
     }
 
     if (!currentProduct) {
@@ -55,14 +70,14 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 <h3 className="TitleOfProduct">{currentProduct.title}</h3>
                 <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
                 <div className="ProductViewButtons">
-                    <button className="StatusBtn">{currentProduct.status}</button>
+                    <button className="StatusBtn">{currentProduct.productStatus}</button>
                     <button className="AddToCartBtn">Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">
                 <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
-                        icon={faUser}/>{currentProduct.seller.valueOf().toString()}</a>
+                        icon={faUser}/>{currentProduct.username}</a>
                     <p>{currentProduct.description}</p>
-                    <p>{currentProduct.date}</p>
+                    <p>{currentProduct.datePosted}</p>
                 </div>
             </div>
         </div>
