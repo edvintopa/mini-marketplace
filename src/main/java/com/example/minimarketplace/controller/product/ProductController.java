@@ -71,8 +71,13 @@ public class ProductController {
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
-            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);   //TODO: Create appropriate response. A lot of unnecessary info is sent.
+            /*for (int i = 0; i < products.size(); i++) {
+                System.out.println(i + ": " + products.get(i));
+            }*/
+            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+
         }catch (Exception e){
+            System.out.println("error :( " + e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,11 +1,12 @@
 import { ProductGallery } from './ProductGallery'
 import { SearchTitle } from './SearchTitle'
 
-export const ProductGalleryWrapper = () => {
-  return (
-    <div>
-        <SearchTitle searchquery={'Placeholder'}/>
-        <ProductGallery/>
-    </div>
-  )
+export const ProductGalleryWrapper = ({ searchTerm }: { searchTerm: string }) => {
+
+    return (
+        <div>
+            <SearchTitle searchquery={searchTerm.toString()}/>
+            <ProductGallery/>
+        </div>
+    )
 }

@@ -1,12 +1,14 @@
-import React from 'react'
 import { FilterTags } from './FilterTags' /** change from plural to singular */
 
 export const FilterTagWrapper = () => {
   return (
     <div className='FilterTagGallery'>
-        <FilterTags tag={'Hoodie'}/>
-        <FilterTags tag={'Bag'}/>
-        <FilterTags tag={'Shoes'}/>
+        <FilterTags tag={'Season'}/>
+        <FilterTags tag={'Gender'}/>
+        <FilterTags tag={'Size'}/>
+        <FilterTags tag={'Clothing Type'}/>
+        <FilterTags tag={'Color'}/>
+        <FilterTags tag={'Condition'}/>
     </div>
   )
 }

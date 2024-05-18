@@ -10,6 +10,7 @@ import { SignUpApp } from "./components/SignUpApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
+
 import { useUser } from './context/UserContext';
 import axios from 'axios';
 import { RegisterProductApp } from './components/RegisterProductApp.tsx';
