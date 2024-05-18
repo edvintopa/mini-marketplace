@@ -24,6 +24,17 @@ public class UserCartService {
         cartMap.put(userId, cart);   //put it in the map
     }
 
+    public boolean removeFromCart(UUID userId, UUID productId) {
+        List<UUID> cart = cartMap.getOrDefault(userId, new ArrayList<>());
+        if (cart.remove(productId)) {
+            cartMap.put(userId, cart);
+            return true;
+        } else {
+            cartMap.put(userId, cart);
+            return false;
+        }
+    }
+
     public List<UUID> getCart(UUID userId) {
         return cartMap.getOrDefault(userId, new ArrayList<>());  //if no cart, create one
     }
