@@ -100,7 +100,7 @@ public class ProductController {
             //productPublisher.notifyProductAvailability(savedProduct.getName(), savedProduct.getType());
 
             System.out.println(newClothing);
-            ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProduct_id(), HttpStatus.CREATED);
+            ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProductId(), HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
