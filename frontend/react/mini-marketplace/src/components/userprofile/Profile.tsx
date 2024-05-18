@@ -4,6 +4,7 @@ import ProfileInfo from '../common-components/ProfileInfo';
 import OrderHistory from './OrderHistory';
 import ProfileSettings from './ProfileSettings';
 import EditProfile from './EditProfile';
+import InterestsDropdown from './InterestsDropdown';
 import { useUser } from '../../context/UserContext';
 import { Order, User } from '../../types/types';
 
@@ -12,10 +13,12 @@ interface ProfileProps {
     orders: Order[];
 }
 
+
 const Profile: React.FC<ProfileProps> = ({ orders  }) => {
     const { user } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState<User | null>(null);
+
 
     useEffect(() => {
         if (user) {
@@ -30,6 +33,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
         }
         setEditMode(!editMode);
     };
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -55,6 +59,7 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
                         <button id="edit-profile-btn" onClick={handleEditToggle}>{editMode ? 'Save' : 'Edit'}</button>
                     </ProfileInfo>
                 )}
+                <InterestsDropdown />
                 <OrderHistory orders={orders} />
             </div>
         </div>

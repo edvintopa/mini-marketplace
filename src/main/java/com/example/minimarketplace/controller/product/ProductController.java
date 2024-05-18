@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.minimarketplace.component.event.ProductPublisher;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,14 +31,19 @@ import java.util.UUID;
 public class ProductController {
 
     private final JwtUtil jwtUtil;
+
+    private final ProductPublisher productPublisher;
     private final TokenResolverService tokenResolverService;
+
     @Autowired
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
 
-    public ProductController(JwtUtil jwtUtil, TokenResolverService tokenResolverService) {
+
+    public ProductController(JwtUtil jwtUtil, ProductPublisher productPublisher, TokenResolverService tokenResolverService) {
         this.jwtUtil = jwtUtil;
+        this.productPublisher = productPublisher;
         this.tokenResolverService = tokenResolverService;
     }
 
@@ -132,7 +138,6 @@ public class ProductController {
 
             //productPublisher.notifyProductAvailability(savedProduct.getName(), savedProduct.getType());
 
-            System.out.println(newClothing);
             ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProductId(), HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){

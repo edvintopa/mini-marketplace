@@ -7,6 +7,7 @@ export interface User {
         dateOfBirth: string;
         email: string;
         balance: number;
+        interests?: string[];
 }
 
 export interface TextFieldComponentTypes {
@@ -33,6 +34,7 @@ export interface UserContextType {
     loginUser: (username: string, password: string) => Promise<boolean>;
     logoutUser: () => void;
     signupUser: (formData: SignupFormData) => Promise<boolean>;
+    setUserInterests: (interests: string[]) => Promise<boolean>;
     token: string | null;
 }
 
