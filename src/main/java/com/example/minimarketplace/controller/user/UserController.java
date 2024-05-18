@@ -57,24 +57,6 @@ public class UserController {
         this.tokenResolverService = tokenResolverService;
     }
 
-    //http://localhost:8080/user/get
-    // test
-    /*TO BE REMOVED*/
-    @GetMapping("/get")
-    public ResponseEntity<User> getAllUsers(@RequestParam String username) {
-        try {
-            User user = userRepository.findByUsername(username);
-
-            if (user == null) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            }
-
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     /**
      * This method is responsible for fetching the user's information based on the provided JWT token.
      * The token is passed in the request header under the key "Authorization".
