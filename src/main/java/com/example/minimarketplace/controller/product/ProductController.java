@@ -13,6 +13,7 @@ import com.example.minimarketplace.repository.product.ProductRepository;
 import com.example.minimarketplace.repository.user.UserRepository;
 import com.example.minimarketplace.model.product.Product;
 import com.example.minimarketplace.model.product.products.clothing.*;
+import com.example.minimarketplace.service.TokenResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +30,29 @@ import java.util.UUID;
 public class ProductController {
 
     private final JwtUtil jwtUtil;
+    private final TokenResolverService tokenResolverService;
     @Autowired
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
 
-    public ProductController(JwtUtil jwtUtil) {
+    public ProductController(JwtUtil jwtUtil, TokenResolverService tokenResolverService) {
         this.jwtUtil = jwtUtil;
+        this.tokenResolverService = tokenResolverService;
+    }
 
+    @GetMapping("/getmy")
+    public ResponseEntity getSellerProducts(@RequestHeader("Authorization") String token) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            User seller = userRepository.findByUserId(userId);
+            List<Product> products = productRepository.findAllBySeller(seller);
+
+            return ResponseEntity.status(HttpStatus.OK).body(products);     //TODO: Create appropriate response. A lot of unnecessary info is sent.
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
     }
 
     @GetMapping(value = "/get")
