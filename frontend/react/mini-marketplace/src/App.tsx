@@ -10,10 +10,9 @@ import { SignUpApp } from "./components/SignUpApp";
 import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
-import { ThemeProvider } from './context/ThemeContext';
-import { UserProvider } from './context/UserContext';
 import { useUser } from './context/UserContext';
 import axios from 'axios';
+import { RegisterProductApp } from './components/RegisterProductApp.tsx';
 
 axios.interceptors.request.use(
     config => {
@@ -70,7 +69,9 @@ const App = () => {
                 <Route path="/login" element={<LoginPageApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<CurrentProductView id={""} />} />
+               <Route path="/createproduct" element={<RegisterProductApp />} />
                <Route path="/profile" element={<Profile orders={orders} />} />
+               
             </Routes>
             <Footer />
         </div>
