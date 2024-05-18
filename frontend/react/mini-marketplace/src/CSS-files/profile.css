@@ -1,14 +1,14 @@
 .main-content {
     flex: 1;
     display: flex;
-    overflow: hidden;
-
+    flex-direction: column;
     width: 95%;
     padding: 20px;
     margin: auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     max-width: 1200px;
     font-family: inter;
+    min-height: 100vh;
 }
 
 body[data-theme='dark'] .main-content {
@@ -57,7 +57,7 @@ body[data-theme='dark'] .main-content {
     font-size: 16px;
 }
 
-#edit-profile-btn {
+#edit-profile-btn {                 /* Reuse? */
     padding: 8px 16px;
     border-radius: 4px;
     background-color: #c4b5fd;
@@ -88,11 +88,6 @@ body[data-theme='dark'] .profile-details p {
  * Profile.tsx
  *
  * */
-.content-area {
-    margin-left: 220vh;
-    width: calc(100% - 220vh);
-    overflow-y: auto;
-}
 
 
 /* 
@@ -145,7 +140,7 @@ body[data-theme='dark'] .settings-item button:hover {
 .content-area {
     margin-left: 220px;
     width: calc(100% - 220px);
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 .profile-settings, .order-history {
@@ -230,5 +225,99 @@ body[data-theme='dark'] .order-history-container {
 }
 
 .order-history-icon {
+    margin-left: 10px;
+}
+
+
+/*
+ * InterestsDropdown.tsx
+ *
+ * */
+.interests-parent {
+    margin-top: 20px;
+    position: relative;
+}
+
+.interests-container {
+    position: relative;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #f4f4f4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+
+}
+
+.interests-container.visible {
+    transform: scaleY(1);
+}
+
+body[data-theme='dark'] .interest-container {
+    background-color: #424242;
+}
+
+
+.interests-action-button {
+    margin-bottom: 10px;
+}
+
+.interests-action-button button {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 0;
+
+}
+
+.interest-option {
+    margin-left: 5px;
+}
+
+.interest-option label {
+    display: flex;
+    align-items: center;
+}
+
+.interest-option input {
+    margin-right: 10px;
+}
+
+.interests-container button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #c4b5fd;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.interests-container button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.save-message {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #28a745;
+}
+
+.interests-icon {
     margin-left: 10px;
 }

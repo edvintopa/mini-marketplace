@@ -2,22 +2,6 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import axios from 'axios';
 import { SignupFormData, User, UserContextType } from '../types/types';
 
-/* TODO: leftover from editing profile
-const defaultState = {
-    user: {
-        UUID: "",
-        first_name: "",
-        last_name: "",
-        username: "",
-        password: "",
-        date_of_birth: "",
-        email: "",
-        balance: 0,
-    },
-    updateUser: () => {}
-};
-*/
-
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const useUser = () => {
@@ -42,7 +26,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             setToken(storedToken);
-            
             axios.get<User>(`http://localhost:8080/user/me`, {
                 headers: { Authorization: `Bearer ${storedToken}` },
             })
@@ -173,14 +156,25 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
-    /* TODO: leftover from editing profile
-    const updateUser = (newUserData: User) => {
-        setUser(newUserData);
+    const setUserInterests = async (interests: string[]): Promise<boolean> => {
+        if (!token) return false;
+        try {
+            await axios.post(`http://localhost:8080/user/setinterests`, { interests }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setUser((prevUser) => prevUser ? {...prevUser, interests } : null);
+            return true;
+        } catch (error) {
+            console.error('Failed to set user interests:', error);
+            setError('Failed to set user interests');
+            return false;
+        }
     };
-    */
 
     return (
-        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, signupUser, token, error }}>
+        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests, token, error }}>
             {children}
         </UserContext.Provider>
     );
