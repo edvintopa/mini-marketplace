@@ -84,6 +84,23 @@ public class OrderController {
         }
     }
 
+    /**
+     * This method is mapped to the "/create" endpoint and is responsible for creating a new order.
+     * It uses the JWT token from the request header to identify the user (buyer).
+     * It also takes an OrderRequest object from the request body which contains the ID of the product to be ordered.
+     * <p>
+     * The method first checks if the product is in the user's cart. If it is, the product is removed from the cart,
+     * its status is set to ON_HOLD, and a new order is created and saved in the database.
+     * <p>
+     * If the product is not in the user's cart, an ErrorResponse is returned with the status code BAD_REQUEST and a message indicating that the cart item was not found.
+     * <p>
+     * If any exception occurs during this process, an ErrorResponse is returned with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The JWT token from the request header. It is used to authenticate and identify the user (buyer).
+     * @param request An OrderRequest object from the request body. It contains the ID of the product to be ordered.
+     * @return A ResponseEntity containing a message indicating that the order was created if successful, or an ErrorResponse object if an exception occurs.
+     * @author edvintopa
+     */
     @PostMapping("/create")
     public ResponseEntity createOrder(@RequestHeader("Authorization") String token, @RequestBody OrderRequest request) {
         try {
@@ -111,6 +128,20 @@ public class OrderController {
         }
     }
 
+    /**
+     * This method is mapped to the "/cancel" endpoint and is responsible for cancelling an existing order.
+     * It takes an OrderRequest object from the request body which contains the ID of the order to be cancelled.
+     * <p>
+     * The method first checks if the order is confirmed. If it is, an ErrorResponse is returned with the status code BAD_REQUEST and a message indicating that the order is confirmed and cannot be cancelled.
+     * <p>
+     * If the order is not confirmed, it is deleted from the database, the status of the product associated with the order is set to AVAILABLE, and a message indicating that the order was removed is returned in the response.
+     * <p>
+     * If any exception occurs during this process, an ErrorResponse is returned with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param request An OrderRequest object from the request body. It contains the ID of the order to be cancelled.
+     * @return A ResponseEntity containing a message indicating that the order was removed if successful, or an ErrorResponse object if an exception occurs.
+     * @author edvintopa
+     */
     @PostMapping("/cancel")
     public ResponseEntity cancelOrder(@RequestBody OrderRequest request) {
         try {
@@ -134,6 +165,22 @@ public class OrderController {
         }
     }
 
+    /**
+     * This method is mapped to the "/sellorder" endpoint and is responsible for fetching all orders associated with the authenticated user who is a seller.
+     * It uses the JWT token from the request header to identify the user (seller).
+     * <p>
+     * The method first resolves the JWT token to a User ID and fetches the seller from the database.
+     * It then fetches all the products sold by this seller from the database.
+     * For each product, it checks if there is an order associated with it. If there is, it adds the order to a list of sell orders.
+     * <p>
+     * It then creates a list of OrderResponse objects from the list of sell orders and returns it in the response.
+     * <p>
+     * If any exception occurs during this process, it returns an ErrorResponse with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The JWT token from the request header. It is used to authenticate and identify the user (seller).
+     * @return ResponseEntity containing a list of OrderResponse objects if successful, or an ErrorResponse object if an exception occurs.
+     * @author edvintopa
+     */
     @GetMapping("/sellorder")
     public ResponseEntity getSellOrders(@RequestHeader("Authorization") String token) {
         try {
@@ -168,6 +215,24 @@ public class OrderController {
         }
     }
 
+    /**
+     * This method is mapped to the "/confirm" endpoint and is responsible for confirming an order.
+     * It uses the JWT token from the request header to identify the user (seller).
+     * It also takes an OrderRequest object from the request body which contains the ID of the order to be confirmed.
+     * <p>
+     * The method first resolves the JWT token to a User ID and fetches the order and the product associated with the order from the database.
+     * It then checks if the ID of the seller of the product matches the User ID. If it does, it sets the status of the product to NOT_AVAILABLE,
+     * confirms the order, and saves the product and the order in the database.
+     * <p>
+     * If the ID of the seller of the product does not match the User ID, it returns an ErrorResponse with the status code BAD_REQUEST and a message indicating that the user is not the seller of the product.
+     * <p>
+     * If any exception occurs during this process, it returns an ErrorResponse with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The JWT token from the request header. It is used to authenticate and identify the user (seller).
+     * @param request An OrderRequest object from the request body. It contains the ID of the order to be confirmed.
+     * @return A ResponseEntity containing a message indicating that the order was confirmed if successful, or an ErrorResponse object if an exception occurs.
+     * @author edvintopa
+     */
     @PostMapping("/confirm")
     public ResponseEntity confirmOrder(@RequestHeader("Authorization") String token, @RequestBody OrderRequest request) {
         try {
