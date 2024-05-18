@@ -23,13 +23,6 @@ public class Order {
     private UUID orderId;
 
     @Column(
-            name = "seller",
-            updatable = false,
-            nullable = false
-    )
-    private UUID sellerId;
-
-    @Column(
             name = "buyer",
             updatable = false,
             nullable = false
@@ -63,12 +56,10 @@ public class Order {
     )
     private UUID productId;
 
-    public Order(UUID sellerId,
-                 UUID buyerId,
+    public Order(UUID buyerId,
                  double total,
                  UUID productId) {
 
-        this.sellerId = sellerId;
         this.buyerId = buyerId;
         this.total = total;
         this.orderDate = new Date();
@@ -82,10 +73,6 @@ public class Order {
 
     public UUID getOrderId() {
         return orderId;
-    }
-
-    public UUID getSellerId() {
-        return sellerId;
     }
 
     public UUID getBuyerId() {
@@ -106,5 +93,9 @@ public class Order {
 
     public UUID getProductId() {
         return productId;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        isConfirmed = confirmed;
     }
 }
