@@ -43,13 +43,13 @@ export const ProductGallery = () => {
         <div className='ProductGallery'>
           {products.map((product) => (
               console.log('product: ', product),
-              <ProductGalleryCard
-                  id={product.id}
-                  imagelink={product.product_image}
-                  url={product.url}
-                  title={product.title}
-                  price={product.price + " kr"}
-              />
+                  <ProductGalleryCard
+                      id={product.id}
+                      imagelink={product.product_image}
+                      url={product.url}
+                      title={product.title}
+                      price={product.price + " kr"}
+                  />
           ))}
         </div>
       </>

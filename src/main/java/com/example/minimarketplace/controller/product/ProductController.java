@@ -93,7 +93,7 @@ public class ProductController {
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
 
-        }catch (Exception e){
+        } catch (Exception e){
             return new ResponseEntity<>("Failed to fetch product", HttpStatus.NOT_FOUND);
         }
     }
