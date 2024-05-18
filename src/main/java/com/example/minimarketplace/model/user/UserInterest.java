@@ -39,6 +39,13 @@ public class UserInterest {
     )
     private String interest;
 
+    public UserInterest(UUID userId, String interest) {
+        this.userId = userId;
+        this.interest = interest;
+    }
+
+    public UserInterest() {}
+
     public UUID getInterestId() {
         return interestId;
     }
