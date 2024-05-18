@@ -1,6 +1,11 @@
 package com.example.minimarketplace.controller.user;
 
 import com.example.minimarketplace.auth.JwtUtil;
+import com.example.minimarketplace.model.communication.request.user.SetInterestRequest;
+import com.example.minimarketplace.model.notification.Notification;
+import com.example.minimarketplace.model.user.UserInterest;
+import com.example.minimarketplace.repository.user.NotificationRepository;
+import com.example.minimarketplace.repository.user.UserInterestRepository;
 import com.example.minimarketplace.repository.user.UserRepository;
 import com.example.minimarketplace.model.communication.request.user.LoginRequest;
 import com.example.minimarketplace.model.user.User;
@@ -19,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,6 +40,12 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserInterestRepository userInterestRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
     private final AuthenticationManager authenticationManager;
 
     private JwtUtil jwtUtil;
@@ -47,6 +59,7 @@ public class UserController {
 
     //http://localhost:8080/user/get
     // test
+    /*TO BE REMOVED*/
     @GetMapping("/get")
     public ResponseEntity<User> getAllUsers(@RequestParam String username) {
         try {
@@ -201,6 +214,39 @@ public class UserController {
         }catch (Exception e){
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    @PostMapping("/setinterests")
+    public ResponseEntity setUserInterests(@RequestHeader("Authorization") String token, @RequestBody SetInterestRequest request) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+
+            for (String interest : request.getInterests()) {
+                userInterestRepository.save(new UserInterest(
+                        userId,
+                        interest
+                ));
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body("Interests saved");
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/notifications")
+    ResponseEntity getNotifications(@RequestHeader("Authorization") String token) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            List<Notification> notifications = notificationRepository.findByUserId(userId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(notifications);
+
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
         }
     }
 }
