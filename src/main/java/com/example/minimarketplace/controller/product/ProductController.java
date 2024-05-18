@@ -41,6 +41,16 @@ public class ProductController {
         this.tokenResolverService = tokenResolverService;
     }
 
+    /**
+     * This method is used to get all the products sold by a specific seller.
+     * It takes the Authorization token from the request header, resolves it to a User ID, and fetches the seller from the database.
+     * It then fetches all the products sold by this seller from the database and returns them in the response.
+     * If any exception occurs during this process, it returns an ErrorResponse with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The Authorization token from the request header. It is used to identify the seller.
+     * @return ResponseEntity containing a list of products sold by the seller if successful, or an ErrorResponse if an exception occurs.
+     * @author edvintopa
+     */
     @GetMapping("/getmy")
     public ResponseEntity getSellerProducts(@RequestHeader("Authorization") String token) {
         try {
@@ -61,7 +71,7 @@ public class ProductController {
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
-            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);   //TODO: Create appropriate response. A lot of unnecessary info is sent.
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -73,7 +83,7 @@ public class ProductController {
             Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
 
             if (product != null){
-                return new ResponseEntity<>(product, HttpStatus.OK);
+                return new ResponseEntity<>(product, HttpStatus.OK);    //TODO: Create appropriate response. A lot of unnecessary info is sent.
             }else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
