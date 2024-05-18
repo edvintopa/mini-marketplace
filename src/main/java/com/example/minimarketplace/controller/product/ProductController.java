@@ -14,6 +14,7 @@ import com.example.minimarketplace.repository.product.ProductRepository;
 import com.example.minimarketplace.repository.user.UserRepository;
 import com.example.minimarketplace.model.product.Product;
 import com.example.minimarketplace.model.product.products.clothing.*;
+import com.example.minimarketplace.service.TokenResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,16 +32,18 @@ public class ProductController {
 
     private final JwtUtil jwtUtil;
     private final ProductPublisher productPublisher;
+    private final TokenResolverService tokenResolverService;
+
     @Autowired
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
 
 
-    public ProductController(JwtUtil jwtUtil, ProductPublisher productPublisher) {
+    public ProductController(JwtUtil jwtUtil, ProductPublisher productPublisher, TokenResolverService tokenResolverService) {
         this.jwtUtil = jwtUtil;
         this.productPublisher = productPublisher;
-
+        this.tokenResolverService = tokenResolverService;
     }
   
   /**
@@ -139,7 +142,7 @@ public class ProductController {
             //NOTIFY ALL USERS WITH MATCHING INTEREST
             productPublisher.notifyProductAvailability(newClothing.getType().name());
 
-            ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProduct_id(), HttpStatus.CREATED);
+            ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProductId(), HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
