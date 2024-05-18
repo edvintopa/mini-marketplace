@@ -51,8 +51,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/getProduct/{productId}")
-    public ResponseEntity getProductById(@PathVariable("productId") UUID productId){
+    @GetMapping(value = "/getProduct")
+    public ResponseEntity getProductById(@RequestBody UUID productId){
         try{
             Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
 
@@ -68,7 +68,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/createClothing")
-    public ResponseEntity createClothing(@RequestBody ClothingCreateRequest clothing, @RequestHeader("Authorization") java.lang.String token){
+    public ResponseEntity createClothing(@RequestBody ClothingCreateRequest clothing, @RequestHeader("Authorization") String token){
         try{
             String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
             User user = userRepository.findByUsername(username);
