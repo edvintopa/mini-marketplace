@@ -54,7 +54,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     }, [id]);
 
     if (currentProduct) {
-        console.log(JSON.stringify(currentProduct.username) + " is the status");
+        console.log(JSON.stringify(currentProduct.product_image) + " is the status");
     }
 
     if (!currentProduct) {

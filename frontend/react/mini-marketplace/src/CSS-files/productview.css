@@ -26,6 +26,7 @@
     padding: 10px 10px;
     width: auto !important;
     height: fit-content;
+    border: none;
     border-radius: 10px;
 }
 
@@ -39,6 +40,7 @@
     width: auto !important;
     height: fit-content;
     border-radius: 10px;
+    border: none;
     border-color: #6b7280;
 }
 
