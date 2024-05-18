@@ -8,31 +8,30 @@ import java.util.UUID;
  * @project mini-marketplace
  * @created 2024-05-17
  */
-public class GetOrdersResponse {
+public class OrderResponse {
 
-    private String sellerUsername;
+    private UUID orderId;
     private Date orderDate;
     private double total;
     private boolean isConfirmed;
     private UUID productId;
 
-    public GetOrdersResponse(String sellerUsername,
-                             Date orderDate,
-                             double total,
-                             boolean isConfirmed,
-                             UUID productId) {
+    public OrderResponse(UUID orderId,
+                         Date orderDate,
+                         double total,
+                         boolean isConfirmed,
+                         UUID productId) {
 
-        this.sellerUsername = sellerUsername;
+        this.orderId = orderId;
         this.orderDate = orderDate;
         this.total = total;
         this.isConfirmed = isConfirmed;
         this.productId = productId;
     }
 
-    public String getSellerUsername() {
-        return sellerUsername;
+    public UUID getOrderId() {
+        return orderId;
     }
-
     public Date getOrderDate() {
         return orderDate;
     }
