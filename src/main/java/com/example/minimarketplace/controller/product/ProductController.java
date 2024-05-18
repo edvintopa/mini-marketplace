@@ -4,8 +4,11 @@ package com.example.minimarketplace.controller.product;
 import com.example.minimarketplace.auth.JwtUtil;
 import com.example.minimarketplace.component.event.ProductPublisher;
 import com.example.minimarketplace.model.communication.request.product.ClothingCreateRequest;
+import com.example.minimarketplace.model.communication.request.product.ClothingGetProductRequest;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
 import com.example.minimarketplace.model.communication.response.product.ClothingCreateResponse;
+import com.example.minimarketplace.model.communication.response.product.ClothingGetProductResponse;
+import com.example.minimarketplace.model.communication.response.product.ClothingGetResponse;
 import com.example.minimarketplace.model.product.ProductColor;
 import com.example.minimarketplace.model.product.ProductCondition;
 import com.example.minimarketplace.model.product.ProductStatus;
@@ -72,7 +75,7 @@ public class ProductController {
 
 
     @GetMapping(value = "/get")
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<List<ClothingGetResponse>> getAllProducts(){
         try{
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
@@ -86,19 +89,36 @@ public class ProductController {
                 }
 
             }
-            return new ResponseEntity<List<Product>>(AvailableProducts,HttpStatus.OK);
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : AvailableProducts) {
+                ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                );
+                response.add(clothingGetResponse);
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value = "/getProduct")
-    public ResponseEntity getProductById(@RequestBody UUID productId){
+    public ResponseEntity getProductById(@RequestBody ClothingGetProductRequest productId){
         try{
-            Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
+            UUID productIdNew = (productId.getProductId());
+            Clothing product = (Clothing) productRepository.findById(productIdNew).orElse(null);
 
             if (product != null){
-                return new ResponseEntity<>(product, HttpStatus.OK);
+                ClothingGetProductResponse response = new ClothingGetProductResponse(productIdNew,
+                        product.getTitle(),
+                        product.getPrice(),
+                        product.getProductStatus().name(),
+                        product.getSeller().getUsername(),
+                        product.getDescription(),
+                        product.getDatePosted());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
