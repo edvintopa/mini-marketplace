@@ -10,6 +10,8 @@ import java.util.List;
 public class SetInterestRequest {
     private List<String> interests;
 
+    public SetInterestRequest() {}
+
     public SetInterestRequest(List<String> interests) {
         this.interests = interests;
     }
