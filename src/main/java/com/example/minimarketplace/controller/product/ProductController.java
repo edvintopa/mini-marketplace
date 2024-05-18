@@ -2,6 +2,7 @@ package com.example.minimarketplace.controller.product;
 
 
 import com.example.minimarketplace.auth.JwtUtil;
+import com.example.minimarketplace.component.event.ProductPublisher;
 import com.example.minimarketplace.model.communication.request.product.ClothingCreateRequest;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
 import com.example.minimarketplace.model.communication.response.product.ClothingCreateResponse;
@@ -29,13 +30,16 @@ import java.util.UUID;
 public class ProductController {
 
     private final JwtUtil jwtUtil;
+    private final ProductPublisher productPublisher;
     @Autowired
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
 
-    public ProductController(JwtUtil jwtUtil) {
+
+    public ProductController(JwtUtil jwtUtil, ProductPublisher productPublisher) {
         this.jwtUtil = jwtUtil;
+        this.productPublisher = productPublisher;
 
     }
 
@@ -45,7 +49,16 @@ public class ProductController {
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
-            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
+            List<Product> AvailableProducts = new ArrayList<>();
+
+
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getProductStatus().equals(ProductStatus.AVAILABLE)){
+                    AvailableProducts.add(products.get(i));
+                }
+
+            }
+            return new ResponseEntity<List<Product>>(AvailableProducts,HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -72,7 +85,7 @@ public class ProductController {
         try{
             String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
             User user = userRepository.findByUsername(username);
-            System.out.println(clothing);
+
             //ALL ENUMS
             ProductCondition productCondition = ProductCondition.valueOf(clothing.getProductcondition().toUpperCase());
             ProductColor productColor = ProductColor.valueOf(clothing.getProductcolor().toUpperCase());
@@ -80,7 +93,7 @@ public class ProductController {
             ClothingSex sex = ClothingSex.valueOf(clothing.getSex().toUpperCase());
             ClothingSize size = ClothingSize.valueOf(clothing.getSize().toUpperCase());
             ClothingType type = ClothingType.valueOf(clothing.getType().toUpperCase());
-
+            //TODO: Save Image to directory
             Clothing newClothing = productRepository.save(new Clothing(
                     user,
                     clothing.getTitle(),
@@ -91,15 +104,16 @@ public class ProductController {
                     productCondition,
                     productColor,
                     ProductStatus.AVAILABLE,
+                    clothing.getproductImage(),
                     season,
                     sex,
                     size,
                     type)
             );
 
-            //productPublisher.notifyProductAvailability(savedProduct.getName(), savedProduct.getType());
+            //NOTIFY ALL USERS WITH MATCHING INTEREST
+            productPublisher.notifyProductAvailability(newClothing.getType().name());
 
-            System.out.println(newClothing);
             ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProduct_id(), HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
@@ -107,6 +121,26 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+//ORDER DOES THIS DIRECTLY
+//    @PutMapping(value = "/updateStatus")
+//    public ResponseEntity updateStatus(@RequestBody UUID productId){
+//        try {
+//            Product existingProduct = productRepository.findById(productId).orElse(null);
+//
+//            if (existingProduct == null){
+//                return new ResponseEntity( "Product not found", HttpStatus.NOT_FOUND);
+//            }
+//            existingProduct.setProductStatus(ProductStatus.NOT_AVAILABLE);
+//
+//            productRepository.save(existingProduct);
+//
+//            ClothingCreateResponse response = new ClothingCreateResponse(productId, HttpStatus.OK);
+//            return ResponseEntity.status(HttpStatus.OK).body(response);
+//        }catch (Exception e){
+//            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//        }
+//    }
 //    @PostMapping(value = "/editClothing")
 //    public ResponseEntity editClothing(@RequestBody UUID productID, Product updatedClothing){
 //        try{

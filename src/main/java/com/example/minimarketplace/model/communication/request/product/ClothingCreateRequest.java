@@ -6,7 +6,10 @@ public class ClothingCreateRequest {
     private String manufacturer;
     private double price;
     private String productcondition;
+
+
     private String productcolor;
+    private String productImage;
     private String season;
     private String sex;
     private String size;
@@ -34,6 +37,10 @@ public class ClothingCreateRequest {
 
     public String getProductcolor() {
         return productcolor;
+    }
+
+    public String getproductImage() {
+        return productImage;
     }
 
     public String getSeason() {
