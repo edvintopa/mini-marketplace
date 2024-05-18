@@ -56,15 +56,14 @@ public class Order {
     )
     private Date orderDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(
-            name = "order_status",
+            name = "is_confirmed",
             nullable = false
     )
-    private OrderStatus orderStatus;
+    private boolean orderStatus;
 
     public Order(User seller, User buyer, double total,
-                 Date orderDate, OrderStatus orderStatus){
+                 Date orderDate, boolean orderStatus){
         this.seller = seller;
         this.buyer = buyer;
         this.total = total;
@@ -96,7 +95,7 @@ public class Order {
         return orderDate;
     }
 
-    public OrderStatus getOrderStatus() {
+    public boolean getOrderStatus() {
         return orderStatus;
     }
 }

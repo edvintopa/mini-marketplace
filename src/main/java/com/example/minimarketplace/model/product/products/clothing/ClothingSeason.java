@@ -12,7 +12,8 @@ public enum ClothingSeason {
     SPRING,
     SUMMER,
     AUTUMN,
-    WINTER;
+    WINTER,
+    ALL_SEASON;
 
     @JsonValue
     public String toValue() {
