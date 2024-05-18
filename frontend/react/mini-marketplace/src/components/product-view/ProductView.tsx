@@ -32,7 +32,7 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             price: data.price,
             title: data.title,
             manufacturer: data.manufacturer,
-            product_image: data.product_image,
+            product_image: data.imagePath,
             url: data.url,
             description: data.description,
             datePosted: data.datePosted,
@@ -54,7 +54,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     }, [id]);
 
     if (currentProduct) {
-        console.log(JSON.stringify(currentProduct.product_image) + " is the status");
+        console.log(JSON.stringify(currentProduct.username) + " is the seller");
     }
 
     if (!currentProduct) {

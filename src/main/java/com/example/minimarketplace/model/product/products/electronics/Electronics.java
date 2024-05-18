@@ -16,6 +16,6 @@ public class Electronics extends Product {
     private ElectronicsType type;
 
     public Electronics(User seller_id, String title, String description, String manufacturer, Date datePosted, double price, ProductCondition productCondition, ProductColor productColor, ProductStatus productStatus) {
-        super(seller_id, title, description, manufacturer, datePosted, price, productCondition, productColor, productStatus);
+       // super(seller_id, title, description, manufacturer, datePosted, price, productCondition, productColor, productStatus);
     }
 }

@@ -72,6 +72,7 @@ const App = () => {
                 <Route path="/login" element={<LoginPageApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<ProductViewApp />} />
+
                <Route path="/createproduct" element={<RegisterProductApp />} />
                <Route path="/profile" element={<Profile orders={orders} />} />
                

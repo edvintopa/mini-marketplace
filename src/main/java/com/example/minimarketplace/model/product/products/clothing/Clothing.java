@@ -67,15 +67,7 @@ public class Clothing extends Product {
                     ClothingSex sex,
                     ClothingSize size,
                     ClothingType type) {
-        super(user,
-                title,
-                description,
-                manufacturer,
-                date,
-                price,
-                productCondition,
-                productColor,
-                productStatus);
+
         this.season = season;
         this.sex = sex;
         this.size = size;
