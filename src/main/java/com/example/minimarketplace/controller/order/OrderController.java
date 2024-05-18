@@ -258,4 +258,48 @@ public class OrderController {
             return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
         }
     }
+
+    /**
+     * This method is mapped to the "/reject" endpoint and is responsible for rejecting an order.
+     * It uses the JWT token from the request header to identify the user (seller).
+     * It also takes an OrderRequest object from the request body which contains the ID of the order to be rejected.
+     *
+     * The method first resolves the JWT token to a User ID and fetches the order and the product associated with the order from the database.
+     * It then checks if the ID of the seller of the product matches the User ID. If it does, it sets the status of the product to AVAILABLE,
+     * deletes the order, and saves the product in the database.
+     *
+     * If the ID of the seller of the product does not match the User ID, it returns an ErrorResponse with the status code BAD_REQUEST and a message indicating that the user is not the seller of the product.
+     *
+     * If any exception occurs during this process, it returns an ErrorResponse with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The JWT token from the request header. It is used to authenticate and identify the user (seller).
+     * @param request An OrderRequest object from the request body. It contains the ID of the order to be rejected.
+     * @return A ResponseEntity containing a message indicating that the order was rejected and deleted if successful, or an ErrorResponse object if an exception occurs.
+     * @author edvintopa
+     */
+    @PostMapping("/reject")
+    public ResponseEntity rejectOrder(@RequestHeader("Authorization") String token, @RequestBody OrderRequest request) {
+        try {
+            UUID sellerId = tokenResolverService.resolveTokenToUserId(token);
+            Order sellOrder = orderRepository.findOrderByOrderId(request.getId());
+            Product product = productRepository.findByProductId(sellOrder.getProductId());
+            User seller = product.getSeller();
+
+            if (sellerId == seller.getUserId()) {
+                product.setProductStatus(ProductStatus.AVAILABLE);
+
+                productRepository.save(product);
+                orderRepository.delete(sellOrder);
+
+                return ResponseEntity.status(HttpStatus.OK).body("Order rejected and deleted");
+
+            } else {
+                ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, "User is not seller of product");
+                return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+            }
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
+    }
 }
