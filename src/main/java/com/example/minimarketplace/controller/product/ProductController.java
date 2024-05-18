@@ -82,14 +82,16 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/getProduct")
-    public ResponseEntity getProductById(@RequestBody UUID productId){
+    @GetMapping(value = "/getProduct/{productId}")
+    public ResponseEntity getProductById(@PathVariable UUID productId){
+        System.out.println("Fetching product with id: " + productId);
         try{
             Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
 
             if (product != null){
+                System.out.println(product.getProductStatus() + " is this ?");
                 return new ResponseEntity<>(product, HttpStatus.OK);    //TODO: Create appropriate response. A lot of unnecessary info is sent.
-            }else{
+            } else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
 

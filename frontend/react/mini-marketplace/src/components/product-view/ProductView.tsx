@@ -1,59 +1,70 @@
-import { arrayOfProducts } from "../product-gallery/ProductGallery"; // Import the missing 'ProductType' interface
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
+import {useEffect, useState} from "react";
 interface ProductViewProps {
   id: string;
 }
 
-function fetchProductById(id: string) {
-  console.log("id: " + id);
-  arrayOfProducts.map((product) => console.log(product.id));
+export interface ProductInfo {
+    id: string;
+    name: string;
+    price: number;
+    title: string;
+    product_image: string;
+    url: string;
+    description: string;
+    seller: string;
+    date: string;
+    status: string;
+}
 
-  if (arrayOfProducts.find((product) => product.id === parseInt(id))) {
-    return arrayOfProducts.find((product) => product.id === parseInt(id));
-  } else {
-    console.log("failed to find the product with the given array");
-  }
+async function fetchProductById(id: string): Promise<ProductInfo | null> {
+    try {
+        console.log(id.valueOf() + " is the id")
+        const response = await fetch(`http://localhost:8080/product/getProduct/${id}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
 }
 
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
-  const currentProduct = fetchProductById(id);
+    const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
 
-  return (
-    <div className="GeneralProductView">
-      <div className="ProductViewImage">
-        <img
-          src="https://media-photos.depop.com/b1/8343507/1791399827_079d48edd2134d9b946e3252d59ea14a/P0.jpg"
-          alt=""
-        />
-      </div>
-      <div className="ProductViewInfo">
-        <h3 className="TitleOfProduct">Cowboy boots </h3>
-        <h4 className="PriceOfProduct">800 kr</h4>
-        <div className="ProductViewButtons">
-          <button className="AddToCartBtn">ADD TO CART</button>
-          <button className="PlaceholderBtn">PLACEHOLDER</button>
+    useEffect(() => {
+        fetchProductById(id).then(product => setCurrentProduct(product));
+    }, [id]);
+
+    if (currentProduct) {
+        console.log(currentProduct.status + " is the status");
+    }
+
+    if (!currentProduct) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div className="GeneralProductView">
+            <div className="ProductViewImage">
+                <img src={currentProduct.product_image} alt="" />
+            </div>
+            <div className="ProductViewInfo">
+                <h3 className="TitleOfProduct">{currentProduct.title}</h3>
+                <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
+                <div className="ProductViewButtons">
+                    <button className="StatusBtn">{currentProduct.status}</button>
+                    <button className="AddToCartBtn">Add to cart</button>
+                </div>
+                <div className="DescriptionInfo">
+                <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
+                        icon={faUser}/>{currentProduct.seller.valueOf().toString()}</a>
+                    <p>{currentProduct.description}</p>
+                    <p>{currentProduct.date}</p>
+                </div>
+            </div>
         </div>
-        <div className="DescriptionInfo">
-        <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon icon={faUser} /> Seller's info</a>
-
-            <p>
-            Vintage Abilene women’s cowboy boots 🤠 <br></br>
-Very good condition — some wear as shown in photos.<br></br>
-<br></br>
-Marked size 6M. I’m a size 6, but these were just a bit too tight on me unfortunately 🥲
-Fit like size 5 1/2, even 5.<br></br>
-
-** Please read shop policies and ask any questions before purchasing. Free shipping on bundles!
-Shipping is a bit more for these because of weight and size.
-<br></br><br></br>
-Thank you for supporting my shop!! 🫶🏼
-            </p>
-        </div>
-        {/* user icon + sellers info here */}
-        {/* tags ? */}
-      </div>
-    </div>
-  );
+    );
 };

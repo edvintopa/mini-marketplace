@@ -18,15 +18,30 @@
 }
 
 .AddToCartBtn {
-    background-color: black;
-    color: white;
+    background-color: #c4b5fd;
+    color: black;
     font-family: inter;
-    font-size: xx-large;
+    font-size: x-large;
     font-weight: bold;
     padding: 10px 10px;
     width: auto !important;
     height: fit-content;
+    border-radius: 10px;
 }
+
+.StatusBtn {
+    background-color: #fff;
+    color: black;
+    font-family: inter;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 10px 10px;
+    width: auto !important;
+    height: fit-content;
+    border-radius: 10px;
+    border-color: #6b7280;
+}
+
 
 .PlaceholderBtn {
     background-color: white;
