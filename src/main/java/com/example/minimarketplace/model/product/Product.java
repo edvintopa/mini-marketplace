@@ -94,12 +94,6 @@ public abstract class Product {
     )
     private ProductStatus productStatus;
 
-    @Column(
-            name = "product_image",
-            nullable = false
-    )
-    private String imagePath;
-
     public Product(User seller,
                    String title,
                    String description,
@@ -108,8 +102,7 @@ public abstract class Product {
                    double price,
                    ProductCondition productCondition,
                    ProductColor productColor,
-                   ProductStatus productStatus,
-                   String imagePath) {
+                   ProductStatus productStatus) {
         this.seller = seller;
         this.title = title;
         this.description = description;
@@ -119,7 +112,6 @@ public abstract class Product {
         this.productCondition = productCondition;
         this.productColor = productColor;
         this.productStatus = productStatus;
-        this.imagePath = imagePath;
     }
 
     public Product() {
@@ -206,12 +198,5 @@ public abstract class Product {
         this.productId = product_id;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String productImage) {
-        this.imagePath = productImage;
-    }
 
 }

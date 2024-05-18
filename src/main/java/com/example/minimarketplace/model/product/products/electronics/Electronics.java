@@ -15,7 +15,7 @@ public class Electronics extends Product {
     //Electronics attributes
     private ElectronicsType type;
 
-    public Electronics(User seller_id, String title, String description, String manufacturer, Date datePosted, double price, ProductCondition productCondition, ProductColor productColor, ProductStatus productStatus, String productImage) {
-        super(seller_id, title, description, manufacturer, datePosted, price, productCondition, productColor, productStatus, productImage);
+    public Electronics(User seller_id, String title, String description, String manufacturer, Date datePosted, double price, ProductCondition productCondition, ProductColor productColor, ProductStatus productStatus) {
+        super(seller_id, title, description, manufacturer, datePosted, price, productCondition, productColor, productStatus);
     }
 }
