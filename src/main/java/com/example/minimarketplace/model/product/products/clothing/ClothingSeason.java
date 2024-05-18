@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum ClothingSeason {
     SPRING,
-    ALL_SEASON,
     SUMMER,
     AUTUMN,
     WINTER,
