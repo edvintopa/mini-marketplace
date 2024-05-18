@@ -1,7 +1,7 @@
 package com.example.minimarketplace.model.order;
 
-import com.example.minimarketplace.model.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -10,37 +10,24 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @SequenceGenerator( //sequence to increment order id
-            name = "order_sequence",
-            sequenceName = "order_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "order_sequence"
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator" //deprecated, find alternative (still works)
     )
     @Column(
             name = "order_id",
-            nullable = false,
-            updatable = false
-    )
-    private UUID orderID;
-
-    @ManyToOne //one seller, many orders
-    @JoinColumn(
-            name = "seller", //name in order table
-            referencedColumnName = "user_id", //name in user table
+            updatable = false,
             nullable = false
     )
-    private User seller;
+    private UUID orderId;
 
-    @ManyToOne //one buyer, many orders
-    @JoinColumn(
-            name = "buyer", //name in order table
-            referencedColumnName = "user_id", //name in user table
+    @Column(
+            name = "buyer",
+            updatable = false,
             nullable = false
     )
-    private User buyer;
+    private UUID buyerId;
 
     @Column(
             name = "total",
@@ -60,31 +47,36 @@ public class Order {
             name = "is_confirmed",
             nullable = false
     )
-    private boolean orderStatus;
+    private boolean isConfirmed;
 
-    public Order(User seller, User buyer, double total,
-                 Date orderDate, boolean orderStatus){
-        this.seller = seller;
-        this.buyer = buyer;
+    @Column(
+            name = "product_id",
+            updatable = false,
+            nullable = false
+    )
+    private UUID productId;
+
+    public Order(UUID buyerId,
+                 double total,
+                 UUID productId) {
+
+        this.buyerId = buyerId;
         this.total = total;
-        this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
+        this.orderDate = new Date();
+        this.isConfirmed = false;
+        this.productId = productId;
     }
 
     public Order() {
 
     }
 
-    public UUID getOrderID() {
-        return orderID;
+    public UUID getOrderId() {
+        return orderId;
     }
 
-    public User getSeller() {
-        return seller;
-    }
-
-    public User getBuyer() {
-        return buyer;
+    public UUID getBuyerId() {
+        return buyerId;
     }
 
     public double getTotal() {
@@ -95,7 +87,15 @@ public class Order {
         return orderDate;
     }
 
-    public boolean getOrderStatus() {
-        return orderStatus;
+    public boolean isConfirmed() {
+        return isConfirmed;
+    }
+
+    public UUID getProductId() {
+        return productId;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        isConfirmed = confirmed;
     }
 }
