@@ -7,12 +7,12 @@ import java.util.UUID;
  * @project mini-marketplace
  * @created 2024-05-17
  */
-public class AddToCartRequest {
+public class CartRequest {
     UUID productId;
 
-    public AddToCartRequest() {}    //workaround
+    public CartRequest() {}    //workaround
 
-    public AddToCartRequest(String productId) {
+    public CartRequest(String productId) {
         this.productId = UUID.fromString(productId);
     }
 

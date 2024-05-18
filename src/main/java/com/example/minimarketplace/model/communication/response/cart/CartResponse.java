@@ -7,20 +7,15 @@ import java.util.UUID;
  * @project mini-marketplace
  * @created 2024-05-17
  */
-public class AddToCartResponse {
+public class CartResponse {
     private UUID productId;
-    private UUID userId;
 
-    public AddToCartResponse(UUID productId, UUID userId) {
+    public CartResponse(UUID productId) {
         this.productId = productId;
-        this.userId = userId;
     }
 
     public UUID getProductId() {
         return productId;
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
 }
