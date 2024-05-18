@@ -63,6 +63,7 @@ public class Clothing extends Product {
                     ProductCondition productCondition,
                     ProductColor productColor,
                     ProductStatus productStatus,
+                    String productImage,
                     ClothingSeason season,
                     ClothingSex sex,
                     ClothingSize size,
@@ -75,7 +76,8 @@ public class Clothing extends Product {
                 price,
                 productCondition,
                 productColor,
-                productStatus);
+                productStatus,
+                productImage);
         this.season = season;
         this.sex = sex;
         this.size = size;
