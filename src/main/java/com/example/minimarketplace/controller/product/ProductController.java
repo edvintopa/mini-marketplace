@@ -42,6 +42,31 @@ public class ProductController {
         this.productPublisher = productPublisher;
 
     }
+  
+  /**
+     * This method is used to get all the products sold by a specific seller.
+     * It takes the Authorization token from the request header, resolves it to a User ID, and fetches the seller from the database.
+     * It then fetches all the products sold by this seller from the database and returns them in the response.
+     * If any exception occurs during this process, it returns an ErrorResponse with the status code INTERNAL_SERVER_ERROR and the exception message.
+     *
+     * @param token The Authorization token from the request header. It is used to identify the seller.
+     * @return ResponseEntity containing a list of products sold by the seller if successful, or an ErrorResponse if an exception occurs.
+     * @author edvintopa
+     */
+    @GetMapping("/getmy")
+    public ResponseEntity getSellerProducts(@RequestHeader("Authorization") String token) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            User seller = userRepository.findByUserId(userId);
+            List<Product> products = productRepository.findAllBySeller(seller);
+
+            return ResponseEntity.status(HttpStatus.OK).body(products);     //TODO: Create appropriate response. A lot of unnecessary info is sent.
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
+    }
+
 
     @GetMapping(value = "/get")
     public ResponseEntity<List<Product>> getAllProducts(){

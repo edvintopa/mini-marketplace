@@ -3,6 +3,7 @@ import "../../CSS-files/index.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faShop, faCartShopping, faTimes, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 interface NavbarLoggedInProps {
     toggleSavedProducts: () => void;
@@ -15,6 +16,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { user, logoutUser } = useUser();
+    const navigate = useNavigate();
 
     const toggleDropdown = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -34,6 +36,15 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
         };
     }, []);
 
+    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            const searchTerm  = event.currentTarget.value;
+            navigate(`/productgallery`, { state: { searchTerm } });
+            console.log(searchTerm + " was searched")
+            event.currentTarget.value = '';
+        }
+    };
+
     return (
         <nav className="nav">
             <div className="nav-left">
@@ -41,7 +52,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
                 <a href="/productgallery">Marketplace</a>
             </div>
             <div className="nav-center">
-            <input className="nav-search" type="text" placeholder="Search" />
+            <input className="nav-search" type="text" placeholder="Search" onKeyDown={handleSearch} />
             </div>
             <div className="nav-right">
             <button className="toggle-saved-products-btn" onClick={toggleSavedProducts}>

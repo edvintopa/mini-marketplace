@@ -1,12 +1,18 @@
 package com.example.minimarketplace.controller.user;
 
 import com.example.minimarketplace.auth.JwtUtil;
+import com.example.minimarketplace.model.communication.request.user.SetInterestRequest;
+import com.example.minimarketplace.model.notification.Notification;
+import com.example.minimarketplace.model.user.UserInterest;
+import com.example.minimarketplace.repository.user.NotificationRepository;
+import com.example.minimarketplace.repository.user.UserInterestRepository;
 import com.example.minimarketplace.repository.user.UserRepository;
 import com.example.minimarketplace.model.communication.request.user.LoginRequest;
 import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
 import com.example.minimarketplace.model.communication.response.user.LoginResponse;
 import com.example.minimarketplace.model.communication.response.user.UserResponse;
+import com.example.minimarketplace.service.TokenResolverService;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +23,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author edvintopa
@@ -31,29 +40,21 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserInterestRepository userInterestRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
     private final AuthenticationManager authenticationManager;
 
     private JwtUtil jwtUtil;
-    public UserController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+
+    private final TokenResolverService tokenResolverService;
+    public UserController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, TokenResolverService tokenResolverService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-    }
-
-    //http://localhost:8080/user/get
-    // test
-    @GetMapping("/get")
-    public ResponseEntity<User> getAllUsers(@RequestParam String username) {
-        try {
-            User user = userRepository.findByUsername(username);
-
-            if (user == null) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            }
-
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        this.tokenResolverService = tokenResolverService;
     }
 
     /**
@@ -75,8 +76,8 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity getUser(@RequestHeader("Authorization") String token) {
         try {
-            String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
-            User user = userRepository.findByUsername(username);
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            User user = userRepository.findByUserId(userId);
 
             UserResponse userResponse = new UserResponse(
                     user.getFirstName(),
@@ -195,6 +196,39 @@ public class UserController {
         }catch (Exception e){
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    @PostMapping("/setinterests")
+    public ResponseEntity setUserInterests(@RequestHeader("Authorization") String token, @RequestBody SetInterestRequest request) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+
+            for (String interest : request.getInterests()) {
+                userInterestRepository.save(new UserInterest(
+                        userId,
+                        interest
+                ));
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body("Interests saved");
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/notifications")
+    ResponseEntity getNotifications(@RequestHeader("Authorization") String token) {
+        try {
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            List<Notification> notifications = notificationRepository.findByUserId(userId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(notifications);
+
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
         }
     }
 }

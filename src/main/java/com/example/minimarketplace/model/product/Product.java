@@ -26,7 +26,7 @@ public abstract class Product {
             name = "product_id",
             updatable = false
     )
-    private UUID product_id;
+    private UUID productId;
 
     @ManyToOne( //FK mapping (one seller, many products)
             cascade = CascadeType.ALL
@@ -198,12 +198,12 @@ public abstract class Product {
         this.seller = seller_id;
     }
 
-    public UUID getProduct_id() {
-        return product_id;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(UUID product_id) {
-        this.product_id = product_id;
+    public void setProductId(UUID product_id) {
+        this.productId = product_id;
     }
 
     public String getImagePath() {
