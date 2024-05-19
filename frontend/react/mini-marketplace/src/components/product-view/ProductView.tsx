@@ -17,6 +17,8 @@ export interface ProductInfo {
     product_image: string;
     url: string;
     productStatus: string;
+    productSize : string;
+    productCondition : string;
 }
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
@@ -35,8 +37,10 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             product_image: data.imagePath,
             url: data.url,
             description: data.description,
-            datePosted: data.datePosted,
+            datePosted: data.datePosted.split('T')[0],
             productStatus: data.productStatus,
+            productSize : data.size,
+            productCondition : data.productCondition,
         };
 
         console.log(JSON.stringify(productInfo.productStatus) + " is the product info");
@@ -74,10 +78,12 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                     <button className="AddToCartBtn">Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">
-                <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
+                    <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
                         icon={faUser}/>{currentProduct.username}</a>
                     <p>{currentProduct.description}</p>
                     <p>{currentProduct.datePosted}</p>
+                    <p>Size: {currentProduct.productSize}</p>
+                    <p>Condition: {currentProduct.productCondition}</p>
                 </div>
             </div>
         </div>
