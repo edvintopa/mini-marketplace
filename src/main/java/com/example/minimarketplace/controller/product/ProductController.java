@@ -64,7 +64,7 @@ public class ProductController {
         try {
             UUID userId = tokenResolverService.resolveTokenToUserId(token);
             User seller = userRepository.findByUserId(userId);
-            List<Clothing> products = productRepository.findAllBySeller(seller);
+            List<Product> products = productRepository.findAllBySeller(seller);
 
             List<ClothingGetResponse> response = new ArrayList<>();
             for (Product product : products) {
@@ -84,17 +84,17 @@ public class ProductController {
 
 
     @GetMapping(value = "/get")
-    public ResponseEntity<List<ClothingGetResponse>> getAllProducts(){
+    public ResponseEntity<?> getAllProducts(){
         try{
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
-            List<Product> AvailableProducts = new ArrayList<>();
+            List<Clothing> AvailableProducts = new ArrayList<>();
 
 
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getProductStatus().equals(ProductStatus.AVAILABLE)){
-                    AvailableProducts.add(products.get(i));
+                    AvailableProducts.add((Clothing) products.get(i));
                 }
 
             }
@@ -109,7 +109,8 @@ public class ProductController {
             }
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
