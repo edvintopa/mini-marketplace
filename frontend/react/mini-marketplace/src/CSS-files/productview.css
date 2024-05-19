@@ -81,6 +81,7 @@ h3, h4, button {
 }
 
 .DescriptionInfo {
+    margin-top: 10px;
     text-align: left;
     font-family: Arial;
     font-size: 17px;
@@ -90,8 +91,26 @@ h3, h4, button {
 
 .userProfile {
     margin-top: 10px;
-    font-size: 30px;
+    font-size: 20px;
     text-decoration: none;
     color: black;
     font-style: normal;
+}
+
+.productAttributes {
+    display: flex;
+    gap: 10px;
+}
+
+.bubble {
+    display: inline-block;
+    padding: 7px 15px;
+    border-radius: 20px;
+    background-color: #e4defc;
+    font-size: 14px;
+    gap: 20px;
+}
+
+#dateposted {
+    font-size: 15px;
 }

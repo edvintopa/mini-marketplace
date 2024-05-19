@@ -37,7 +37,7 @@
 .LoginButton {
   background-color: #c4b5fd;
   width: 100%;
-  font-size: 35px;
+  font-size: 30px;
   padding: 10px 0px 10px;
   font-family: arial;
   font-weight: bold;
@@ -77,6 +77,11 @@
   text-decoration: none;
 }
 
+.error-message {
+  font-size: 17px;
+  text-align: center;
+}
+
 /*---------- SIGN UP CSS ----------------*/
 .NameContainer {
   display: flex;
@@ -94,7 +99,7 @@
 .SignUpButtonWrapper button {
   background-color: #c4b5fd;
   width: 100%;
-  font-size: 35px;
+  font-size: 30px;
   padding: 10px 0px 10px;
   font-family: arial;
   font-weight: bold;

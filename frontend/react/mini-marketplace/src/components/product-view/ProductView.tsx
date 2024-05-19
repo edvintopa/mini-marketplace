@@ -79,11 +79,13 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 </div>
                 <div className="DescriptionInfo">
                     <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
-                        icon={faUser}/>{currentProduct.username}</a>
+                        icon={faUser}/> {currentProduct.username}</a>
                     <p>{currentProduct.description}</p>
-                    <p>{currentProduct.datePosted}</p>
-                    <p>Size: {currentProduct.productSize}</p>
-                    <p>Condition: {currentProduct.productCondition}</p>
+                    <div className="productAttributes">
+                        <span className="bubble">Size: {currentProduct.productSize}</span>
+                        <span className="bubble">Condition: {currentProduct.productCondition}</span>
+                    </div>
+                    <p id="dateposted">{currentProduct.datePosted}</p>
                 </div>
             </div>
         </div>
