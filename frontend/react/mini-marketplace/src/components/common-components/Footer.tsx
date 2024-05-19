@@ -6,8 +6,7 @@ const Footer = () => {
 
         <div className="footer">
         <footer>
-            <p>Lorem footer</p>
-            <p>dolor sit footer</p>
+            <p>Contact us at minimarket@info.com!</p>
         </footer>
         </div>
 

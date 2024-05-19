@@ -2,18 +2,16 @@ import { ProductGalleryCard } from './ProductGalleryCard'
 import { FilterTagWrapper } from './FilterTagWrapper'
 import {useEffect, useState} from "react";
 
-export interface ProductType {
-  id: string;
+export interface ProductInfo {
+  product_id: string;
+  title: string;
   name: string;
   price: number;
-  title: string;
   product_image: string;
   url: string;
 }
 
-export interface ListOfProducts {
-  products: [ProductType];
-}
+
 
 export const arrayOfProducts = [
   { id: '1', name: 'Hoodie', price: 200, imagelink: 'https://media-photos.depop.com/b1/11985249/1825399086_03666561d28c44f09dfdcd78b8cd5ca1/P0.jpg', url: '/productview/1' },
@@ -26,14 +24,38 @@ export const arrayOfProducts = [
   { id: '8', name: 'Leather jacket', price: 650, imagelink: 'https://media-photos.depop.com/b1/21291151/1826390941_449b3bf72c404dfa87dda0f1d1913f5d/P0.jpg', url: '/productview/8' },
 ];
 
+async function fetchProducts(): Promise<ProductInfo[]> {
+  try {
+    const response = await fetch('http://localhost:8080/product/get');
+    const data = await response.json();
+    console.log('Received data:', data); // Log the received data
+
+    // Map the received data to the ProductInfo interface
+    const products: ProductInfo[] = data.map((product: any) => ({
+      product_id: product.productId,
+      title: product.title,
+      username: product.username,
+      price: product.price,
+      product_image: product.imagePath,
+      url: product.url,
+    }));
+
+    console.log('Mapped products:', products); // Log the mapped products
+    return products;
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
+  }
+}
+
 export const ProductGallery = () => {
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<ProductInfo[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/product/get') // replace with your server URL and endpoint
-        .then(response => response.json())
-        .then(data => setProducts(data))
-        .catch(error => console.error('Error:', error));
+    fetchProducts().then(products => {
+      console.log('Fetched products:', products); // Log the fetched products
+      setProducts(products);
+    });
   }, []);
 
 
@@ -42,14 +64,13 @@ export const ProductGallery = () => {
         <div className='FilterTagWrapper'><FilterTagWrapper /></div>
         <div className='ProductGallery'>
           {products.map((product) => (
-              console.log('product: ', product),
-                  <ProductGalleryCard
-                      id={product.id}
-                      imagelink={product.product_image}
-                      url={product.url}
-                      title={product.title}
-                      price={product.price + " kr"}
-                  />
+              <ProductGalleryCard
+                  imagelink={product.product_image}
+                  url={`/productview/${product.product_id}`}
+                  title={product.title}
+                  price={`${product.price} kr`}
+                  id={product.product_id}
+              />
           ))}
         </div>
       </>

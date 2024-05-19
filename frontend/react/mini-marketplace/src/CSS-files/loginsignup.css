@@ -13,15 +13,15 @@
 }
 
 .textFieldBox input {
-  height: 40px;
-  font-size: 25px;
+  height: 20px;
+  font-size: 15px;
+  padding: 10px;
   border-radius: 5px;
   border-color: #b1b1b1;
   color: #1f2937;
-  padding-left: 10px;
 }
 
-.textFieldBox {
+.textFieldBox { /* also for sing up page */
   /*background-color: blueviolet;*/
   margin: 0px 0px -1%;
 
@@ -37,7 +37,7 @@
 .LoginButton {
   background-color: #c4b5fd;
   width: 100%;
-  font-size: 35px;
+  font-size: 30px;
   padding: 10px 0px 10px;
   font-family: arial;
   font-weight: bold;
@@ -77,6 +77,12 @@
   text-decoration: none;
 }
 
+.error-message {
+  font-size: 17px;
+  text-align: center;
+  color: #a90000;
+}
+
 /*---------- SIGN UP CSS ----------------*/
 .NameContainer {
   display: flex;
@@ -94,7 +100,7 @@
 .SignUpButtonWrapper button {
   background-color: #c4b5fd;
   width: 100%;
-  font-size: 35px;
+  font-size: 30px;
   padding: 10px 0px 10px;
   font-family: arial;
   font-weight: bold;
