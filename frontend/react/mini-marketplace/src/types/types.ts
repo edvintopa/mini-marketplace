@@ -17,6 +17,11 @@ export interface TextFieldComponentTypes {
     textFieldTitle: string;
 }
 
+export interface Notification {
+    "category": string,
+    "dateOfNotification": string
+}
+
 export interface SignupFormData {
     username: string,
     password: string,
