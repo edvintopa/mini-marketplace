@@ -281,7 +281,10 @@ body[data-theme='dark'] .interest-container {
     cursor: pointer;
     transition: background-color 0.3s;
     margin-bottom: 0;
+}
 
+.interests-action-button button:hover {
+    background-color: #a78bfa;
 }
 
 .interest-option {
