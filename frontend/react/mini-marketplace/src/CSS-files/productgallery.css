@@ -1,4 +1,3 @@
-
 .ProductCard img {
     width: 250px;
     height: 250px;
@@ -36,20 +35,22 @@
 }
 
 .ProductGalleryWrapper {
-
     margin: 10px auto;
     width: fit-content;
 }
 
 .FilterTagButton {
+    position: relative;
+    z-index: 1;
     width: fit-content;
-    background-color: white;
     font-size: 17px;
     font-family: inter;
     margin: 0px 10px;
-    padding: 10px 20px 5%;
+    padding: 5px 10px;
     border: 2px solid rgb(132, 132, 132);
     border-radius: 24px;
+    background-color: #c4b5fd;
+    margin-left: 100px;
 }
 
 .FilterTagGallery {
@@ -57,4 +58,67 @@
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap !important;
+}
+
+.dropdown-filter {
+    position: relative;
+    z-index: 2;
+    width: fit-content;
+    font-family: inter;
+    display: inline-block;
+    border-radius: 3px;
+    margin: 0px 10px;
+}
+
+.dropdown-filter.open .items {
+    display: block;
+}
+
+.dropdown-filter .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 2px solid rgb(132, 132, 132);
+    border-radius: 24px;
+}
+
+.dropdown-filter .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    transform: rotate(-135deg);
+}
+
+.dropdown-filter .anchor:active:after {
+    right: 8px;
+    top: 21%;
+}
+
+.dropdown-filter ul.items {
+    font-family: inter;
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    position: absolute; /* Change to absolute positioning */
+    background-color: white; /* Ensure dropdown items have a background */
+    z-index: 3; /* Higher than other elements */
+}
+
+.dropdown-filter ul.items li {
+    list-style: none;
+}
+
+.dropdown-filter .visible .anchor {
+    color: #0094ff;
+}
+
+.dropdown-filter .visible .items {
+    display: block;
 }
