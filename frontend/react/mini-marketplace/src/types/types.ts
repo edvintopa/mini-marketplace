@@ -44,6 +44,8 @@ export interface UserContextType {
     cancelOrder: (id: string) => Promise<boolean>;
     token: string | null;
     orders: Order[];
+    notifications: Notification[];
+    fetchNotifications: () => Promise<void>;
 }
 
 export interface Order {
