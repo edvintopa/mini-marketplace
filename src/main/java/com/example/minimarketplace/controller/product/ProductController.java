@@ -2,6 +2,7 @@ package com.example.minimarketplace.controller.product;
 
 
 import com.example.minimarketplace.auth.JwtUtil;
+import com.example.minimarketplace.component.event.ProductPublisher;
 import com.example.minimarketplace.model.communication.request.product.ClothingCreateRequest;
 import com.example.minimarketplace.model.communication.request.product.ClothingFilterRequest;
 import com.example.minimarketplace.model.communication.request.product.ClothingGetProductRequest;
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.minimarketplace.component.event.ProductPublisher;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private final JwtUtil jwtUtil;
-
     private final ProductPublisher productPublisher;
     private final TokenResolverService tokenResolverService;
 
@@ -49,8 +48,8 @@ public class ProductController {
         this.productPublisher = productPublisher;
         this.tokenResolverService = tokenResolverService;
     }
-
-    /**
+  
+  /**
      * This method is used to get all the products sold by a specific seller.
      * It takes the Authorization token from the request header, resolves it to a User ID, and fetches the seller from the database.
      * It then fetches all the products sold by this seller from the database and returns them in the response.
@@ -83,25 +82,40 @@ public class ProductController {
         }
     }
 
+
     @GetMapping(value = "/get")
     public ResponseEntity<?> getAllProducts(){
         try{
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
+            List<Clothing> AvailableProducts = new ArrayList<>();
 
-            return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
 
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getProductStatus().equals(ProductStatus.AVAILABLE)){
+                    AvailableProducts.add((Clothing) products.get(i));
+                }
+
+            }
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : AvailableProducts) {
+                ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                );
+                response.add(clothingGetResponse);
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
-            System.out.println("error :( " + e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
-    @GetMapping(value = "/getProduct/{productId}")
-    public ResponseEntity getProductById(@PathVariable UUID productId){
-        System.out.println("Fetching product with id: " + productId);
-
+    @GetMapping(value = "/getProduct")
+    public ResponseEntity getProductById(@RequestBody ClothingGetProductRequest productId){
         try{
             UUID productIdNew = (productId.getProductId());
             Clothing product = (Clothing) productRepository.findById(productIdNew).orElse(null);
@@ -116,11 +130,10 @@ public class ProductController {
                         product.getDatePosted());
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{
-
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
 
-        } catch (Exception e){
+        }catch (Exception e){
             return new ResponseEntity<>("Failed to fetch product", HttpStatus.NOT_FOUND);
         }
     }
@@ -130,7 +143,7 @@ public class ProductController {
         try{
             String username = jwtUtil.getBearer(token.replace("Bearer ", ""));
             User user = userRepository.findByUsername(username);
-            System.out.println(clothing);
+
             //ALL ENUMS
             ProductCondition productCondition = ProductCondition.valueOf(clothing.getProductcondition().toUpperCase());
             ProductColor productColor = ProductColor.valueOf(clothing.getProductcolor().toUpperCase());
@@ -138,7 +151,7 @@ public class ProductController {
             ClothingSex sex = ClothingSex.valueOf(clothing.getSex().toUpperCase());
             ClothingSize size = ClothingSize.valueOf(clothing.getSize().toUpperCase());
             ClothingType type = ClothingType.valueOf(clothing.getType().toUpperCase());
-
+            //TODO: Save Image to directory
             Clothing newClothing = productRepository.save(new Clothing(
                     user,
                     clothing.getTitle(),
@@ -149,13 +162,15 @@ public class ProductController {
                     productCondition,
                     productColor,
                     ProductStatus.AVAILABLE,
+                    clothing.getproductImage(),
                     season,
                     sex,
                     size,
                     type)
             );
 
-            //productPublisher.notifyProductAvailability(savedProduct.getName(), savedProduct.getType());
+            //NOTIFY ALL USERS WITH MATCHING INTEREST
+            productPublisher.notifyProductAvailability(newClothing.getType().name());
 
             ClothingCreateResponse response = new ClothingCreateResponse(newClothing.getProductId(), HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -270,7 +285,6 @@ public class ProductController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 //        }
 //    }
-
 //    @PostMapping(value = "/editClothing")
 //    public ResponseEntity editClothing(@RequestBody UUID productID, Product updatedClothing){
 //        try{
