@@ -14,8 +14,8 @@ interface ProfileProps {
 }
 
 
-const Profile: React.FC<ProfileProps> = ({ orders  }) => {
-    const { user } = useUser();
+const Profile: React.FC<ProfileProps> = () => {
+    const { user, orders, fetchOrders } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState<User | null>(null);
 
@@ -25,6 +25,12 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
             setEditableUser(user);
         }
     }, [user]);
+
+    useEffect(() => {
+        if (user) {
+            fetchOrders();
+        }
+    }, [user, fetchOrders]);
 
     const handleEditToggle = () => {
         if (editMode) {

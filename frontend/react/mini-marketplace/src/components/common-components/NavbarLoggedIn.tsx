@@ -11,7 +11,6 @@ interface NavbarLoggedInProps {
 }
 
 const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, isSavedProductsVisible }) => {
-    console.log("Rendering NavbarLoggedIn");
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
