@@ -7,7 +7,7 @@ import { useUser } from '../../context/UserContext';
 
 const SellOrderHistory: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { sellOrders, getSellOrders } = useUser();
+    const { sellOrders, getSellOrders, confirmOrder, rejectOrder } = useUser();
     const toggle = () => {
         setIsOpen(!isOpen);
     };
@@ -19,6 +19,14 @@ const SellOrderHistory: React.FC = () => {
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    const handleConfirmOrder = (orderId: string) => {
+        confirmOrder(orderId);
+    };
+
+    const handleRejectOrder = (orderId: string) => {
+        rejectOrder(orderId);
     };
 
     return (
@@ -36,20 +44,32 @@ const SellOrderHistory: React.FC = () => {
                         <thead>
                             <tr>
                                 <th>Order ID</th>
-                                <th>Total</th>
-                                <th>Confirmed</th>
                                 <th>Date</th>
                                 <th>Product ID</th>
+                                <th>Total</th>
+                                <th>Confirmed</th>
                             </tr>
                         </thead>
                         <tbody>
                             {sellOrders.map(order => (
                                 <tr key={order.orderId}>
                                     <td>{order.orderId}</td>
-                                    <td>{order.total}</td>
-                                    <td>{order.confirmed ? 'Yes' : 'No'}</td>
                                     <td className="order-date">{formatDate(order.orderDate)}</td>
                                     <td>{order.productId}</td>
+                                    <td>{order.total}</td>
+                                    <td>{order.confirmed ? 'Yes' : 'No'}</td>
+                                    <td>
+                                        {!order.confirmed && (
+                                            <>
+                                                <button onClick={() => handleConfirmOrder(order.orderId)} className="confirm-order-button">
+                                                    Confirm
+                                                </button>
+                                                <button onClick={() => handleRejectOrder(order.orderId)} className="reject-order-button">
+                                                    Reject
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

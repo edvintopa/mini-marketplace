@@ -87,20 +87,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     }, [token]);
 
-    const getSellOrders = useCallback(async () => {
-        if (!token) return;
-        try {
-            const response = await axios.get<Order[]>(`http://localhost:8080/order/sellorder`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            console.log(response.data);
-            setSellOrders(response.data);
-        } catch (error) {
-            console.error('Error fetching sell orders:', error);
-            setError('Error fetching sell orders:');
-        }
-    }, [token]);
-
     const cancelOrder = async (orderId: string) => {
         if (!token) return false;
         console.log('Order id that is being sent: ', orderId);
@@ -126,6 +112,78 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             return false;
         }
     };
+
+    const getSellOrders = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Order[]>(`http://localhost:8080/order/sellorder`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setSellOrders(response.data);
+        } catch (error) {
+            console.error('Error fetching sell orders:', error);
+            setError('Error fetching sell orders:');
+        }
+    }, [token]);
+
+    const confirmOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being confirmed: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/confirm`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setSellOrders(prevOrders => prevOrders.map(order => 
+                    order.orderId === orderId ? { ...order, confirmed: true } : order
+                ));
+                console.log('Order confirmation successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to confirm order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to confirm order:', error);
+            setError('Failed to confirm order.');
+            return false;
+        }
+    };
+
+    const rejectOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being rejected: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/reject`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setSellOrders(prevOrders => prevOrders.filter(order => order.orderId !== orderId));
+                console.log('Order rejection successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to reject order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to reject order:', error);
+            setError('Failed to reject order.');
+            return false;
+        }
+    };
+
+
+
+
 
     const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
@@ -232,7 +290,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return (
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
-            token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders }}>
+            token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
+            confirmOrder, rejectOrder }}>
             {children}
         </UserContext.Provider>
     );
