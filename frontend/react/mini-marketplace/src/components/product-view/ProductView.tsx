@@ -37,7 +37,7 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             product_image: data.imagePath,
             url: data.url,
             description: data.description,
-            datePosted: data.datePosted.split('T')[0],
+            datePosted: data.datePosted.split('T')[0], //removed timestamp 
             productStatus: data.productStatus,
             productSize : data.size,
             productCondition : data.productCondition,
