@@ -248,8 +248,16 @@ public class ProductController {
                         .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
                         .collect(Collectors.toList());
             }
-
-            return new ResponseEntity<>(products, HttpStatus.OK);
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : products) {
+                ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                );
+                response.add(clothingGetResponse);
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
