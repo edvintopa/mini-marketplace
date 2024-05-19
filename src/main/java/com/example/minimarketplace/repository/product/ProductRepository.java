@@ -1,6 +1,7 @@
 package com.example.minimarketplace.repository.product;
 
 import com.example.minimarketplace.model.product.Product;
+import com.example.minimarketplace.model.product.products.clothing.Clothing;
 import com.example.minimarketplace.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,6 +12,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Override
     List<Product> findAll();
 
+    List<Clothing> findAllBySeller(User seller);
+
     Product findByProductId(UUID productId);
-    List<Product> findAllBySeller(User seller);
+    //List<Product> findAllBySeller(User seller);
 }

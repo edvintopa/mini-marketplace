@@ -64,9 +64,18 @@ public class ProductController {
         try {
             UUID userId = tokenResolverService.resolveTokenToUserId(token);
             User seller = userRepository.findByUserId(userId);
-            List<Product> products = productRepository.findAllBySeller(seller);
+            List<Clothing> products = productRepository.findAllBySeller(seller);
 
-            return ResponseEntity.status(HttpStatus.OK).body(products);     //TODO: Create appropriate response. A lot of unnecessary info is sent.
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : products) {
+                response.add(new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                ));
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);

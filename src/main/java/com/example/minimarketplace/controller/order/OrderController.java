@@ -6,6 +6,7 @@ import com.example.minimarketplace.model.communication.response.order.OrderRespo
 import com.example.minimarketplace.model.order.Order;
 import com.example.minimarketplace.model.product.Product;
 import com.example.minimarketplace.model.product.ProductStatus;
+import com.example.minimarketplace.model.product.products.clothing.Clothing;
 import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.repository.order.OrderRepository;
 import com.example.minimarketplace.repository.product.ProductRepository;
@@ -186,8 +187,9 @@ public class OrderController {
         try {
             UUID sellerId = tokenResolverService.resolveTokenToUserId(token);
             User seller = userRepository.findByUserId(sellerId);
-            List<Product> products = productRepository.findAllBySeller(seller);
+            List<Clothing> products = productRepository.findAllBySeller(seller);
             List<Order> sellOrders = new ArrayList<>();
+
 
             for (Product p : products) {
                 Order sellOrder = orderRepository.findOrderByProductId(p.getProductId());
