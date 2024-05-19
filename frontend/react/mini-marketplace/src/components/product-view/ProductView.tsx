@@ -50,6 +50,7 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
         return null;
     }
 }
+
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
 

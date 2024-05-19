@@ -3,15 +3,16 @@ package com.example.minimarketplace.controller.product;
 
 import com.example.minimarketplace.auth.JwtUtil;
 import com.example.minimarketplace.model.communication.request.product.ClothingCreateRequest;
+import com.example.minimarketplace.model.communication.request.product.ClothingFilterRequest;
+import com.example.minimarketplace.model.communication.request.product.ClothingGetProductRequest;
 import com.example.minimarketplace.model.communication.response.ErrorResponse;
 import com.example.minimarketplace.model.communication.response.product.ClothingCreateResponse;
-import com.example.minimarketplace.model.product.ProductColor;
-import com.example.minimarketplace.model.product.ProductCondition;
-import com.example.minimarketplace.model.product.ProductStatus;
+import com.example.minimarketplace.model.communication.response.product.ClothingGetProductResponse;
+import com.example.minimarketplace.model.communication.response.product.ClothingGetResponse;
+import com.example.minimarketplace.model.product.*;
 import com.example.minimarketplace.model.user.User;
 import com.example.minimarketplace.repository.product.ProductRepository;
 import com.example.minimarketplace.repository.user.UserRepository;
-import com.example.minimarketplace.model.product.Product;
 import com.example.minimarketplace.model.product.products.clothing.*;
 import com.example.minimarketplace.service.TokenResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/product")
@@ -64,7 +67,16 @@ public class ProductController {
             User seller = userRepository.findByUserId(userId);
             List<Product> products = productRepository.findAllBySeller(seller);
 
-            return ResponseEntity.status(HttpStatus.OK).body(products);     //TODO: Create appropriate response. A lot of unnecessary info is sent.
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : products) {
+                response.add(new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                ));
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
             return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
@@ -72,14 +84,12 @@ public class ProductController {
     }
 
     @GetMapping(value = "/get")
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<?> getAllProducts(){
         try{
             System.out.println("Fetching all products");
             List<Product> products = new ArrayList<>();
             products = productRepository.findAll();
-            /*for (int i = 0; i < products.size(); i++) {
-                System.out.println(i + ": " + products.get(i));
-            }*/
+
             return new ResponseEntity<List<Product>>(products,HttpStatus.OK);
 
         }catch (Exception e){
@@ -91,13 +101,22 @@ public class ProductController {
     @GetMapping(value = "/getProduct/{productId}")
     public ResponseEntity getProductById(@PathVariable UUID productId){
         System.out.println("Fetching product with id: " + productId);
+
         try{
-            Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
+            UUID productIdNew = (productId.getProductId());
+            Clothing product = (Clothing) productRepository.findById(productIdNew).orElse(null);
 
             if (product != null){
-                System.out.println(product.getProductStatus() + " is this ?");
-                return new ResponseEntity<>(product, HttpStatus.OK);    //TODO: Create appropriate response. A lot of unnecessary info is sent.
-            } else{
+                ClothingGetProductResponse response = new ClothingGetProductResponse(productIdNew,
+                        product.getTitle(),
+                        product.getPrice(),
+                        product.getProductStatus().name(),
+                        product.getSeller().getUsername(),
+                        product.getDescription(),
+                        product.getDatePosted());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }else{
+
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
             }
 
@@ -145,6 +164,113 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+
+    @GetMapping(value ="/filter")
+    public ResponseEntity<?> filterProducts(@RequestBody String filterCriteria) {
+        try {
+            System.out.println(filterCriteria);
+            List<Product> products = productRepository.findAll();
+            List<Product> filteredProducts = new ArrayList<>();
+
+            for (ClothingType type : ClothingType.values()) {
+                if (filterCriteria.equals(type.name())) {
+                    filteredProducts = products.stream()
+                            .filter(product -> product instanceof Clothing && ((Clothing) product).getType().equals(type))
+                            .collect(Collectors.toList());
+                    return new ResponseEntity<>(filteredProducts, HttpStatus.OK);
+                }
+            }
+
+            for (ProductCondition condition : ProductCondition.values()) {
+                if (filterCriteria.equalsIgnoreCase(condition.name())) {
+                    filteredProducts = products.stream()
+                            .filter(product -> product.getProductCondition().equals(condition))
+                            .collect(Collectors.toList());
+                    return new ResponseEntity<>(filteredProducts, HttpStatus.OK);
+                }
+            }
+
+            if (filterCriteria.contains("-")) {
+                String[] priceRange = filterCriteria.split("-");
+                double minPrice = Double.parseDouble(priceRange[0]);
+                double maxPrice = Double.parseDouble(priceRange[1]);
+                filteredProducts = products.stream()
+                        .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
+                        .collect(Collectors.toList());
+                return new ResponseEntity<>(filteredProducts, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>("Invalid filter criteria", HttpStatus.BAD_REQUEST);
+
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+    @GetMapping(value ="/filterAll")
+    public ResponseEntity<?> filterProductsAll(@RequestBody ClothingFilterRequest filterRequest) {
+        try {
+            List<Product> products = productRepository.findAll();
+
+            if (filterRequest.getClothingType() != null) {
+                ClothingType type = ClothingType.valueOf(filterRequest.getClothingType().toUpperCase());
+                products = products.stream()
+                        .filter(product -> product instanceof Clothing && ((Clothing) product).getType().equals(type))
+                        .collect(Collectors.toList());
+            }
+
+            if (filterRequest.getProductCondition() != null) {
+                ProductCondition condition = ProductCondition.valueOf(filterRequest.getProductCondition().toUpperCase());
+                products = products.stream()
+                        .filter(product -> product.getProductCondition().equals(condition))
+                        .collect(Collectors.toList());
+            }
+
+            if (filterRequest.getMinPrice() != 0 && filterRequest.getMaxPrice() != 0) {
+                double minPrice = filterRequest.getMinPrice();
+                double maxPrice = filterRequest.getMaxPrice();
+                products = products.stream()
+                        .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
+                        .collect(Collectors.toList());
+            }
+            List<ClothingGetResponse> response = new ArrayList<>();
+            for (Product product : products) {
+                ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
+                        product.getProductId(),
+                        product.getTitle(),
+                        product.getPrice()
+                );
+                response.add(clothingGetResponse);
+            }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+//ORDER DOES THIS DIRECTLY
+//    @PutMapping(value = "/updateStatus")
+//    public ResponseEntity updateStatus(@RequestBody UUID productId){
+//        try {
+//            Product existingProduct = productRepository.findById(productId).orElse(null);
+//
+//            if (existingProduct == null){
+//                return new ResponseEntity( "Product not found", HttpStatus.NOT_FOUND);
+//            }
+//            existingProduct.setProductStatus(ProductStatus.NOT_AVAILABLE);
+//
+//            productRepository.save(existingProduct);
+//
+//            ClothingCreateResponse response = new ClothingCreateResponse(productId, HttpStatus.OK);
+//            return ResponseEntity.status(HttpStatus.OK).body(response);
+//        }catch (Exception e){
+//            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+//        }
+//    }
+
 //    @PostMapping(value = "/editClothing")
 //    public ResponseEntity editClothing(@RequestBody UUID productID, Product updatedClothing){
 //        try{

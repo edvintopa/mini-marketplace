@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { SignupFormData, User, UserContextType } from '../types/types';
+import { SignupFormData, User, UserContextType, Order } from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -21,6 +21,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string>('');
     const [token, setToken] = useState<string | null>(null);
+    const [orders, setOrders] = useState<Order[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -68,6 +69,46 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             } else {
                 setError('An unexpected error occurred, could not fetch user.');
             }
+        }
+    };
+
+    const fetchOrders = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Order[]>(`http://localhost:8080/order/get`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setOrders(response.data);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            setError('Error fetching orders:');
+        }
+    }, [token]);
+
+    const cancelOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being sent: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/cancel`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setOrders(prevOrders => prevOrders.filter(order => order.orderId !== orderId));
+                console.log('Order cancellation successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to cancel order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to cancel order:', error);
+            setError('Failed to cancel order.');
+            return false;
         }
     };
 
@@ -174,7 +215,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests, token, error }}>
+        <UserContext.Provider value={{
+            user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
+            token, error, fetchOrders, orders, cancelOrder }}>
             {children}
         </UserContext.Provider>
     );

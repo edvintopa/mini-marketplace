@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../../CSS-files/profile.css';
 import ProfileInfo from '../common-components/ProfileInfo';
 import OrderHistory from './OrderHistory';
-import ProfileSettings from './ProfileSettings';
 import EditProfile from './EditProfile';
 import InterestsDropdown from './InterestsDropdown';
 import { useUser } from '../../context/UserContext';
@@ -14,8 +13,8 @@ interface ProfileProps {
 }
 
 
-const Profile: React.FC<ProfileProps> = ({ orders  }) => {
-    const { user } = useUser();
+const Profile: React.FC<ProfileProps> = () => {
+    const { user, orders, fetchOrders } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState<User | null>(null);
 
@@ -25,6 +24,12 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
             setEditableUser(user);
         }
     }, [user]);
+
+    useEffect(() => {
+        if (user) {
+            fetchOrders();
+        }
+    }, [user, fetchOrders]);
 
     const handleEditToggle = () => {
         if (editMode) {
@@ -46,9 +51,6 @@ const Profile: React.FC<ProfileProps> = ({ orders  }) => {
 
     return (
         <div className="main-content">
-            <div className="profile-settings">
-                <ProfileSettings />
-            </div>
             <div className="content-area">
                 {editMode ? (
                     <EditProfile user={editableUser || user} onChange={handleChange}>
