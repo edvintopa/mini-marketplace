@@ -187,7 +187,7 @@ public class OrderController {
         try {
             UUID sellerId = tokenResolverService.resolveTokenToUserId(token);
             User seller = userRepository.findByUserId(sellerId);
-            List<Clothing> products = productRepository.findAllBySeller(seller);
+            List<Product> products = productRepository.findAllBySeller(seller);
             List<Order> sellOrders = new ArrayList<>();
 
 

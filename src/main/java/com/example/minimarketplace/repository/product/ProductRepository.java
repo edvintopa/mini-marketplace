@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Override
     List<Product> findAll();
 
-    List<Clothing> findAllBySeller(User seller);
+    List<Product> findAllBySeller(User seller);
 
     Product findByProductId(UUID productId);
     //List<Product> findAllBySeller(User seller);
