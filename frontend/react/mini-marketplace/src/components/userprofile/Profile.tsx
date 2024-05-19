@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../../CSS-files/profile.css';
 import ProfileInfo from '../common-components/ProfileInfo';
 import OrderHistory from './OrderHistory';
-import ProfileSettings from './ProfileSettings';
 import EditProfile from './EditProfile';
 import InterestsDropdown from './InterestsDropdown';
 import { useUser } from '../../context/UserContext';
@@ -52,9 +51,6 @@ const Profile: React.FC<ProfileProps> = () => {
 
     return (
         <div className="main-content">
-            <div className="profile-settings">
-                <ProfileSettings />
-            </div>
             <div className="content-area">
                 {editMode ? (
                     <EditProfile user={editableUser || user} onChange={handleChange}>

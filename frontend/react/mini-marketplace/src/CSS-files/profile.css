@@ -138,9 +138,10 @@ body[data-theme='dark'] .settings-item button:hover {
 
 
 .content-area {
-    margin-left: 220px;
     width: calc(100% - 220px);
     overflow-y: visible;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 .profile-settings, .order-history {
@@ -234,8 +235,8 @@ body[data-theme='dark'] .order-history-container {
  *
  * */
 .interests-parent {
-    margin-top: 20px;
     position: relative;
+    margin-top: 20px;
 }
 
 .interests-container {
