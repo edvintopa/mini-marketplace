@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShop, faCartShopping, faTimes, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShop, faCartShopping, faTimes, faHeart, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/useTheme";
 
 interface NavbarLoggedInProps {
     toggleSavedProducts: () => void;
@@ -11,12 +12,12 @@ interface NavbarLoggedInProps {
 }
 
 const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, isSavedProductsVisible }) => {
-    console.log("Rendering NavbarLoggedIn");
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { user, logoutUser } = useUser();
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
 
     const toggleDropdown = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -45,6 +46,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
         }
     };
 
+
     return (
         <nav className="nav">
             <div className="nav-left">
@@ -52,19 +54,25 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
                 <a href="/productgallery">Marketplace</a>
             </div>
             <div className="nav-center">
-            <input className="nav-search" type="text" placeholder="Search" onKeyDown={handleSearch} />
+                <input className="nav-search" type="text" placeholder="Search" onKeyDown={handleSearch} />
             </div>
             <div className="nav-right">
-            <button className="toggle-saved-products-btn" onClick={toggleSavedProducts}>
-                {isSavedProductsVisible ? <FontAwesomeIcon icon = {faTimes} /> : <FontAwesomeIcon icon = {faHeart} />}
-            </button>
-            <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
-            <a href="#" onClick={(event) => toggleDropdown(event)} className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>
-            <div className={`dropdown-menu ${isDropdownVisible ? 'visible' : ''}`} ref={dropdownRef}>
-                <a href="/profile">View Profile</a>
-                <a href="/createproduct">Create Product</a>
-                <button onClick={logoutUser}>Logout</button>
-            </div>
+                <button className="toggle-saved-products-btn" onClick={toggleSavedProducts}>
+                    {isSavedProductsVisible ? <FontAwesomeIcon icon = {faTimes} /> : <FontAwesomeIcon icon = {faHeart} />}
+                </button>
+                <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
+                <a href="#" onClick={(event) => toggleDropdown(event)} className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>
+                <div className={`dropdown-menu ${isDropdownVisible ? 'visible' : ''}`} ref={dropdownRef}>
+                    <a href="/profile">View Profile</a>
+                    <a href="/createproduct">Create Product</a>
+                    <div className="row-buttons">
+                        <button onClick={toggleTheme} className="dark-mode-button">
+                        {theme === 'dark' ? <FontAwesomeIcon icon={faSun} /> 
+                            : <FontAwesomeIcon icon={faMoon} />}
+                        </button>
+                        <button onClick={logoutUser} className="logout-button">Logout</button>
+                    </div>
+                </div>
             </div>
         </nav>
     );

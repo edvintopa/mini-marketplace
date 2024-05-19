@@ -35,13 +35,17 @@ export interface UserContextType {
     logoutUser: () => void;
     signupUser: (formData: SignupFormData) => Promise<boolean>;
     setUserInterests: (interests: string[]) => Promise<boolean>;
+    fetchOrders: () => Promise<void>;
     token: string | null;
+    orders: Order[];
 }
 
 export interface Order {
     id: number;
-    description: string;
-    date: string;
+    orderDate: string;
+    total: number;
+    confirmed: boolean;
+    productId: string;
 }
 
 export interface OrderContextType {
