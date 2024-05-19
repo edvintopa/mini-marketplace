@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { Order } from '../../types/types';
 import '../../CSS-files/orderHistory.css';
+import { useUser } from '../../context/UserContext';
 
 
 interface OrderHistoryProps {
@@ -11,6 +12,7 @@ interface OrderHistoryProps {
 
 const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { cancelOrder } = useUser();
     const toggle = () => {
         setIsOpen(!isOpen);
     };
@@ -18,6 +20,10 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    const handleCancelOrder = (id: string) => {
+        cancelOrder(id);
     };
 
     return (
@@ -34,19 +40,27 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({ orders }) => {
                     <table className="order-table">
                         <thead>
                             <tr>
-                                <th>Product ID</th>
+                                <th>Order ID</th>
                                 <th>Total</th>
                                 <th>Confirmed</th>
                                 <th>Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {orders.map(order => (
-                                <tr key={order.id}>
-                                    <td>{order.productId}</td>
+                                <tr key={order.orderId}>
+                                    <td>{order.orderId}</td>
                                     <td>{order.total}</td>
                                     <td>{order.confirmed ? 'Yes' : 'No'}</td>
                                     <td className="order-date">{formatDate(order.orderDate)}</td>
+                                    <td>
+                                        {!order.confirmed && (
+                                            <button onClick={() => handleCancelOrder(order.orderId)} className="cancel-order-button">
+                                                Cancel
+                                            </button>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

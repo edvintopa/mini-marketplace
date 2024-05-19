@@ -36,12 +36,13 @@ export interface UserContextType {
     signupUser: (formData: SignupFormData) => Promise<boolean>;
     setUserInterests: (interests: string[]) => Promise<boolean>;
     fetchOrders: () => Promise<void>;
+    cancelOrder: (id: string) => Promise<boolean>;
     token: string | null;
     orders: Order[];
 }
 
 export interface Order {
-    id: number;
+    orderId: string;
     orderDate: string;
     total: number;
     confirmed: boolean;
@@ -51,6 +52,6 @@ export interface Order {
 export interface OrderContextType {
     orders: Order[];
     addOrder: (order: Order) => void;
-    removeOrder: (id: number) => void;
+    removeOrder: (orderId: string) => void;
 }
 

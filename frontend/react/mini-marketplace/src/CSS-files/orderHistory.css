@@ -68,6 +68,20 @@
     color: #888;
 }
 
+.cancel-order-button {
+    background-color: #f87171;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-order-button {
+    background-color: #ef4444;
+}
+
 body[data-theme='dark'] .order-history-container {
     background-color: #424242;
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { SignupFormData, User, UserContextType, Order } from '../types/types';
 
@@ -72,16 +72,43 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         if (!token) return;
         try {
             const response = await axios.get<Order[]>(`http://localhost:8080/order/get`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+            console.log(response.data);
             setOrders(response.data);
         } catch (error) {
             console.error('Error fetching orders:', error);
             setError('Error fetching orders:');
+        }
+    }, [token]);
+
+    const cancelOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being sent: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/cancel`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setOrders(prevOrders => prevOrders.filter(order => order.orderId !== orderId));
+                console.log('Order cancellation successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to cancel order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to cancel order:', error);
+            setError('Failed to cancel order.');
+            return false;
         }
     };
 
@@ -188,7 +215,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests, token, error, fetchOrders, orders }}>
+        <UserContext.Provider value={{
+            user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
+            token, error, fetchOrders, orders, cancelOrder }}>
             {children}
         </UserContext.Provider>
     );
