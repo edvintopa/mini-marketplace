@@ -30,14 +30,14 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
         // Map the received data to the ProductInfo interface
         const productInfo: ProductInfo = {
             product_id: data.product_id,
-            username: data.username,
+            username: data.seller.username,
             price: data.price,
             title: data.title,
             manufacturer: data.manufacturer,
             product_image: data.imagePath,
             url: data.url,
             description: data.description,
-            datePosted: data.datePosted.split('T')[0], //removed timestamp 
+            datePosted: data.datePosted.split('T')[0], //removed timestamp
             productStatus: data.productStatus,
             productSize : data.size,
             productCondition : data.productCondition,
