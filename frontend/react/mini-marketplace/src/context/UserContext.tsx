@@ -22,6 +22,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [error, setError] = useState<string>('');
     const [token, setToken] = useState<string | null>(null);
     const [orders, setOrders] = useState<Order[]>([]);
+    const [sellOrders, setSellOrders] = useState<Order[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -83,6 +84,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         } catch (error) {
             console.error('Error fetching orders:', error);
             setError('Error fetching orders:');
+        }
+    }, [token]);
+
+    const getSellOrders = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Order[]>(`http://localhost:8080/order/sellorder`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setSellOrders(response.data);
+        } catch (error) {
+            console.error('Error fetching sell orders:', error);
+            setError('Error fetching sell orders:');
         }
     }, [token]);
 
@@ -217,7 +232,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return (
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
-            token, error, fetchOrders, orders, cancelOrder }}>
+            token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders }}>
             {children}
         </UserContext.Provider>
     );

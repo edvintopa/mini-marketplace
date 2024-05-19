@@ -37,8 +37,10 @@ export interface UserContextType {
     setUserInterests: (interests: string[]) => Promise<boolean>;
     fetchOrders: () => Promise<void>;
     cancelOrder: (id: string) => Promise<boolean>;
+    getSellOrders: (id: string) => Promise<void>;
     token: string | null;
     orders: Order[];
+    sellOrders: Order[];
 }
 
 export interface Order {
