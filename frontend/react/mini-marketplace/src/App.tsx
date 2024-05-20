@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/common-components/Navbar';
 import NavbarLoggedIn from './components/common-components/NavbarLoggedIn';
@@ -7,7 +7,6 @@ import Footer from './components/common-components/Footer';
 import { ProductGalleryApp } from "./components/ProductGalleryApp";
 import { LoginPageApp } from "./components/LoginPageApp";
 import { SignUpApp } from "./components/SignUpApp";
-import { CurrentProductView } from './components/product-view/ProductView';
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
 

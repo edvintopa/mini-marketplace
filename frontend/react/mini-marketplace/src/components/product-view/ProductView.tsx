@@ -3,7 +3,6 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {User} from "../../types/types.ts";
 interface ProductViewProps {
   id: string;
 }
