@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FilterTags } from './FilterTags';
 import { FilterOptionsButton } from './FilterOptionsButton';
 import { ClothingFilterRequest } from '../../types/types.ts';
