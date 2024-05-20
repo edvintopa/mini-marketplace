@@ -24,6 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sellOrders, setSellOrders] = useState<Order[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [fetchedInterests, setFetchedInterests] = useState<string[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -71,6 +72,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         } catch (error) {
             console.error('Error fetching notifications:', error)
             setError('Error fetching notifications')
+        }
+    }, [token]);
+
+    const fetchInterests = useCallback( async () => {
+        if(!token) return;
+        try {
+            const response = await axios.get<string[]>('http://localhost:8080/user/getinterests', {
+                headers: { Authorization: `Bearer ${token}`},
+            });
+            console.log(response.data);
+            setFetchedInterests(response.data);
+        } catch (error) {
+            console.error('Error fetching interests:', error)
+            setError('Error fetching interests')
         }
     }, [token]);
 
@@ -306,7 +321,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
             token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
-            confirmOrder, rejectOrder, notifications, fetchNotifications }}>
+            confirmOrder, rejectOrder, notifications, fetchNotifications, fetchedInterests, fetchInterests }}>
             {children}
         </UserContext.Provider>
     );

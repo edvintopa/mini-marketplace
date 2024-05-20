@@ -50,6 +50,8 @@ export interface UserContextType {
     sellOrders: Order[];
     notifications: Notification[];
     fetchNotifications: () => Promise<void>;
+    fetchedInterests: string[];
+    fetchInterests: () => Promise<void>;
 }
 
 export interface Order {
