@@ -9,7 +9,7 @@ export interface ProductInfo {
   title: string;
   name: string;
   price: number;
-  product_image: string;
+  imagePath: string;
   url: string;
 }
 
@@ -24,7 +24,7 @@ async function fetchProducts(): Promise<ProductInfo[]> {
       title: product.title,
       username: product.username,
       price: product.price,
-      product_image: product.imagePath,
+      imagePath: product.imagePath,
       url: product.url,
     }));
 
@@ -43,7 +43,7 @@ export async function fetchProductsByFilter(filterTerms: any): Promise<ProductIn
       clothingType: filterTerms['Product type'] ? filterTerms['Product type'][0] : '',
       productCondition: filterTerms['Condition'] ? filterTerms['Condition'][0] : '',
       minPrice: getPriceRangeMin(filterTerms['Price range']),
-      maxPrice: getPriceRangeMax(filterTerms['Price range'])
+      maxPrice: getPriceRangeMax(filterTerms['Price range']),
     };
 
     console.log(requestBody.clothingType + " is the clothing type");
@@ -110,7 +110,7 @@ export const ProductGallery = () => {
           {products.map((product) => (
               <ProductGalleryCard
                   key={product.product_id}
-                  imagelink={product.product_image}
+                  imagelink={product.imagePath}
                   url={`/productview/${product.product_id}`}
                   title={product.title}
                   price={`${product.price} kr`}

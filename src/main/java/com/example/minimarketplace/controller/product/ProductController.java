@@ -71,7 +71,8 @@ public class ProductController {
                 response.add(new ClothingGetResponse(
                         product.getProductId(),
                         product.getTitle(),
-                        product.getPrice()
+                        product.getPrice(),
+                        product.getImagePath()
                 ));
             }
 
@@ -103,7 +104,8 @@ public class ProductController {
                 ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
                         product.getProductId(),
                         product.getTitle(),
-                        product.getPrice()
+                        product.getPrice(),
+                        product.getImagePath()
                 );
                 response.add(clothingGetResponse);
             }
@@ -114,14 +116,13 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/getProduct")
-    public ResponseEntity getProductById(@RequestBody ClothingGetProductRequest productId){
+    @GetMapping(value = "/getProduct/{productId}")
+    public ResponseEntity getProductById(@PathVariable UUID productId){
         try{
-            UUID productIdNew = (productId.getProductId());
-            Clothing product = (Clothing) productRepository.findById(productIdNew).orElse(null);
+            Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
 
             if (product != null){
-                ClothingGetProductResponse response = new ClothingGetProductResponse(productIdNew,
+                ClothingGetProductResponse response = new ClothingGetProductResponse(productId,
                         product.getTitle(),
                         product.getPrice(),
                         product.getProductStatus().name(),
@@ -129,7 +130,10 @@ public class ProductController {
                         product.getDescription(),
                         product.getSize().name(),
                         product.getProductCondition().name(),
-                        product.getDatePosted());
+                        product.getDatePosted(),
+                        product.getImagePath()
+                 );
+
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);

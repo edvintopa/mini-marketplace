@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
 import {useEffect, useState} from "react";
+import axios from "axios";
 interface ProductViewProps {
   id: string;
 }
@@ -9,12 +10,12 @@ interface ProductViewProps {
 export interface ProductInfo {
     product_id: string;
     title: string;
-    username: string;
+    sellerName: string;
     description: string;
     manufacturer: string;
-    datePosted: string;
+    date_posted: string;
     price: number;
-    product_image: string;
+    imagePath: string;
     url: string;
     productStatus: string;
     productSize : string;
@@ -23,28 +24,33 @@ export interface ProductInfo {
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
     try {
-        const response = await fetch(`http://localhost:8080/product/getProduct/${id}`);
-        const data = await response.json();
-        console.log(JSON.stringify(data) + " received from database"); // Log the received data
+        const response = await axios.get<ProductInfo>(`http://localhost:8080/product/getProduct/` + id);
+        //const response = await fetch(`http://localhost:8080/product/getProduct/${id}`);
 
-        // Map the received data to the ProductInfo interface
-        const productInfo: ProductInfo = {
-            product_id: data.product_id,
-            username: data.seller.username,
-            price: data.price,
-            title: data.title,
-            manufacturer: data.manufacturer,
-            product_image: data.imagePath,
-            url: data.url,
-            description: data.description,
-            datePosted: data.datePosted.split('T')[0], //removed timestamp
-            productStatus: data.productStatus,
-            productSize : data.size,
-            productCondition : data.productCondition,
-        };
+        if (response.data) {
+            const data = response.data;
+            console.log(JSON.stringify(data) + " received from database"); // Log the received data
 
-        console.log(JSON.stringify(productInfo.productStatus) + " is the product info");
-        return productInfo;
+            const productInfo: ProductInfo = {
+                product_id: data.product_id,
+                sellerName: data.sellerName,
+                price: data.price,
+                title: data.title,
+                manufacturer: data.manufacturer,
+                imagePath: data.imagePath,
+                url: data.url,
+                description: data.description,
+                date_posted: data.date_posted.split('T')[0], //removed timestamp
+                productStatus: data.productStatus,
+                productSize : data.productSize,
+                productCondition : data.productCondition,
+            };
+
+            console.log(productInfo.imagePath + " is this ?")
+            console.log(JSON.stringify(productInfo.productStatus) + " is the product info");
+            return productInfo;
+        }
+        return null;
     } catch (error) {
         console.error('Error:', error);
         return null;
@@ -58,9 +64,9 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
         fetchProductById(id).then(product => setCurrentProduct(product));
     }, [id]);
 
-    if (currentProduct) {
+   /* if (currentProduct) {
         console.log(JSON.stringify(currentProduct.username) + " is the seller");
-    }
+    }*/
 
     if (!currentProduct) {
         return <div>Loading...</div>;
@@ -69,7 +75,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     return (
         <div className="GeneralProductView">
             <div className="ProductViewImage">
-                <img src={currentProduct.product_image} alt="" />
+                <img src={currentProduct.imagePath} alt="" />
             </div>
             <div className="ProductViewInfo">
                 <h3 className="TitleOfProduct">{currentProduct.title}</h3>
@@ -80,13 +86,13 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 </div>
                 <div className="DescriptionInfo">
                     <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
-                        icon={faUser}/> {currentProduct.username}</a>
+                        icon={faUser}/> {currentProduct.sellerName}</a>
                     <p>{currentProduct.description}</p>
                     <div className="productAttributes">
                         <span className="bubble">Size: {currentProduct.productSize}</span>
                         <span className="bubble">Condition: {currentProduct.productCondition}</span>
                     </div>
-                    <p id="dateposted">{currentProduct.datePosted}</p>
+                    <p id="dateposted">{currentProduct.date_posted}</p>
                 </div>
             </div>
         </div>

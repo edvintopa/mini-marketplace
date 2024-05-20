@@ -1,5 +1,6 @@
 /* accent color: #c4b5fd */
 
+
 body[data-theme='dark'] {
     background-color: #121212;
     color: #E0E0E0;
@@ -274,7 +275,7 @@ body[data-theme='dark'] .saved-products-panel {
  * startpage.tsx
  *
  * */
-.banner {    
+.banner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -292,9 +293,9 @@ body[data-theme='dark'] .saved-products-panel {
 }
 
 .banner p {
-    font-family: playfair;
+    font-family: montserrat;
     font-size: 1rem; 
-    font-weight: 500; 
+    font-weight: bold;
     color: #1f2937;
     margin-top: 10px;
 }
@@ -325,7 +326,8 @@ body[data-theme='dark'] .banner p {
     /*font-size: 1rem;*/
     font-weight: 500;
     cursor: pointer;
-    text-decoration: none; 
+    text-decoration: none;
+    margin: 0 auto;
 }
 
 .show-more-btn:hover {
@@ -336,9 +338,8 @@ body[data-theme='dark'] .banner p {
     width: 95%;
     padding: 20px;
     margin: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: none !important;
 }
-
 
 /* 
  * Footer
