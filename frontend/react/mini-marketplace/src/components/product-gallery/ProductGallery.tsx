@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductGalleryCard } from './ProductGalleryCard';
 import { FilterTagWrapper } from './FilterTagWrapper';
-import {ClothingFilterRequest, User} from '../../types/types.ts';
+import {ClothingFilterRequest} from '../../types/types.ts';
 import axios from 'axios';
 
 export interface ProductInfo {

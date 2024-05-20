@@ -17,6 +17,13 @@ export interface TextFieldComponentTypes {
     textFieldTitle: string;
 }
 
+export interface ClothingFilterRequest {
+    clothingType: string;
+    productCondition: string;
+    minPrice: number;
+    maxPrice: number;
+}
+
 export interface Notification {
     "category": string,
     "dateOfNotification": string
@@ -30,14 +37,6 @@ export interface SignupFormData {
     email: string,
     dateOfBirth: string,
 }
-
-export interface ClothingFilterRequest {
-    clothingType: string;
-    productCondition: string;
-    minPrice: number;
-    maxPrice: number;
-}
-
 
 export interface UserContextType {
     user: User | null;

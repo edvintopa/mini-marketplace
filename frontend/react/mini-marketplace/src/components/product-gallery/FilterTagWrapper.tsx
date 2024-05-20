@@ -16,7 +16,12 @@ export const FilterTagWrapper = ({ onApplyFilter }: FilterTagWrapperProps) => {
     const conditionTags = ['NEW', 'VERY GOOD', 'GOOD', 'NOT_WORKING_PROPERLY', 'USED'];
     const priceRange = ['0-100', '101-300', '301-500', '501-1000', '1000+'];
 
-    const [selectedFilters, setSelectedFilters] = useState<ClothingFilterRequest>({});
+    const [selectedFilters, setSelectedFilters] = useState<ClothingFilterRequest>({
+        clothingType: "",
+        maxPrice: 0,
+        minPrice: 0,
+        productCondition: ""
+    });
 
     const handleSelectionChange = (tag: string, items: string[]) => {
         setSelectedFilters(prevState => ({
