@@ -17,6 +17,11 @@ export interface TextFieldComponentTypes {
     textFieldTitle: string;
 }
 
+export interface Notification {
+    "category": string,
+    "dateOfNotification": string
+}
+
 export interface SignupFormData {
     username: string,
     password: string,
@@ -42,7 +47,12 @@ export interface UserContextType {
     rejectOrder: (id: string) => Promise<boolean>;
     token: string | null;
     orders: Order[];
+<<<<<<< HEAD
     sellOrders: Order[];
+=======
+    notifications: Notification[];
+    fetchNotifications: () => Promise<void>;
+>>>>>>> master
 }
 
 export interface Order {

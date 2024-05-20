@@ -2,6 +2,7 @@ package com.example.minimarketplace.controller.user;
 
 import com.example.minimarketplace.auth.JwtUtil;
 import com.example.minimarketplace.model.communication.request.user.SetInterestRequest;
+import com.example.minimarketplace.model.communication.response.NotificationResponse;
 import com.example.minimarketplace.model.notification.Notification;
 import com.example.minimarketplace.model.user.UserInterest;
 import com.example.minimarketplace.repository.user.NotificationRepository;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -224,7 +226,16 @@ public class UserController {
             UUID userId = tokenResolverService.resolveTokenToUserId(token);
             List<Notification> notifications = notificationRepository.findByUserId(userId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(notifications);
+            List<NotificationResponse> response = new ArrayList<>();
+
+            for (Notification n : notifications) {
+                response.add(new NotificationResponse(
+                        n.getType(),
+                        n.getDateOfNotification()
+                ));
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (Exception e) {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

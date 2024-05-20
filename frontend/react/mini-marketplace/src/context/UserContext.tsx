@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { SignupFormData, User, UserContextType, Order } from '../types/types';
+import {SignupFormData, User, UserContextType, Order, Notification} from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -23,6 +23,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [token, setToken] = useState<string | null>(null);
     const [orders, setOrders] = useState<Order[]>([]);
     const [sellOrders, setSellOrders] = useState<Order[]>([]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -56,6 +57,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token');
+        }
+    }, [token]);
+
+    const fetchNotifications = useCallback(async () => {
+        if(!token) return;
+        try {
+            const response = await axios.get<Notification[]>('http://localhost:8080/user/notifications', {
+                headers: { Authorization: `Bearer ${token}`},
+            });
+            console.log(response.data);
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error)
+            setError('Error fetching notifications')
         }
     }, [token]);
 
@@ -291,7 +306,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
             token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
-            confirmOrder, rejectOrder }}>
+            confirmOrder, rejectOrder, notifications, fetchNotifications }}>
             {children}
         </UserContext.Provider>
     );

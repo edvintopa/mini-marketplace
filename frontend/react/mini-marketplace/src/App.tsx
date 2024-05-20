@@ -14,6 +14,7 @@ import Profile from './components/userprofile/Profile';
 import { useUser } from './context/UserContext';
 import axios from 'axios';
 import { RegisterProductApp } from './components/RegisterProductApp.tsx';
+import {ProductViewApp} from "./components/ProductViewApp.tsx";
 
 axios.interceptors.request.use(
     config => {
@@ -66,10 +67,12 @@ const App = () => {
                 <Route path="/" element={<StartPage />} />
                 <Route path="/productgallery" element={<ProductGalleryApp />} /> {''}
                 <Route path="/signup" element={<SignUpApp />} />{" "}
+
                 {/* to be fixed */}
                 <Route path="/login" element={<LoginPageApp />} />{" "}
                 {/* to be fixed */}
-                <Route path="/productview/:id" element={<CurrentProductView id={""} />} />
+                <Route path="/productview/:id" element={<ProductViewApp />} />
+
                <Route path="/createproduct" element={<RegisterProductApp />} />
                <Route path="/profile" element={<Profile orders={orders} />} />
                
