@@ -91,7 +91,7 @@ public class ClothingGetProductResponse {
     public String getProductCondition() {
         return productCondition;
     }
-
+  
     public String getImagePath() {
         return imagePath;
     }

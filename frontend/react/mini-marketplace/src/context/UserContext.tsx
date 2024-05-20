@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { SignupFormData, User, UserContextType, Order } from '../types/types';
+import {SignupFormData, User, UserContextType, Order, Notification} from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -22,6 +22,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [error, setError] = useState<string>('');
     const [token, setToken] = useState<string | null>(null);
     const [orders, setOrders] = useState<Order[]>([]);
+    const [sellOrders, setSellOrders] = useState<Order[]>([]);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [fetchedInterests, setFetchedInterests] = useState<string[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -55,6 +58,34 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             localStorage.setItem('token', token);
         } else {
             localStorage.removeItem('token');
+        }
+    }, [token]);
+
+    const fetchNotifications = useCallback(async () => {
+        if(!token) return;
+        try {
+            const response = await axios.get<Notification[]>('http://localhost:8080/user/notifications', {
+                headers: { Authorization: `Bearer ${token}`},
+            });
+            console.log(response.data);
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error)
+            setError('Error fetching notifications')
+        }
+    }, [token]);
+
+    const fetchInterests = useCallback( async () => {
+        if(!token) return;
+        try {
+            const response = await axios.get<string[]>('http://localhost:8080/user/getinterests', {
+                headers: { Authorization: `Bearer ${token}`},
+            });
+            console.log(response.data);
+            setFetchedInterests(response.data);
+        } catch (error) {
+            console.error('Error fetching interests:', error)
+            setError('Error fetching interests')
         }
     }, [token]);
 
@@ -111,6 +142,78 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             return false;
         }
     };
+
+    const getSellOrders = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Order[]>(`http://localhost:8080/order/sellorder`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setSellOrders(response.data);
+        } catch (error) {
+            console.error('Error fetching sell orders:', error);
+            setError('Error fetching sell orders:');
+        }
+    }, [token]);
+
+    const confirmOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being confirmed: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/confirm`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setSellOrders(prevOrders => prevOrders.map(order => 
+                    order.orderId === orderId ? { ...order, confirmed: true } : order
+                ));
+                console.log('Order confirmation successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to confirm order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to confirm order:', error);
+            setError('Failed to confirm order.');
+            return false;
+        }
+    };
+
+    const rejectOrder = async (orderId: string) => {
+        if (!token) return false;
+        console.log('Order id that is being rejected: ', orderId);
+        const requestBody = { id: orderId };
+        console.log('Request body:', requestBody);
+        try {
+            const response = await axios.post(`http://localhost:8080/order/reject`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                setSellOrders(prevOrders => prevOrders.filter(order => order.orderId !== orderId));
+                console.log('Order rejection successful for order id:', orderId);
+                return true;
+            } else {
+                setError('Failed to reject order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to reject order:', error);
+            setError('Failed to reject order.');
+            return false;
+        }
+    };
+
+
+
+
 
     const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
@@ -217,7 +320,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return (
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
-            token, error, fetchOrders, orders, cancelOrder }}>
+            token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
+            confirmOrder, rejectOrder, notifications, fetchNotifications, fetchedInterests, fetchInterests }}>
             {children}
         </UserContext.Provider>
     );

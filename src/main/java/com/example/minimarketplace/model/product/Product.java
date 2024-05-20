@@ -95,8 +95,7 @@ public abstract class Product {
     private ProductStatus productStatus;
 
     @Column(
-            name = "product_image",
-            nullable = false
+            name = "product_image"
     )
     private String imagePath;
 

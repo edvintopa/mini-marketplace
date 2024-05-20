@@ -131,7 +131,9 @@ public class ProductController {
                         product.getSize().name(),
                         product.getProductCondition().name(),
                         product.getDatePosted(),
-                        product.getImagePath());
+                        product.getImagePath()
+                 );
+
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);

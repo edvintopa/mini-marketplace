@@ -1,6 +1,8 @@
 import '../../CSS-files/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useUser } from '../../context/UserContext';
+import {useEffect} from "react";
 
 interface SavedProductsPanelProps {
     className: string;
@@ -8,18 +10,28 @@ interface SavedProductsPanelProps {
 }
 
 const SavedProductsPanel: React.FC<SavedProductsPanelProps> = ({ className, toggleSavedProducts }) => {
+
+    const { notifications, user, fetchNotifications } = useUser();
+
+    useEffect(() => {
+        if (user) {
+            fetchNotifications();
+        }
+    }, [user, fetchNotifications]);
+
     return (
             <aside className={`saved-products-panel ${className}`}>
                 <button className="close-panel-btn" onClick={toggleSavedProducts}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
-                <h4>Saved Products</h4>
+                <h4>Notifications</h4>
                 <ul>
-                    <li>Product 1</li>
-                    <li>Product 2</li>
-                    <li>Product 3</li>
-                    <li>Product 4</li>
-                    <li>Product 5</li>
+                    {notifications.map((notification, index) => (
+                        <li key={index}>
+                            <div>{notification.category}</div>
+                            <div>{notification.dateOfNotification}</div>
+                        </li>
+                    ))}
                 </ul>
             </aside>
     );
