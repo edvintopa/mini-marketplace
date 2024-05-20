@@ -82,6 +82,42 @@
     background-color: #ef4444;
 }
 
+.confirm-order-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-order-button:hover {
+    background-color: #45a049;
+}
+
+.reject-order-button {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.reject-order-button:hover {
+    background-color: #e41e1e;
+}
+
 body[data-theme='dark'] .order-history-container {
     background-color: #424242;
 }
