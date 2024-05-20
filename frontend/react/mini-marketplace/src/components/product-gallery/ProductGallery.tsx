@@ -77,11 +77,13 @@ function getPriceRangeMin(priceRange: string[]): number {
 }
 
 
+const MAX_VALUE = 9007199254740991; // Maximum safe integer in JavaScript
+
 function getPriceRangeMax(priceRange: string[]): number {
   if (!priceRange || priceRange.length === 0) return 0;
   const prices = priceRange.map(range => {
     const [min, max] = range.split('-').map(Number);
-    return max === undefined || isNaN(max) ? Number.POSITIVE_INFINITY : max;
+    return max === undefined || isNaN(max) ? MAX_VALUE : max;
   });
   prices.sort((a, b) => b - a); // Sort the prices in descending order
   return prices[0]; // Get the first (highest) value

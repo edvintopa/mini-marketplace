@@ -248,6 +248,7 @@ public class ProductController {
                 products = products.stream()
                         .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
                         .collect(Collectors.toList());
+                System.out.println(minPrice + " " + maxPrice);
             }
             List<ClothingGetResponse> response = new ArrayList<>();
             for (Product product : products) {
