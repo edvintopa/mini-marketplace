@@ -13,5 +13,6 @@ import java.util.UUID;
  */
 public interface UserInterestRepository extends JpaRepository<UserInterest, UUID> {
     List<UserInterest> findByInterest(String interest);
+    List<UserInterest> findByUserId(UUID userId);
 
 }
