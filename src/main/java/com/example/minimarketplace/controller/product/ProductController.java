@@ -127,6 +127,8 @@ public class ProductController {
                         product.getProductStatus().name(),
                         product.getSeller().getUsername(),
                         product.getDescription(),
+                        product.getSize().name(),
+                        product.getProductCondition().name(),
                         product.getDatePosted());
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{

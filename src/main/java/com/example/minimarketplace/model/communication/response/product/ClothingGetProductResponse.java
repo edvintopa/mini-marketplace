@@ -10,6 +10,8 @@ public class ClothingGetProductResponse {
     private String status;
     private String sellerName;
     private String description;
+    private String productSize;
+    private String productCondition;
     private Date date_posted;
 
     public ClothingGetProductResponse(UUID productId,
@@ -18,6 +20,8 @@ public class ClothingGetProductResponse {
                                       String status,
                                       String sellerName,
                                       String description,
+                                      String productSize,
+                                      String productCondition,
                                       Date date_posted) {
         this.productId = productId;
         this.title = title;
@@ -25,6 +29,8 @@ public class ClothingGetProductResponse {
         this.status = status;
         this.sellerName = sellerName;
         this.description = description;
+        this.productSize = productSize;
+        this.productCondition =productCondition;
         this.date_posted = date_posted;
     }
 
@@ -54,5 +60,13 @@ public class ClothingGetProductResponse {
 
     public Date getDate_posted() {
         return date_posted;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public String getProductCondition() {
+        return productCondition;
     }
 }
