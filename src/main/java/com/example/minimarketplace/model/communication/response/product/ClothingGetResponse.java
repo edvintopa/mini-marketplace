@@ -18,6 +18,7 @@ public class ClothingGetResponse {
         return productId;
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -25,4 +26,6 @@ public class ClothingGetResponse {
     public double getPrice() {
         return price;
     }
+
+
 }

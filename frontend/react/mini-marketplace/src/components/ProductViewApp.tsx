@@ -10,7 +10,6 @@ export const ProductViewApp = () => {
         return <div>No product ID provided</div>;
     }
 
-    console.log('id1: ' + id);
     return (
         <div className='ProductViewWrapper'>
             <CurrentProductView id={id} />

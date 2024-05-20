@@ -224,7 +224,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-    @GetMapping(value ="/filterAll")
+    @PostMapping(value ="/filterAll")
     public ResponseEntity<?> filterProductsAll(@RequestBody ClothingFilterRequest filterRequest) {
         try {
             List<Product> products = productRepository.findAll();
@@ -243,12 +243,13 @@ public class ProductController {
                         .collect(Collectors.toList());
             }
 
-            if (filterRequest.getMinPrice() != 0 && filterRequest.getMaxPrice() != 0) {
+            if (filterRequest.getMaxPrice() != 0) {
                 double minPrice = filterRequest.getMinPrice();
                 double maxPrice = filterRequest.getMaxPrice();
                 products = products.stream()
                         .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
                         .collect(Collectors.toList());
+                System.out.println(minPrice + " " + maxPrice);
             }
             List<ClothingGetResponse> response = new ArrayList<>();
             for (Product product : products) {
