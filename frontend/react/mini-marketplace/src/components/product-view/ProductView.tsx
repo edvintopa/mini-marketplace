@@ -2,27 +2,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
 import {useEffect, useState} from "react";
-import { useUser } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 interface ProductViewProps {
   id: string;
 }
 
 export interface ProductInfo {
-    productId: string;
+    product_id: string;
     title: string;
-    price: number;
-    status: string;
     sellerName: string;
     description: string;
+    date_posted: string;
+    price: number;
+    imagePath: string;
+    url: string;
+    status: string;
     productSize : string;
     productCondition : string;
-    date_posted: string;
-    imagePath: string;
-url: string;
-manufacturer: string;
+    type: string;
+    manufacturer: string;
+    sex: string;
+    season: string;
 }
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
@@ -35,11 +35,10 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             console.log(JSON.stringify(data) + " received from database"); // Log the received data
 
             const productInfo: ProductInfo = {
-                productId: data.productId,
+                product_id: data.product_id,
                 sellerName: data.sellerName,
                 price: data.price,
                 title: data.title,
-                manufacturer: data.manufacturer,
                 imagePath: data.imagePath,
                 url: data.url,
                 description: data.description,
@@ -47,10 +46,15 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
                 status: data.status,
                 productSize : data.productSize,
                 productCondition : data.productCondition,
+                type : data.type,
+                manufacturer : data.manufacturer,
+                sex : data.sex,
+                season : data.season,
             };
 
             console.log(productInfo.imagePath + " is this ?")
             console.log(JSON.stringify(productInfo) + " is the product info");
+            console.log('Response: ', response.data);
             return productInfo;
         }
         return null;
@@ -60,16 +64,11 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
     }
 }
 
-
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
-    const { token, addToCart } = useUser();
-    const navigate = useNavigate();
-
 
     useEffect(() => {
         fetchProductById(id).then(product => setCurrentProduct(product));
-        console.log('Product:', currentProduct);
     }, [id]);
 
    /* if (currentProduct) {
@@ -79,21 +78,6 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     if (!currentProduct) {
         return <div>Loading...</div>;
     }
-
-    const handleAddToCart = async (event: React.MouseEvent) => {
-        if (!token) {
-            console.log("User is not logged in");
-            navigate("/login");
-            return;
-        }
-        console.log('Product to be added to cart:', currentProduct.productId);
-        const success = await addToCart(currentProduct.productId);
-        if (success) {
-            console.log("Product added to cart");
-        } else {
-            console.log("Failed to add product to cart");
-        }
-    };
 
     return (
         <div className="GeneralProductView">
@@ -105,7 +89,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
                 <div className="ProductViewButtons">
                     <button className="StatusBtn">{currentProduct.status}</button>
-                    <button className="AddToCartBtn" onClick={handleAddToCart}>Add to cart</button>
+                    <button className="AddToCartBtn">Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">
                     <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
@@ -114,6 +98,10 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                     <div className="productAttributes">
                         <span className="bubble">Size: {currentProduct.productSize}</span>
                         <span className="bubble">Condition: {currentProduct.productCondition}</span>
+                        <span className="bubble">Type: {currentProduct.type}</span>
+                        <span className="bubble">Manufacturer: {currentProduct.manufacturer}</span>
+                        <span className="bubble">Sex: {currentProduct.sex}</span>
+                        <span className="bubble">Season: {currentProduct.season}</span>
                     </div>
                     <p id="dateposted">{currentProduct.date_posted}</p>
                 </div>
@@ -121,3 +109,4 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
         </div>
     );
 };
+
