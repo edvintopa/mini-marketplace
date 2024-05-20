@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {SignupFormData, User, UserContextType, Order, Notification} from '../types/types';
+import {SignupFormData, User, UserContextType, Order, Notification, Product} from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -24,6 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sellOrders, setSellOrders] = useState<Order[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [listings, setListings] = useState<Product[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -196,6 +197,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
+    const getListings = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Order[]>(`http://localhost:8080/product/getmy`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setListings(response.data);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            setError('Error fetching orders:');
+        }
+    }, [token]);
+
     const addToCart = async (productId: string): Promise<boolean> => {
         if (!token) return false;
         const requestBody = { productId: productId };
@@ -323,7 +338,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
             token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
-            confirmOrder, rejectOrder, notifications, fetchNotifications }}>
+            confirmOrder, rejectOrder, notifications, fetchNotifications, addToCart,
+            listings, getListings }}>
             {children}
         </UserContext.Provider>
     );
