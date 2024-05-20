@@ -2,28 +2,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
 import {useEffect, useState} from "react";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 interface ProductViewProps {
   id: string;
 }
 
 export interface ProductInfo {
-    product_id: string;
+productId: string;
     title: string;
+    price: number;
+    status: string;
     sellerName: string;
     description: string;
-    date_posted: string;
-    price: number;
-    imagePath: string;
-    url: string;
-    status: string;
     productSize : string;
     productCondition : string;
-    type: string;
-    manufacturer: string;
-    sex: string;
-    season: string;
+    date_posted: string;
+    imagePath: string;
+url: string;
+type: string;
+manufacturer: string;
+sex: string;
+season: string;
 }
+
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
     try {
@@ -35,7 +39,7 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             console.log(JSON.stringify(data) + " received from database"); // Log the received data
 
             const productInfo: ProductInfo = {
-                product_id: data.product_id,
+                productId: data.productId,
                 sellerName: data.sellerName,
                 price: data.price,
                 title: data.title,
@@ -64,11 +68,16 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
     }
 }
 
+
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
+    const { token, addToCart } = useUser();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         fetchProductById(id).then(product => setCurrentProduct(product));
+        console.log('Product:', currentProduct);
     }, [id]);
 
    /* if (currentProduct) {
@@ -78,6 +87,21 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     if (!currentProduct) {
         return <div>Loading...</div>;
     }
+
+    const handleAddToCart = async (event: React.MouseEvent) => {
+        if (!token) {
+            console.log("User is not logged in");
+            navigate("/login");
+            return;
+        }
+        console.log('Product to be added to cart:', currentProduct.productId);
+        const success = await addToCart(currentProduct.productId);
+        if (success) {
+            console.log("Product added to cart");
+        } else {
+            console.log("Failed to add product to cart");
+        }
+    };
 
     return (
         <div className="GeneralProductView">
@@ -89,7 +113,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
                 <div className="ProductViewButtons">
                     <button className="StatusBtn">{currentProduct.status}</button>
-                    <button className="AddToCartBtn">Add to cart</button>
+                    <button className="AddToCartBtn" onClick={handleAddToCart}>Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">
                     <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon
@@ -103,6 +127,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                         <span className="bubble">Sex: {currentProduct.sex}</span>
                         <span className="bubble">Season: {currentProduct.season}</span>
                     </div>
+
                     <p id="dateposted">{currentProduct.date_posted}</p>
                 </div>
             </div>
