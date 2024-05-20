@@ -27,7 +27,10 @@ const SavedProductsPanel: React.FC<SavedProductsPanelProps> = ({ className, togg
                 <h4>Notifications</h4>
                 <ul>
                     {notifications.map((notification, index) => (
-                        <li key={index}>{notification.category}</li>
+                        <li key={index}>
+                            <div>{notification.category}</div>
+                            <div>{notification.dateOfNotification}</div>
+                        </li>
                     ))}
                 </ul>
             </aside>

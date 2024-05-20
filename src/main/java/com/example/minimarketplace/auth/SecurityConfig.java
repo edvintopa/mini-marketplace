@@ -46,7 +46,8 @@ public class SecurityConfig  {
                 .requestMatchers("/user/login",
                                     "user/register",
                                     "product/get",
-                                    "product/getProduct").permitAll()
+                                    "product/getProduct",
+                                    "product/filterAll").permitAll()
                 .anyRequest().permitAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

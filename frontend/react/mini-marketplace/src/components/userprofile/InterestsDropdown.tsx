@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from '../../context/UserContext';
@@ -19,11 +19,21 @@ const interestsOptions = [
 ];
 
 const InterestsDropdown: React.FC = () => {
-    const { user, setUserInterests } = useUser();
+    const { user, setUserInterests, fetchInterests, fetchedInterests } = useUser();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedInterests, setSelectedInterests] = useState<string[]>(user?.interests || []);
     const [isSaving, setIsSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState('');
+
+    useEffect(() => {
+        if(user) {
+            fetchInterests();
+        }
+    }, [user, fetchInterests]);
+
+    useEffect(() => {
+        setSelectedInterests(fetchedInterests)
+    }, [fetchedInterests]);
 
     const toggle = () => {
         setIsOpen(!isOpen);

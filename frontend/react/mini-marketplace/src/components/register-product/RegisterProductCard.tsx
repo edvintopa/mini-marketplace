@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import '../../CSS-files/index.css';
 
 const conditions = [
@@ -46,7 +47,9 @@ export const RegisterProductCard: React.FC = () => {
         price: 0,
     });
 
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const { token } = useUser();
+    const navigate = useNavigate(); //
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -87,6 +90,11 @@ export const RegisterProductCard: React.FC = () => {
     const postProduct = async (event: React.FormEvent) => {
         event.preventDefault();
 
+        if (!formData.title || !formData.description || !formData.manufacturer || !formData.price) {
+            setErrorMessage('Error creating product. Please fill out all fields'); //null handling (except image)
+            return;
+        }
+
         const productData = {
             ...formData,
             productcondition: condition,
@@ -106,11 +114,15 @@ export const RegisterProductCard: React.FC = () => {
                 },
             });
             console.log('Product created:', response.data);
+            alert('Product was successfully created!'); //inform user
+            navigate(`/ProductGallery`); //redirect to gallery view
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Failed to create product:', error.response?.data || error.message);
+                setErrorMessage('Failed to create product');
+                console.error(errorMessage);
             } else {
                 console.log('Unexpected error:', error);
+                setErrorMessage('Unexpected error occurred when creating product');
             }
         }
     };
@@ -201,6 +213,7 @@ export const RegisterProductCard: React.FC = () => {
                     </select>
                 </div>
                 <button type="submit" className="product-submit-btn">Post product</button>
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
             </form>
         </div>
     );

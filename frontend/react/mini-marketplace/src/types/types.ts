@@ -17,6 +17,13 @@ export interface TextFieldComponentTypes {
     textFieldTitle: string;
 }
 
+export interface ClothingFilterRequest {
+    clothingType: string;
+    productCondition: string;
+    minPrice: number;
+    maxPrice: number;
+}
+
 export interface Notification {
     "category": string,
     "dateOfNotification": string
@@ -38,6 +45,7 @@ export interface UserContextType {
     orders: Order[];
     sellOrders: Order[];
     notifications: Notification[];
+    fetchedInterests: string[];
     listings: Product[];
     //updateUser: (user: User) => void;
     fetchUser: (username: string) => void;
@@ -51,6 +59,7 @@ export interface UserContextType {
     confirmOrder: (id: string) => Promise<boolean>;
     rejectOrder: (id: string) => Promise<boolean>;
     fetchNotifications: () => Promise<void>;
+    fetchInterests: () => Promise<void>;
     getListings: () => Promise<void>;
     addToCart: (productId: string) => Promise<boolean>
 }

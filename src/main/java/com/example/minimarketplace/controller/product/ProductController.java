@@ -71,7 +71,8 @@ public class ProductController {
                 response.add(new ClothingGetResponse(
                         product.getProductId(),
                         product.getTitle(),
-                        product.getPrice()
+                        product.getPrice(),
+                        product.getImagePath()
                 ));
             }
 
@@ -103,7 +104,8 @@ public class ProductController {
                 ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
                         product.getProductId(),
                         product.getTitle(),
-                        product.getPrice()
+                        product.getPrice(),
+                        product.getImagePath()
                 );
                 response.add(clothingGetResponse);
             }
@@ -114,20 +116,24 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/getProduct")
-    public ResponseEntity getProductById(@RequestBody ClothingGetProductRequest productId){
+    @GetMapping(value = "/getProduct/{productId}")
+    public ResponseEntity getProductById(@PathVariable UUID productId){
         try{
-            UUID productIdNew = (productId.getProductId());
-            Clothing product = (Clothing) productRepository.findById(productIdNew).orElse(null);
+            Clothing product = (Clothing) productRepository.findById(productId).orElse(null);
 
             if (product != null){
-                ClothingGetProductResponse response = new ClothingGetProductResponse(productIdNew,
+                ClothingGetProductResponse response = new ClothingGetProductResponse(productId,
                         product.getTitle(),
                         product.getPrice(),
                         product.getProductStatus().name(),
                         product.getSeller().getUsername(),
                         product.getDescription(),
-                        product.getDatePosted());
+                        product.getSize().name(),
+                        product.getProductCondition().name(),
+                        product.getDatePosted(),
+                        product.getImagePath()
+                 );
+
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             }else{
                 return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
@@ -222,7 +228,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-    @GetMapping(value ="/filterAll")
+    @PostMapping(value ="/filterAll")
     public ResponseEntity<?> filterProductsAll(@RequestBody ClothingFilterRequest filterRequest) {
         try {
             List<Product> products = productRepository.findAll();
@@ -241,12 +247,13 @@ public class ProductController {
                         .collect(Collectors.toList());
             }
 
-            if (filterRequest.getMinPrice() != 0 && filterRequest.getMaxPrice() != 0) {
+            if (filterRequest.getMaxPrice() != 0) {
                 double minPrice = filterRequest.getMinPrice();
                 double maxPrice = filterRequest.getMaxPrice();
                 products = products.stream()
                         .filter(product -> product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
                         .collect(Collectors.toList());
+                System.out.println(minPrice + " " + maxPrice);
             }
             List<ClothingGetResponse> response = new ArrayList<>();
             for (Product product : products) {
