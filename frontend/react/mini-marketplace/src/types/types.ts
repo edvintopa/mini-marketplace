@@ -41,6 +41,12 @@ export interface SignupFormData {
 export interface UserContextType {
     user: User | null;
     error: string;
+    token: string | null;
+    orders: Order[];
+    sellOrders: Order[];
+    notifications: Notification[];
+    fetchedInterests: string[];
+    listings: Product[];
     //updateUser: (user: User) => void;
     fetchUser: (username: string) => void;
     loginUser: (username: string, password: string) => Promise<boolean>;
@@ -52,13 +58,24 @@ export interface UserContextType {
     getSellOrders: () => Promise<void>;
     confirmOrder: (id: string) => Promise<boolean>;
     rejectOrder: (id: string) => Promise<boolean>;
-    token: string | null;
-    orders: Order[];
-    sellOrders: Order[];
-    notifications: Notification[];
     fetchNotifications: () => Promise<void>;
-    fetchedInterests: string[];
     fetchInterests: () => Promise<void>;
+    getListings: () => Promise<void>;
+    addToCart: (productId: string) => Promise<boolean>;
+}
+
+export interface Product {
+    productId: string;
+    seller: User;
+    title: string;
+    description: string;
+    manufacturer: string;
+    datePosted: string;
+    price: number;
+    productCondition: string;
+    productStatus: string;
+    productColor: string;
+    imagePath: string;
 }
 
 export interface Order {

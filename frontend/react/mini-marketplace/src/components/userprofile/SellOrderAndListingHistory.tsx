@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import { Order } from '../../types/types';
-import '../../CSS-files/orderHistory.css';
 import { useUser } from '../../context/UserContext';
+import '../../CSS-files/orderHistory.css';
 
-const SellOrderHistory: React.FC = () => {
+const SellOrderAndListingHistory: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { sellOrders, getSellOrders, confirmOrder, rejectOrder } = useUser();
+    const { sellOrders, getSellOrders, confirmOrder, rejectOrder, listings, getListings } = useUser();
+
     const toggle = () => {
         setIsOpen(!isOpen);
     };
 
     useEffect(() => {
         getSellOrders();
-    }, [getSellOrders]);
+        getListings();
+    }, [getSellOrders, getListings]);
 
     const formatDate = (dateString: string) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -33,13 +34,35 @@ const SellOrderHistory: React.FC = () => {
         <div className="order-history-parent">
             <div className="order-action-button">
                 <button onClick={toggle}>
-                    <span>Sell Order History</span>
+                    <span>Listings & Sell Orders</span>
                     {isOpen ? <FontAwesomeIcon className="order-history-icon" icon={faAngleUp} />
                     : <FontAwesomeIcon className="order-history-icon" icon={faAngleDown} /> }
                 </button>
             </div>
             <div className={`order-history-container ${isOpen ? 'visible' : ''}`}>
                 {isOpen && (
+                    <>
+                    <h3>Listings</h3>
+                    <table className="order-table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listings.map(listing => (
+                                <tr key={listing.productId}>
+                                    <td>{listing.productId}</td>
+                                    <td>{listing.title}</td>
+                                    <td>{listing.price}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    <h3>Sell Orders</h3>
                     <table className="order-table">
                         <thead>
                             <tr>
@@ -74,11 +97,12 @@ const SellOrderHistory: React.FC = () => {
                             ))}
                         </tbody>
                     </table>
+                    </>
                 )}
             </div>
         </div>
     );
 };
 
-export default SellOrderHistory;
+export default SellOrderAndListingHistory;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShop, faCartShopping, faTimes, faHeart, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShop, faCartShopping, faTimes, faBell, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/useTheme";
@@ -15,7 +15,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
 
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const { user, logoutUser } = useUser();
+    const { logoutUser } = useUser();
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
 
@@ -58,7 +58,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
             </div>
             <div className="nav-right">
                 <button className="toggle-saved-products-btn" onClick={toggleSavedProducts}>
-                    {isSavedProductsVisible ? <FontAwesomeIcon icon = {faTimes} /> : <FontAwesomeIcon icon = {faHeart} />}
+                    {isSavedProductsVisible ? <FontAwesomeIcon icon = {faTimes} /> : <FontAwesomeIcon icon = {faBell} />}
                 </button>
                 <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
                 <a href="#" onClick={(event) => toggleDropdown(event)} className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>

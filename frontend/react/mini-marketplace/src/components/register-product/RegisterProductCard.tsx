@@ -15,7 +15,7 @@ const colors = [
 ];
 
 const seasons = [
-    'SPRING', 'SUMMER', 'AUTUMN', 'WINTER',
+    'SPRING', 'SUMMER', 'AUTUMN', 'WINTER', 'ALL_SEASON',
 ];
 
 const types = [

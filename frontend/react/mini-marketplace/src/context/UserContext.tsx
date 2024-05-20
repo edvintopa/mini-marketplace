@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {SignupFormData, User, UserContextType, Order, Notification} from '../types/types';
+import {SignupFormData, User, UserContextType, Order, Notification, Product} from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -24,6 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sellOrders, setSellOrders] = useState<Order[]>([]);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [listings, setListings] = useState<Product[]>([]);
     const [fetchedInterests, setFetchedInterests] = useState<string[]>([]);
 
     useEffect(() => {
@@ -211,9 +212,42 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
+    const getListings = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<Product[]>(`http://localhost:8080/product/getmy`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            setListings(response.data);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            setError('Error fetching orders:');
+        }
+    }, [token]);
 
-
-
+    const addToCart = async (productId: string): Promise<boolean> => {
+        if (!token) return false;
+        const requestBody = { productId };
+        try {
+            const response = await axios.post(`http://localhost:8080/cart/add`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                console.log('Product added to cart:', productId);
+                return true;
+            } else {
+                setError('Failed to add product to cart.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to add product to cart:', error);
+            setError('Failed to add product to cart.');
+            return false;
+        }
+    };
 
     const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
@@ -236,8 +270,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 const user = userResponse.data;
                 setUser(user);
                 localStorage.setItem('user', JSON.stringify(user));
-
-
                 console.log('Login successful for user:', username);
                 return true;
             } else {
@@ -321,7 +353,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         <UserContext.Provider value={{
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
             token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
-            confirmOrder, rejectOrder, notifications, fetchNotifications, fetchedInterests, fetchInterests }}>
+            confirmOrder, rejectOrder, notifications, fetchNotifications, fetchedInterests,
+            fetchInterests, addToCart, listings, getListings }}>
             {children}
         </UserContext.Provider>
     );
