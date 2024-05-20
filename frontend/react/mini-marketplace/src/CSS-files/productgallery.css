@@ -39,8 +39,7 @@
     width: fit-content;
 }
 
-.FilterTagButton {
-    position: relative;
+.ApplyFilterTagButton {
     z-index: 1;
     width: fit-content;
     font-size: 17px;
@@ -50,7 +49,6 @@
     border: 2px solid rgb(132, 132, 132);
     border-radius: 24px;
     background-color: #c4b5fd;
-    margin-left: 100px;
 }
 
 .FilterTagGallery {
@@ -100,6 +98,7 @@
 }
 
 .dropdown-filter ul.items {
+    width: 100%;
     font-family: inter;
     padding: 2px;
     display: none;
@@ -112,6 +111,7 @@
 }
 
 .dropdown-filter ul.items li {
+    width: fit-content;
     list-style: none;
 }
 
@@ -120,5 +120,5 @@
 }
 
 .dropdown-filter .visible .items {
-    display: block;
+    list-style: none;
 }

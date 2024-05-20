@@ -31,6 +31,14 @@ export interface SignupFormData {
     dateOfBirth: string,
 }
 
+export interface ClothingFilterRequest {
+    clothingType: string;
+    productCondition: string;
+    minPrice: number;
+    maxPrice: number;
+}
+
+
 export interface UserContextType {
     user: User | null;
     error: string;

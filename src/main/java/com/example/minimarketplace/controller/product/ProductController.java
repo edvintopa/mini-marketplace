@@ -224,6 +224,7 @@ public class ProductController {
     }
     @GetMapping(value ="/filterAll")
     public ResponseEntity<?> filterProductsAll(@RequestBody ClothingFilterRequest filterRequest) {
+        System.out.println(filterRequest.getClothingType() + " " + filterRequest.getProductCondition() + " " + filterRequest.getMinPrice() + " " + filterRequest.getMaxPrice());
         try {
             List<Product> products = productRepository.findAll();
 
