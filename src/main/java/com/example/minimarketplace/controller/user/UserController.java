@@ -201,10 +201,33 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getinterests")
+    public ResponseEntity getUserInterests(@RequestHeader("Authorization") String token) {
+        try{
+            UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            List<UserInterest> interests = userInterestRepository.findByUserId(userId);
+            List<String> response = new ArrayList<>();
+
+            for (UserInterest interest : interests) {
+                response.add(interest.getInterest());
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
+        }
+    }
+
     @PostMapping("/setinterests")
     public ResponseEntity setUserInterests(@RequestHeader("Authorization") String token, @RequestBody SetInterestRequest request) {
         try {
             UUID userId = tokenResolverService.resolveTokenToUserId(token);
+            List<UserInterest> oldInterests = userInterestRepository.findByUserId(userId);
+
+            for (UserInterest oldInterest : oldInterests) {
+                userInterestRepository.delete(oldInterest);
+            }
 
             for (String interest : request.getInterests()) {
                 userInterestRepository.save(new UserInterest(
