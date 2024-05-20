@@ -5,23 +5,24 @@ import {useEffect, useState} from "react";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 interface ProductViewProps {
   id: string;
 }
 
 export interface ProductInfo {
-    product_id: string;
+    productId: string;
     title: string;
+    price: number;
+    status: string;
     sellerName: string;
     description: string;
-    manufacturer: string;
-    date_posted: string;
-    price: number;
-    imagePath: string;
-    url: string;
-    productStatus: string;
     productSize : string;
     productCondition : string;
+    date_posted: string;
+    imagePath: string;
+url: string;
+manufacturer: string;
 }
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
@@ -34,7 +35,7 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
             console.log(JSON.stringify(data) + " received from database"); // Log the received data
 
             const productInfo: ProductInfo = {
-                product_id: data.product_id,
+                productId: data.productId,
                 sellerName: data.sellerName,
                 price: data.price,
                 title: data.title,
@@ -43,13 +44,13 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
                 url: data.url,
                 description: data.description,
                 date_posted: data.date_posted.split('T')[0], //removed timestamp
-                productStatus: data.productStatus,
+                status: data.status,
                 productSize : data.productSize,
                 productCondition : data.productCondition,
             };
 
             console.log(productInfo.imagePath + " is this ?")
-            console.log(JSON.stringify(productInfo.productStatus) + " is the product info");
+            console.log(JSON.stringify(productInfo) + " is the product info");
             return productInfo;
         }
         return null;
@@ -68,6 +69,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
 
     useEffect(() => {
         fetchProductById(id).then(product => setCurrentProduct(product));
+        console.log('Product:', currentProduct);
     }, [id]);
 
    /* if (currentProduct) {
@@ -84,7 +86,8 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
             navigate("/login");
             return;
         }
-        const success = await addToCart(currentProduct.product_id);
+        console.log('Product to be added to cart:', currentProduct.productId);
+        const success = await addToCart(currentProduct.productId);
         if (success) {
             console.log("Product added to cart");
         } else {
@@ -101,7 +104,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 <h3 className="TitleOfProduct">{currentProduct.title}</h3>
                 <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
                 <div className="ProductViewButtons">
-                    <button className="StatusBtn">{currentProduct.productStatus}</button>
+                    <button className="StatusBtn">{currentProduct.status}</button>
                     <button className="AddToCartBtn" onClick={handleAddToCart}>Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">

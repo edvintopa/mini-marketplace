@@ -228,7 +228,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     const addToCart = async (productId: string): Promise<boolean> => {
         if (!token) return false;
-        const requestBody = { productId: productId };
+        const requestBody = { productId };
         try {
             const response = await axios.post(`http://localhost:8080/cart/add`, requestBody, {
                 headers: {

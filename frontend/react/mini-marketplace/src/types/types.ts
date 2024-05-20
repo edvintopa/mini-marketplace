@@ -61,7 +61,7 @@ export interface UserContextType {
     fetchNotifications: () => Promise<void>;
     fetchInterests: () => Promise<void>;
     getListings: () => Promise<void>;
-    addToCart: (productId: string) => Promise<boolean>
+    addToCart: (productId: string) => Promise<boolean>;
 }
 
 export interface Product {
