@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {SignupFormData, User, UserContextType, Order, Notification, Product} from '../types/types';
+import {SignupFormData, User, UserContextType, Order, Notification, Product, ProductInfo} from '../types/types';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
@@ -26,6 +26,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [listings, setListings] = useState<Product[]>([]);
     const [fetchedInterests, setFetchedInterests] = useState<string[]>([]);
+    const [cartItems, setCartItems] = useState<ProductInfo[]>([]);
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -117,6 +118,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             setError('Error fetching orders:');
         }
     }, [token]);
+
+    const createOrder = async (productId: string): Promise<boolean> => {
+        if (!token) return false;
+        const requestBody = { id: productId };
+        try {
+            const response = await axios.post(`http://localhost:8080/order/create`, requestBody, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.status === 201) {
+                setCartItems(prevItems => prevItems.filter(item => item.productId !== productId));
+                console.log('Order created for product:', productId);
+                return true;
+            } else {
+                setError('Failed to create order.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to create order:', error);
+            setError('Failed to create order.');
+            return false;
+        }
+    };
 
     const cancelOrder = async (orderId: string) => {
         if (!token) return false;
@@ -249,6 +272,65 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
+    const fetchCartItems = useCallback(async () => {
+        if (!token) return;
+        try {
+            const response = await axios.get<string[]>(`http://localhost:8080/cart/get`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data);
+            // Assume getProductsByIds is a function that fetches products by their IDs
+            const productResponses = await Promise.all(response.data.map(id => axios.get<Product>(`http://localhost:8080/product/getProduct/${id}`)));
+            setCartItems(productResponses.map(res => res.data));
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+            setError('Error fetching cart items:');
+        }
+    }, [token]);
+
+    const removeFromCart = async (productId: string): Promise<boolean> => {
+        if (!token) return false;
+        const requestBody = { productId };
+        try {
+            const response = await axios.post(`http://localhost:8080/cart/remove`, requestBody, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.status === 200) {
+                setCartItems(prevItems => prevItems.filter(item => item.productId !== productId));
+                console.log('Product removed from cart:', productId);
+                return true;
+            } else {
+                setError('Failed to remove product from cart.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to remove product from cart:', error);
+            setError('Failed to remove product from cart.');
+            return false;
+        }
+    };
+
+    const clearCart = async (): Promise<boolean> => {
+        if (!token) return false;
+        try {
+            const response = await axios.get(`http://localhost:8080/cart/clear`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.status === 200) {
+                setCartItems([]);
+                console.log('Cart cleared');
+                return true;
+            } else {
+                setError('Failed to clear cart.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to clear cart:', error);
+            setError('Failed to clear cart.');
+            return false;
+        }
+    };
+
     const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
             const response = await axios.post<{ username: string, token: string }>(`http://localhost:8080/user/login`, {
@@ -354,7 +436,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             user, fetchUser, loginUser, logoutUser, signupUser, setUserInterests,
             token, error, fetchOrders, orders, cancelOrder, getSellOrders, sellOrders,
             confirmOrder, rejectOrder, notifications, fetchNotifications, fetchedInterests,
-            fetchInterests, addToCart, listings, getListings }}>
+            fetchInterests, addToCart, listings, getListings, fetchCartItems, cartItems,
+            removeFromCart, clearCart, createOrder }}>
             {children}
         </UserContext.Provider>
     );

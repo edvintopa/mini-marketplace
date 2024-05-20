@@ -60,7 +60,7 @@ const NavbarLoggedIn: React.FC<NavbarLoggedInProps> = ({ toggleSavedProducts, is
                 <button className="toggle-saved-products-btn" onClick={toggleSavedProducts}>
                     {isSavedProductsVisible ? <FontAwesomeIcon icon = {faTimes} /> : <FontAwesomeIcon icon = {faBell} />}
                 </button>
-                <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
+                <a href="/cart"><FontAwesomeIcon icon={faCartShopping} /></a>
                 <a href="#" onClick={(event) => toggleDropdown(event)} className="nav-right" id="profileIcon"><FontAwesomeIcon icon={faUser} /></a>
                 <div className={`dropdown-menu ${isDropdownVisible ? 'visible' : ''}`} ref={dropdownRef}>
                     <a href="/profile">View Profile</a>

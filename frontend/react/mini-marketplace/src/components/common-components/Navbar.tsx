@@ -1,8 +1,6 @@
 import "../../CSS-files/index.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShop, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-//import '../script/Search.tsx';
-// @ts-ignore
+import { faShop } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
@@ -27,7 +25,7 @@ const Navbar: React.FC = () => {
             <input className="nav-search" type="text" placeholder="Search" onKeyDown={handleSearch} />
             </div>
             <div className="nav-right">
-                <a href="#"><FontAwesomeIcon icon={faCartShopping} /></a>
+
                 <a href="/signup">Signup</a>
                 <a href="/login">Login</a>
             </div>

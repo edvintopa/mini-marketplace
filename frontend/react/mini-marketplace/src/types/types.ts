@@ -47,6 +47,7 @@ export interface UserContextType {
     notifications: Notification[];
     fetchedInterests: string[];
     listings: Product[];
+    cartItems: ProductInfo[];
     //updateUser: (user: User) => void;
     fetchUser: (username: string) => void;
     loginUser: (username: string, password: string) => Promise<boolean>;
@@ -62,6 +63,10 @@ export interface UserContextType {
     fetchInterests: () => Promise<void>;
     getListings: () => Promise<void>;
     addToCart: (productId: string) => Promise<boolean>;
+    fetchCartItems: () => Promise<void>;
+    removeFromCart: (productId: string) => Promise<boolean>;
+    clearCart: () => Promise<boolean>;
+    createOrder: (productId: string) => Promise<boolean>;
 }
 
 export interface Product {
@@ -76,6 +81,24 @@ export interface Product {
     productStatus: string;
     productColor: string;
     imagePath: string;
+}
+
+export interface ProductInfo {
+productId: string;
+    title: string;
+    price: number;
+    status: string;
+    sellerName: string;
+    description: string;
+    productSize : string;
+    productCondition : string;
+    date_posted: string;
+    imagePath: string;
+url: string;
+type: string;
+manufacturer: string;
+sex: string;
+season: string;
 }
 
 export interface Order {
