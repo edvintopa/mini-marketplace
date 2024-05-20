@@ -2,6 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "../../CSS-files/productview.css";
 import {useEffect, useState} from "react";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
+
 interface ProductViewProps {
   id: string;
 }
@@ -51,8 +54,12 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
     }
 }
 
+
 export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
     const [currentProduct, setCurrentProduct] = useState<ProductInfo | null>(null);
+    const { token, addToCart } = useUser();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         fetchProductById(id).then(product => setCurrentProduct(product));
@@ -66,6 +73,20 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
         return <div>Loading...</div>;
     }
 
+    const handleAddToCart = async (event: React.MouseEvent) => {
+        if (!token) {
+            console.log("User is not logged in");
+            navigate("/login");
+            return;
+        }
+        const success = await addToCart(currentProduct.product_id);
+        if (success) {
+            console.log("Product added to cart");
+        } else {
+            console.log("Failed to add product to cart");
+        }
+    };
+
     return (
         <div className="GeneralProductView">
             <div className="ProductViewImage">
@@ -76,7 +97,7 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                 <h4 className="PriceOfProduct">{currentProduct.price} kr</h4>
                 <div className="ProductViewButtons">
                     <button className="StatusBtn">{currentProduct.productStatus}</button>
-                    <button className="AddToCartBtn">Add to cart</button>
+                    <button className="AddToCartBtn" onClick={handleAddToCart}>Add to cart</button>
                 </div>
                 <div className="DescriptionInfo">
                     <a href="/profile" className="userProfile" id="profileIcon"><FontAwesomeIcon

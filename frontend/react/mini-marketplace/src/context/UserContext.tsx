@@ -196,9 +196,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     };
 
-
-
-
+    const addToCart = async (productId: string): Promise<boolean> => {
+        if (!token) return false;
+        const requestBody = { productId: productId };
+        try {
+            const response = await axios.post(`http://localhost:8080/cart/add`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.status === 200) {
+                console.log('Product added to cart:', productId);
+                return true;
+            } else {
+                setError('Failed to add product to cart.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to add product to cart:', error);
+            setError('Failed to add product to cart.');
+            return false;
+        }
+    };
 
     const loginUser = async (username: string, password: string): Promise<boolean> => {
         try {
@@ -221,8 +240,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 const user = userResponse.data;
                 setUser(user);
                 localStorage.setItem('user', JSON.stringify(user));
-
-
                 console.log('Login successful for user:', username);
                 return true;
             } else {
