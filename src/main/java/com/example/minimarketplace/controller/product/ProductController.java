@@ -128,10 +128,14 @@ public class ProductController {
                         product.getProductStatus().name(),
                         product.getSeller().getUsername(),
                         product.getDescription(),
-                        product.getSize().name(),
-                        product.getProductCondition().name(),
                         product.getDatePosted(),
-                        product.getImagePath()
+                        product.getImagePath(),
+                        product.getType().name(),
+                        product.getManufacturer(),
+                        product.getSex().name(),
+                        product.getSeason().name(),
+                        product.getSize().name(),
+                        product.getProductCondition().name()
                  );
 
                 return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -324,3 +328,4 @@ public class ProductController {
 //        }
 //    }
 }
+

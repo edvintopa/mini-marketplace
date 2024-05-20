@@ -6,15 +6,12 @@ import SellOrderAndListingHistory from './SellOrderAndListingHistory';
 import EditProfile from './EditProfile';
 import InterestsDropdown from './InterestsDropdown';
 import { useUser } from '../../context/UserContext';
-import { Order, User } from '../../types/types';
+import { User } from '../../types/types';
 
 
-interface ProfileProps {
-    orders: Order[];
-}
 
 
-const Profile: React.FC<ProfileProps> = () => {
+const Profile: React.FC = () => {
     const { user, orders, fetchOrders } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [editableUser, setEditableUser] = useState<User | null>(null);

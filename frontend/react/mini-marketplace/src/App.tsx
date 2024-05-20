@@ -9,11 +9,11 @@ import { LoginPageApp } from "./components/LoginPageApp";
 import { SignUpApp } from "./components/SignUpApp";
 import SavedProductsPanel from './components/common-components/SavedProductsPanel';
 import Profile from './components/userprofile/Profile';
-
 import { useUser } from './context/UserContext';
 import axios from 'axios';
 import { RegisterProductApp } from './components/RegisterProductApp.tsx';
 import {ProductViewApp} from "./components/ProductViewApp.tsx";
+import Cart from './components/userprofile/Cart';
 
 axios.interceptors.request.use(
     config => {
@@ -31,18 +31,6 @@ axios.interceptors.request.use(
 const App = () => {
     const [isSavedProductsVisible, setSavedProductsVisible] = useState(false);
 
-    const [orders, setOrders] = useState([
-        {
-            id: 1,
-            description: 'Black Hoodie',
-            date: '2024-04-18',
-        },
-        {
-            id: 2,
-            description: 'Black jeans',
-            date: '2024-04-29',
-        },
-    ]);
 
     const toggleSavedProducts = () => {
         setSavedProductsVisible(!isSavedProductsVisible);
@@ -71,9 +59,9 @@ const App = () => {
                 <Route path="/login" element={<LoginPageApp />} />{" "}
                 {/* to be fixed */}
                 <Route path="/productview/:id" element={<ProductViewApp />} />
-
+                <Route path="/cart" element={<Cart />} /> 
                <Route path="/createproduct" element={<RegisterProductApp />} />
-               <Route path="/profile" element={<Profile orders={orders} />} />
+               <Route path="/profile" element={<Profile />} />
                
             </Routes>
             <Footer />

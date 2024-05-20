@@ -11,7 +11,7 @@ interface ProductViewProps {
 }
 
 export interface ProductInfo {
-    productId: string;
+productId: string;
     title: string;
     price: number;
     status: string;
@@ -22,8 +22,12 @@ export interface ProductInfo {
     date_posted: string;
     imagePath: string;
 url: string;
+type: string;
 manufacturer: string;
+sex: string;
+season: string;
 }
+
 
 async function fetchProductById(id: string): Promise<ProductInfo | null> {
     try {
@@ -39,7 +43,6 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
                 sellerName: data.sellerName,
                 price: data.price,
                 title: data.title,
-                manufacturer: data.manufacturer,
                 imagePath: data.imagePath,
                 url: data.url,
                 description: data.description,
@@ -47,10 +50,15 @@ async function fetchProductById(id: string): Promise<ProductInfo | null> {
                 status: data.status,
                 productSize : data.productSize,
                 productCondition : data.productCondition,
+                type : data.type,
+                manufacturer : data.manufacturer,
+                sex : data.sex,
+                season : data.season,
             };
 
             console.log(productInfo.imagePath + " is this ?")
             console.log(JSON.stringify(productInfo) + " is the product info");
+            console.log('Response: ', response.data);
             return productInfo;
         }
         return null;
@@ -114,10 +122,16 @@ export const CurrentProductView: React.FC<ProductViewProps> = ({ id }) => {
                     <div className="productAttributes">
                         <span className="bubble">Size: {currentProduct.productSize}</span>
                         <span className="bubble">Condition: {currentProduct.productCondition}</span>
+                        <span className="bubble">Type: {currentProduct.type}</span>
+                        <span className="bubble">Manufacturer: {currentProduct.manufacturer}</span>
+                        <span className="bubble">Sex: {currentProduct.sex}</span>
+                        <span className="bubble">Season: {currentProduct.season}</span>
                     </div>
+
                     <p id="dateposted">{currentProduct.date_posted}</p>
                 </div>
             </div>
         </div>
     );
 };
+

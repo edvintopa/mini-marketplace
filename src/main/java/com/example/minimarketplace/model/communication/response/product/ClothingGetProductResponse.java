@@ -10,50 +10,42 @@ public class ClothingGetProductResponse {
     private String status;
     private String sellerName;
     private String description;
-    private String productSize;
-    private String productCondition;
     private Date date_posted;
     private String imagePath;
-
+    private String type;
+    private String manufacturer;
+    private String sex;
+    private String season;
+    private String productSize;
+    private String productCondition;
     public ClothingGetProductResponse(UUID productId,
                                       String title,
                                       double price,
                                       String status,
                                       String sellerName,
                                       String description,
+                                      Date date_posted,
+                                      String imagePath,
+                                      String type,
+                                      String manufacturer,
+                                      String sex,
+                                      String season,
                                       String productSize,
-                                      String productCondition,
-                                      Date date_posted) {
+                                      String productCondition) {
         this.productId = productId;
         this.title = title;
         this.price = price;
         this.status = status;
         this.sellerName = sellerName;
         this.description = description;
-        this.productSize = productSize;
-        this.productCondition =productCondition;
-        this.date_posted = date_posted;
-    }
-
-    public ClothingGetProductResponse(UUID productId,
-                                      String title,
-                                      double price,
-                                      String status,
-                                      String sellerName,
-                                      String description,
-                                      String productSize,
-                                      String productCondition,
-                                      Date date_posted, String imagePath) {
-        this.productId = productId;
-        this.title = title;
-        this.price = price;
-        this.status = status;
-        this.sellerName = sellerName;
-        this.description = description;
-        this.productSize = productSize;
-        this.productCondition =productCondition;
         this.date_posted = date_posted;
         this.imagePath = imagePath;
+        this.type = type;
+        this.manufacturer = manufacturer;
+        this.sex = sex;
+        this.season = season;
+        this.productSize = productSize;
+        this.productCondition = productCondition;
     }
 
     public UUID getProductId() {
@@ -84,15 +76,33 @@ public class ClothingGetProductResponse {
         return date_posted;
     }
 
-    public String getProductSize() {
-        return productSize;
+    public String getType() {
+        return type;
     }
 
-    public String getProductCondition() {
-        return productCondition;
+    public String getManufacturer() {
+        return manufacturer;
     }
-  
-    public String getImagePath() {
-        return imagePath;
+
+    public String getSex() {
+        return sex;
     }
+
+    public String getSeason() {
+        return season;
+    }
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public String getProductSize() {
+		return productSize;
+	}
+
+	public String getProductCondition() {
+		return productCondition;
+	}
 }
+
+
