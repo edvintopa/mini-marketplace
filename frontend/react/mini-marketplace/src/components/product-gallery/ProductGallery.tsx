@@ -7,7 +7,7 @@ import axios from 'axios';
 export interface ProductInfo {
   product_id: string;
   title: string;
-  name: string;
+  username: string;
   price: number;
   imagePath: string;
   url: string;
@@ -45,15 +45,18 @@ export async function fetchProductsByFilter(filterTerms: any): Promise<ProductIn
       minPrice: getPriceRangeMin(filterTerms['Price range']),
       maxPrice: getPriceRangeMax(filterTerms['Price range']),
     };
-
-    console.log(requestBody.clothingType + " is the clothing type");
-    console.log(requestBody.productCondition + " is the product condition");
-    console.log(requestBody.minPrice + " is the min price");
-    console.log(requestBody.maxPrice + " is the max price");
-
     // Send the filter terms in the request body
     const response = await axios.post<ProductInfo[]>(`http://localhost:8080/product/filterAll`, requestBody);
-    const products = response.data;
+    const data = response.data;
+
+    const products: ProductInfo[] = data.map((product: any) => ({
+      product_id: product.productId,
+      title: product.title,
+      username: product.username,
+      price: product.price,
+      imagePath: product.imagePath,
+      url: product.url,
+    }));
 
     console.log('Received filter terms:', requestBody);
     console.log('Filtered products:', products);

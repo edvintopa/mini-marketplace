@@ -258,7 +258,8 @@ public class ProductController {
                 ClothingGetResponse clothingGetResponse = new ClothingGetResponse(
                         product.getProductId(),
                         product.getTitle(),
-                        product.getPrice()
+                        product.getPrice(),
+                        product.getImagePath()
                 );
                 response.add(clothingGetResponse);
             }
