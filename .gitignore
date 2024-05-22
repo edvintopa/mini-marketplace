@@ -34,3 +34,6 @@ build/
 
 ### DB credentials ###
 src/main/resources/application.properties
+
+### Node Modules ###
+node_modules/
